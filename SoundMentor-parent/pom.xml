@@ -22,7 +22,7 @@
     <modules>
         <module>../SoundMentor-base</module>
         <module>../SoundMentor-pojo</module>
-        <module>../SoundMentor-pojo</module>
+        <module>../SoundMentor-web</module>
     </modules>
 
     <dependencies>

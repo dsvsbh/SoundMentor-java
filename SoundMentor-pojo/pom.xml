@@ -6,6 +6,7 @@
         <groupId>com.soundmentor</groupId>
         <artifactId>SoundMentor-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../SoundMentor-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>com.soundmentor</groupId>
@@ -36,14 +37,4 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
