@@ -16,6 +16,11 @@
         <spring.boot.version>2.2.3.RELEASE</spring.boot.version>
         <spring.boot.test.version>2.3.7.RELEASE</spring.boot.test.version>
         <lombok.version>1.18.20</lombok.version>
+        <java.jwt.version>0.9.1</java.jwt.version>
+        <!--    邮箱验证依赖    -->
+        <javax.activation.version>1.1.1</javax.activation.version>
+        <javax.mail.version>1.4.7</javax.mail.version>
+        <commons-email.version>1.4</commons-email.version>
     </properties>
 
 
@@ -55,6 +60,30 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${java.jwt.version}</version>
+            </dependency>
+            <!--     邮箱验证       -->
+            <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${javax.activation.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${javax.mail.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${commons-email.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
