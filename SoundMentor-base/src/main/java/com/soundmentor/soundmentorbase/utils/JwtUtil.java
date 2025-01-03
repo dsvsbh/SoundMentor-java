@@ -1,4 +1,4 @@
-package ai.ii.ipa.utils;
+package com.soundmentor.soundmentorbase.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
