@@ -41,5 +41,15 @@
             <artifactId>SoundMentor-pojo</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--mybatis-plus-generator 代码生成依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+        </dependency>
+        <!--mybatis-plus 代码生成器模版依赖-->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
     </dependencies>
 </project>
