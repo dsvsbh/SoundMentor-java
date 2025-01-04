@@ -12,8 +12,9 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <mysql.version>8.0.27</mysql.version>
         <spring.boot.version>2.2.3.RELEASE</spring.boot.version>
+        <mybatis.plus.version>3.4.1</mybatis.plus.version>
         <spring.boot.test.version>2.3.7.RELEASE</spring.boot.test.version>
         <lombok.version>1.18.20</lombok.version>
         <java.jwt.version>0.9.1</java.jwt.version>
@@ -45,6 +46,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <!-- 数据库驱动（根据使用的数据库选择） -->
+        <!-- MySQL 示例 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -58,6 +72,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring.boot.test.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- MyBatis-Plus Starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
             </dependency>
 
             <dependency>

@@ -1,3 +1,4 @@
+create database sound_mentor;
 -- 创建组织表
 CREATE TABLE organization (
                               id INT AUTO_INCREMENT PRIMARY KEY COMMENT '组织ID',
@@ -12,12 +13,14 @@ CREATE TABLE user (
                       id INT AUTO_INCREMENT PRIMARY KEY COMMENT '用户ID',
                       name VARCHAR(100) NOT NULL COMMENT '用户名称',
                       email VARCHAR(100) UNIQUE NOT NULL COMMENT '用户邮箱',
-                      username VARCHAR(100) UNIQUE NOT NULL COMMENT '用户名',
+                      phone VARCHAR(100) UNIQUE NOT NULL COMMENT '用户手机号',
+                      username VARCHAR(100) UNIQUE NOT NULL COMMENT '用户名/账号',
                       password VARCHAR(255) NOT NULL COMMENT '用户密码',
                       created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                       updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间'
 ) COMMENT='用户表';
 
+-- 创建组织用户关联表
 create table organization_user(
     id int auto_increment primary key,
     organization_id int not null,
