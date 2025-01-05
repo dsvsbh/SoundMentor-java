@@ -17,7 +17,7 @@ public interface IUserService extends IService<UserDO> {
      * @PARAM: @param userDO
      * @RETURN: @return
      **/
-    Boolean addUser(UserDO userDO);
+    Integer addUser(UserDO userDO);
 
     /**
      * 修改用户
@@ -25,4 +25,11 @@ public interface IUserService extends IService<UserDO> {
      * @RETURN: @return
      **/
     Boolean updateUser(UserDO userDO);
+
+    /**
+     * 根据用户名查询用户
+     * @PARAM: @param username
+     * @RETURN: @return <p>
+     **/
+    UserDO getByUserName(String username);
 }

@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorbase.utils;
 
+import com.soundmentor.soundmentorbase.constant.SoundMentorConstant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  **/
 public class JwtUtil {
 
-    private static final String SECRET = "JOE38R39GNGRTU49Y534YNIGEYR534YNDEUR7964GEUR735";
+    private static final String SECRET = SoundMentorConstant.SECRET;
 
     public static Map<String,Object> validateToken(final String token) {
         byte[] secretBytes = SECRET.getBytes(StandardCharsets.UTF_8);

@@ -50,7 +50,7 @@ public class ResponseDTO<T> implements Serializable {
     }
 
 
-    public static <T> ResponseDTO<T> ok(T data) {
+    public static <T> ResponseDTO<T> OK(T data) {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setData(data);
         responseDTO.setMessage(ResultCodeEnum.OK.message());
@@ -59,7 +59,7 @@ public class ResponseDTO<T> implements Serializable {
         return responseDTO;
     }
 
-    public static <T> ResponseDTO<T> ok() {
+    public static <T> ResponseDTO<T> OK() {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setCode(ResultCodeEnum.OK.code());
         responseDTO.setMessage(ResultCodeEnum.OK.message());

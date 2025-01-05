@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IUserService;
@@ -23,8 +24,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      * @RETURN: @return
      **/
     @Override
-    public Boolean addUser(UserDO userDO) {
-        return this.save(userDO);
+    public Integer addUser(UserDO userDO) {
+        this.save(userDO);
+        return userDO.getId();
     }
 
     /**
@@ -35,5 +37,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public Boolean updateUser(UserDO userDO) {
         return this.updateUser(userDO);
+    }
+
+    /**
+     * 根据用户名查询用户
+     * @PARAM: @param username
+     * @RETURN: @return <p>
+     **/
+    @Override
+    public UserDO getByUserName(String username) {
+        return this.getOne(Wrappers.<UserDO> lambdaQuery()
+            .eq(UserDO::getUsername, username));
     }
 }
