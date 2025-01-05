@@ -1,18 +1,18 @@
 package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
-import com.soundmentor.soundmentorbase.constant.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorbase.utils.MailUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
-import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
+import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import com.soundmentor.soundmentorweb.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +37,8 @@ public class UserBiz {
     private RedisTemplate redisTemplate;
     @Resource
     private UserParamConvert userParamConvert;
+    @Resource
+    private UserInfoApi userInfoApi;
 
     /**
      * 新增用户
@@ -107,5 +109,11 @@ public class UserBiz {
         userDTO.setToken(token);
         redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()), userDO, 120, TimeUnit.MINUTES);
         return userDTO;
+    }
+
+    public Void logout() {
+        redisTemplate.delete(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userInfoApi.getUser().getId()));
+        userInfoApi.removeUser();
+        return null;
     }
 }

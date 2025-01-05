@@ -10,6 +10,6 @@ public enum OrganizationRole {
     ADMIN(1, "Admin"),
     USER(0, "User"),
     ;
-    private int code;
+    private Integer code;
     private String desc;
 }

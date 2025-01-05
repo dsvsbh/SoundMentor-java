@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorbase.constant;
+package com.soundmentor.soundmentorbase.constants;
 
 /**
  * 项目常量类

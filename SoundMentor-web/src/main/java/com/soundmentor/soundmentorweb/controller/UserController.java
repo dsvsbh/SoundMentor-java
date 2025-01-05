@@ -2,11 +2,13 @@ package com.soundmentor.soundmentorweb.controller;
 
 
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
+import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
+import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,13 +24,15 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private static final String SEND_EMAIL = "/sendEmail";
-    private static final String ADD_USER = "/addUser";
-    private static final String LOGIN = "/login";
-    private static final String LOGOUT = "/logout";
+    public static final String SEND_EMAIL = "/sendEmail";
+    public static final String ADD_USER = "/addUser";
+    public static final String LOGIN = "/login";
+    public static final String LOGOUT = "/logout";
 
     @Resource
     private UserBiz userBiz;
+    @Resource
+    private UserInfoApi userInfoapi;
 
     /**
      * 发送邮件【开发中】
@@ -68,7 +72,14 @@ public class UserController {
      * @RETURN: @return
      **/
     @PostMapping(LOGOUT)
-    public ResponseDTO<Long> logout(){
-        return null;
+    public ResponseDTO<Void> logout(){
+        return ResponseDTO.OK(userBiz.logout());
+    }
+    /**
+     * 获取用户信息 todo 待完善
+     */
+    @GetMapping
+    public ResponseDTO<UserDO> getUserInfo(){
+        return ResponseDTO.OK(userInfoapi.getUser());
     }
 }

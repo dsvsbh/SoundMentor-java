@@ -1,6 +1,6 @@
 package com.soundmentor.soundmentorbase.utils;
 
-import com.soundmentor.soundmentorbase.constant.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
