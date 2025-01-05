@@ -1,7 +1,7 @@
 package com.soundmentor.soundmentorweb.controller;
 
 
-import com.soundmentor.soundmentorbase.common.ResponseEntity;
+import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class UserController {
      * @RETURN: @return
      **/
     @PostMapping( SEND_EMAIL)
-    public ResponseEntity<Integer> sendEmail() {
-        return ResponseEntity.ok(userBiz.sendEmail());
+    public ResponseDTO<Integer> sendEmail() {
+        return ResponseDTO.ok(userBiz.sendEmail());
     }
 }

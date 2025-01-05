@@ -32,6 +32,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.soundmentor</groupId>
+            <artifactId>SoundMentor-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

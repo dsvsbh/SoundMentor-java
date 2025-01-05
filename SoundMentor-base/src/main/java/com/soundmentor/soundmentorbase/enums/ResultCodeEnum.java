@@ -121,6 +121,8 @@ public enum ResultCodeEnum {
      * @since 1.0.0
      */
     DATA_DENIED("2025201", "无数据权限"),
+    FILE_ERROR("2025202", "文件异常"),
+
     ;
 
 
