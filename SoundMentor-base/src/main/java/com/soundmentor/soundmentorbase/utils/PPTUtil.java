@@ -36,23 +36,23 @@ public class PPTUtil {
     /**
      * 向指定页导入音频
      */
-    public static void insertAudio(XMLSlideShow ppt, String  mp3FilePath, int slideIndex) throws FileNotFoundException {
-        if (ppt == null) {
-            throw new IllegalStateException("PPT 未加载，请先调用 loadPPT 方法加载 PPT 文件！");
-        }
-        List<XSLFSlide> slides = ppt.getSlides();
-        if (slideIndex < 0 || slideIndex >= slides.size()) {
-            throw new IndexOutOfBoundsException("幻灯片页码超出范围！");
-        }
-
-        XSLFSlide slide = slides.get(slideIndex);
-        File mp3File = new File(mp3FilePath);
-        try (FileInputStream fis = new FileInputStream(mp3File)) {
-            byte[] mp3Bytes = fis.readAllBytes();
-            XSLFPictureData pictureData = ppt.addPicture(mp3Bytes, PictureData.PictureType.PNG);
-            slide.createPicture(pictureData);
-        } catch (IOException e) {
-            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),ResultCodeEnum.FILE_ERROR.getMsg());
-        }
-    }
+//    public static void insertAudio(XMLSlideShow ppt, String  mp3FilePath, int slideIndex) throws FileNotFoundException {
+//        if (ppt == null) {
+//            throw new IllegalStateException("PPT 未加载，请先调用 loadPPT 方法加载 PPT 文件！");
+//        }
+//        List<XSLFSlide> slides = ppt.getSlides();
+//        if (slideIndex < 0 || slideIndex >= slides.size()) {
+//            throw new IndexOutOfBoundsException("幻灯片页码超出范围！");
+//        }
+//
+//        XSLFSlide slide = slides.get(slideIndex);
+//        File mp3File = new File(mp3FilePath);
+//        try (FileInputStream fis = new FileInputStream(mp3File)) {
+//            byte[] mp3Bytes = fis.readAllBytes();
+//            XSLFPictureData pictureData = ppt.addPicture(mp3Bytes, PictureData.PictureType.PNG);
+//            slide.createPicture(pictureData);
+//        } catch (IOException e) {
+//            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),ResultCodeEnum.FILE_ERROR.getMsg());
+//        }
+//    }
 }

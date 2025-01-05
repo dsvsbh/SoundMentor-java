@@ -11,6 +11,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * JWT工具类
+ * @Author: Make
+ * @DATE: 2025/01/05
+ **/
 public class JwtUtil {
 
     private static final String SECRET = "JOE38R39GNGRTU49Y534YNIGEYR534YNDEUR7964GEUR735";

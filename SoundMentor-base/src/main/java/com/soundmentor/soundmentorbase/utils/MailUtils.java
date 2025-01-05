@@ -7,6 +7,12 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import java.util.Properties;
 import org.springframework.stereotype.Component;
 import java.util.Random;
+
+/**
+ * 邮箱工具类
+ * @Author: Make
+ * @DATE: 2025/01/05
+ **/
 @Component
 public class MailUtils {
     public void sendTestMail(String email, String code) throws MessagingException {
@@ -42,7 +48,7 @@ public class MailUtils {
         // 设置收件人的邮箱
         InternetAddress to = new InternetAddress(email);
         message.setRecipient(RecipientType.TO, to);
-        message.setSubject("Fzw'S 每日数码新闻速递");
+        message.setSubject("Sound-Mentor 验证码");
         // 设置邮件的内容体
         message.setContent( code , "text/html;charset=UTF-8");
 

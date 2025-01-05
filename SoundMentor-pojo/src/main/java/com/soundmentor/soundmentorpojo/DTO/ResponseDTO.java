@@ -80,10 +80,25 @@ public class ResponseDTO<T> implements Serializable {
         return responseDTO;
     }
 
+    public static <T> ResponseDTO<T> fail(Exception e) {
+        ResponseDTO<T> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage(e.getMessage());
+        responseDTO.setCode(ResultCodeEnum.INTERNAL_ERROR.getCode());
+        return responseDTO;
+    }
+
     public static <T> ResponseDTO<T> fail(ResultCodeEnum ResultCodeEnum, T data) {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(ResultCodeEnum.message());
         responseDTO.setCode(ResultCodeEnum.code());
+        responseDTO.setData(data);
+        return responseDTO;
+    }
+
+    public static <T> ResponseDTO<T> fail(String code, T data) {
+        ResponseDTO<T> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage(ResultCodeEnum.valueOfCode(code).getMsg());
+        responseDTO.setCode(code);
         responseDTO.setData(data);
         return responseDTO;
     }

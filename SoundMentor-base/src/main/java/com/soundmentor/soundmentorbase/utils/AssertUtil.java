@@ -7,6 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * 断言工具类
+ * @Author: Make
+ * @DATE: 2025/01/05
+ **/
 public class AssertUtil {
 
 
