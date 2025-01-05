@@ -1,11 +1,10 @@
-package com.soundmentor.soundmentorpojo.basic.res;
+package com.soundmentor.soundmentorbase.common;
 
-import com.soundmentor.soundmentorpojo.basic.enums.ResultCodeEnum;
+import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 /**
  * 返回结果统一封装
  * @Author: Make

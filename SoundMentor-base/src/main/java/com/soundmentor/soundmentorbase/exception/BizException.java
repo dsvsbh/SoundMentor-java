@@ -1,6 +1,5 @@
-package com.soundmentor.soundmentorpojo.basic.exception;
-
-import com.soundmentor.soundmentorpojo.basic.enums.ResultCodeEnum;
+package com.soundmentor.soundmentorbase.exception;
+import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import lombok.Getter;
 
 /**

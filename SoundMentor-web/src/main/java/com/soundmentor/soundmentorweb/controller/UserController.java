@@ -1,7 +1,7 @@
 package com.soundmentor.soundmentorweb.controller;
 
 
-import com.soundmentor.soundmentorpojo.basic.res.ResponseEntity;
+import com.soundmentor.soundmentorbase.common.ResponseEntity;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

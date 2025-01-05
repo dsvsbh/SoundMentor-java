@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorpojo.basic.enums;
+package com.soundmentor.soundmentorbase.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,8 +1,9 @@
-package com.soundmentor.soundmentorweb.biz.basic;
+package com.soundmentor.soundmentorbase.utils;
 
-import com.soundmentor.soundmentorpojo.basic.enums.ResultCodeEnum;
-import com.soundmentor.soundmentorpojo.basic.exception.BizException;
+import com.soundmentor.soundmentorbase.exception.BizException;
+import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collection;
 import java.util.Map;
 
