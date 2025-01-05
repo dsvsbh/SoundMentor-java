@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
+import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
@@ -30,21 +31,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try {
             String token = request.getHeader("Authorization");
-            if(StringUtils.isEmpty(token))
-            {
-                throw new BizException();
-            }
+            AssertUtil.hasLength(token, "Authorization不能为空!");
             Map<String, Object> stringObjectMap = JwtUtil.validateToken(token);
             String userId = stringObjectMap.get("userId").toString();
-            if(StringUtils.isEmpty(userId))
-            {
-                throw new BizException();
-            }
+            AssertUtil.notNull(userId, "token已失效，请重新登录！");
             UserDO userDO = (UserDO)redisTemplate.opsForValue().get(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY, userId));
-            if(userDO == null)
-            {
-                throw new BizException();
-            }
+            AssertUtil.ifNull(userDO, "用户信息已失效，请重新登录！");
             userInfoApi.setUser(userDO);
             return true;
         } catch (Exception e) {

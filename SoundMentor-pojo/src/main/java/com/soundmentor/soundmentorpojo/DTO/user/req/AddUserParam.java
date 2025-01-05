@@ -24,7 +24,7 @@ public class AddUserParam implements Serializable {
      * 验证码
      **/
     @NotNull(message = "验证码不能为空")
-    private Integer code;
+    private Integer verifyCode;
 
     /**
      * 用户手机号

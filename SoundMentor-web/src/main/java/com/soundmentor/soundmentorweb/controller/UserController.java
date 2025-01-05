@@ -28,14 +28,14 @@ public class UserController {
     public static final String ADD_USER = "/addUser";
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
+    public static final String GET_WEB_USER = "/getWebUser";
 
     @Resource
     private UserBiz userBiz;
-    @Resource
-    private UserInfoApi userInfoapi;
+
 
     /**
-     * 发送邮件【开发中】
+     * 发送邮件
      * @PARAM:
      * @RETURN: @return
      **/
@@ -72,14 +72,14 @@ public class UserController {
      * @RETURN: @return
      **/
     @PostMapping(LOGOUT)
-    public ResponseDTO<Void> logout(){
+    public ResponseDTO<Boolean> logout(){
         return ResponseDTO.OK(userBiz.logout());
     }
     /**
-     * 获取用户信息 todo 待完善
+     * 获取用户信息
      */
-    @GetMapping
-    public ResponseDTO<UserDO> getUserInfo(){
-        return ResponseDTO.OK(userInfoapi.getUser());
+    @PostMapping(GET_WEB_USER)
+    public ResponseDTO<UserDTO> getUserInfo(){
+        return ResponseDTO.OK(userBiz.getWebUser());
     }
 }

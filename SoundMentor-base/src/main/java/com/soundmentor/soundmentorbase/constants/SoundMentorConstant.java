@@ -25,4 +25,14 @@ public final class SoundMentorConstant {
      **/
     public static final String SECRET = "JOE38R39GNGRTU49Y534YNIGEYR534YNDEUR7964GEUR735";
 
+    /**
+     * token过期时间,单位为分钟
+     **/
+    public static final Integer TOKEN_EXPIRE_TIME = 120;
+
+    /**
+     * 验证码过期时间,单位为分钟
+     **/
+    public static final Integer VERIFY_CODE_EXPIRE_TIME = 5;
+
 }

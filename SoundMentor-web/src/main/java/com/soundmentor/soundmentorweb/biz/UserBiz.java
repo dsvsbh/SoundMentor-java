@@ -46,7 +46,7 @@ public class UserBiz {
      * @RETURN: @return
      **/
     public Integer addUser(AddUserParam param) throws Exception {
-        Boolean verifyTrue = verifyEmail(param.getEmail(), param.getCode());
+        Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
         AssertUtil.isTrue(verifyTrue, "验证码错误");
         UserDO userDO = userParamConvert.convert(param);
         // 密码加密
@@ -72,7 +72,8 @@ public class UserBiz {
     public Boolean sendEmail(String email) throws MessagingException {
         Integer code = MailUtil.achieveCode();
         MailUtil.sendTestMail(email, code);
-        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email), code,60, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email)
+                , code,SoundMentorConstant.VERIFY_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
         return true;
     }
 
@@ -107,13 +108,29 @@ public class UserBiz {
         String token = JwtUtil.generateToken(userDO.getUsername(),userDO.getId().toString());
         UserDTO userDTO = userParamConvert.convert(userDO);
         userDTO.setToken(token);
-        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()), userDO, 120, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()),
+                userDO, SoundMentorConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
         return userDTO;
     }
 
-    public Void logout() {
+    /**
+     * 退出登录
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    public Boolean logout() {
         redisTemplate.delete(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userInfoApi.getUser().getId()));
         userInfoApi.removeUser();
-        return null;
+        return true;
+    }
+
+    /**
+     * 获取用户信息
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    public UserDTO getWebUser() {
+        UserDO userDO = userInfoApi.getUser();
+        return userParamConvert.convert(userDO);
     }
 }

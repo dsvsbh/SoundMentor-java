@@ -11,9 +11,9 @@ import java.util.List;
  * 获取当前用户信息
  */
 public interface UserInfoApi {
-    public void setUser(UserDO user);
-    public UserDO getUser();
-    public List<OrganizationDO> getOrganizations();
-    public OrganizationRole getOrganizationRole(Long organizationId);
-    public void removeUser();
+    void setUser(UserDO user);
+    UserDO getUser();
+    List<OrganizationDO> getOrganizations();
+    OrganizationRole getOrganizationRole(Long organizationId);
+    void removeUser();
 }
