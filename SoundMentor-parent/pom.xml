@@ -16,7 +16,7 @@
         <spring.boot.version>2.2.3.RELEASE</spring.boot.version>
         <mybatis.plus.version>3.4.1</mybatis.plus.version>
         <spring.boot.test.version>2.3.7.RELEASE</spring.boot.test.version>
-        <lombok.version>1.18.20</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <org.apache.poi.version>4.1.2</org.apache.poi.version>
         <java.jwt.version>0.9.1</java.jwt.version>
         <!--    邮箱验证依赖    -->

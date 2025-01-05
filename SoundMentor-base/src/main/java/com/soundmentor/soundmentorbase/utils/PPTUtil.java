@@ -19,11 +19,11 @@ public class PPTUtil {
      * @param filePath PPT 本地临时文件路径
      * @throws IOException 如果文件读取失败
      */
-    public static XMLSlideShow loadPPT(String filePath) throws IOException {
+    public static XMLSlideShow loadPPT(String filePath)  {
         try (FileInputStream fis = new FileInputStream(filePath)) {
              return new XMLSlideShow(fis);
-        } catch (IOException e) {
-            throw new IOException("Failed to load PPT file: " + filePath, e);
+        } catch (Exception e) {
+            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),ResultCodeEnum.FILE_ERROR.getMsg());
         }
     }
     /**
