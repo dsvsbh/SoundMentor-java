@@ -41,6 +41,10 @@ public class UserDTO implements Serializable {
      */
     private String username;
 
+    /**
+     * 头像路径
+     */
+    private String headImg;
 
     /**
      * 创建时间

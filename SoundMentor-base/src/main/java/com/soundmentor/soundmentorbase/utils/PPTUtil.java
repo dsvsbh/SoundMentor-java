@@ -94,7 +94,7 @@ public class PPTUtil {
         XSLFPictureShape pictureShape = slide.createPicture(pictureData);
 
         // 设置图片的位置
-        pictureShape.setAnchor(new java.awt.Rectangle(650, 450, 50, 50)); // 可以调整图片的位置和大小
+        pictureShape.setAnchor(new java.awt.Rectangle(PPTConstant.PPT_VOICE_PICTURE_X, PPTConstant.PPT_VOICE_PICTURE_Y, PPTConstant.PPT_VOICE_PICTURE_WIDTH, PPTConstant.PPT_VOICE_PICTURE_HEIGHT)); // 可以调整图片的位置和大小
 
         // 设置图片的超链接
         URI linkUri = null;  // 这里可以是本地文件路径或网络 URL

@@ -62,6 +62,10 @@ public class UserDO implements Serializable {
     private String password;
 
     /**
+     * 头像路径
+     */
+    private String headImg;
+    /**
      * 创建时间
      */
     private LocalDateTime createdTime;

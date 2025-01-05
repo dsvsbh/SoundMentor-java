@@ -24,7 +24,10 @@ public final class SoundMentorConstant {
      * JWT秘钥
      **/
     public static final String SECRET = "JOE38R39GNGRTU49Y534YNIGEYR534YNDEUR7964GEUR735";
-
+    /**
+     * 默认头像地址
+     */
+    public static final String DEFAULT_HEAD_IMG = "default";//todo 待定
     /**
      * token过期时间,单位为分钟
      **/

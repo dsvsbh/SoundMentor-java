@@ -78,7 +78,7 @@ public class UserController {
     /**
      * 获取用户信息
      */
-    @PostMapping(GET_WEB_USER)
+    @GetMapping(GET_WEB_USER)
     public ResponseDTO<UserDTO> getUserInfo(){
         return ResponseDTO.OK(userBiz.getWebUser());
     }

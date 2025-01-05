@@ -53,6 +53,7 @@ public class UserBiz {
         String password = AESUtil.encrypt(userDO.getPassword(), SoundMentorConstant.AES_KEY);
         userDO.setPassword(password);
         userDO.setCreatedTime(LocalDateTime.now());
+        userDO.setHeadImg(SoundMentorConstant.DEFAULT_HEAD_IMG);
         return userService.addUser(userDO);
     }
     /**
