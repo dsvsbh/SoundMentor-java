@@ -2,7 +2,6 @@ package com.soundmentor.soundmentorweb.controller;
 
 
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
-import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;

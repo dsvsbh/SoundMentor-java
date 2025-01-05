@@ -105,6 +105,7 @@ public class UserBiz {
         String token = JwtUtil.generateToken(userDO.getUsername(),userDO.getId().toString());
         UserDTO userDTO = userParamConvert.convert(userDO);
         userDTO.setToken(token);
+        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()), userDO, 120, TimeUnit.MINUTES);
         return userDTO;
     }
 }

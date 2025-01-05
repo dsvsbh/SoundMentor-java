@@ -8,6 +8,8 @@ import java.util.Properties;
 import java.util.Random;
 
 public class MailUtil {
+    private static final String userName163 = "fzw1938@163.com";
+    private static final String password163 = "EWiPDkat4FXdtuh5";
     public static void main(String[] args) throws MessagingException {
         // 可以在这里直接测试方法，填自己的邮箱即可
         sendTestMail("1939729609@qq.com", achieveCode());
@@ -18,16 +20,15 @@ public class MailUtil {
         Properties props = new Properties();
         // 表示SMTP发送邮件，必须进行身份验证
         props.put("mail.smtp.auth", "true");
-        // 启用 SSL
-        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.starttls.enale", "true");
         // 此处填写SMTP服务器
-        props.put("mail.smtp.host", "smtp.qq.com");
+        props.put("mail.smtp.host", "smtp.163.com");
         // 端口号，SSL 端口为 465
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.port", "25");
         // 此处填写，发件人的账号
-        props.put("mail.user", "1939729609@qq.com");
+        props.put("mail.user", userName163);
         // 此处填写16位 STMP 授权码
-        props.put("mail.password", "jvickiztglwkcgia");
+        props.put("mail.password", password163);
 
         // 构建授权信息，用于进行 SMTP 进行身份验证
         Authenticator authenticator = new Authenticator() {
@@ -55,7 +56,7 @@ public class MailUtil {
         message.setRecipient(RecipientType.TO, to);
 
         // 设置邮件标题
-        message.setSubject("邮件测试");
+        message.setSubject("SoundMentor 验证码");
 
         // 设置邮件的内容体
         message.setContent("尊敬的用户:你好!\n注册验证码为:" + code + "(有效期为一分钟,请勿告知他人)", "text/html;charset=UTF-8");
