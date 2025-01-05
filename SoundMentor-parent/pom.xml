@@ -22,10 +22,7 @@
         <javax.activation.version>1.1.1</javax.activation.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <commons-email.version>1.4</commons-email.version>
-        <!--mybatis plus 依赖-->
-        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>
-        <!--mybatis-plus 代码生成器模版依赖-->
-        <velocity-engine-core.version>2.1</velocity-engine-core.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
     </properties>
 
 
@@ -40,13 +37,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -66,6 +65,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
@@ -116,17 +120,10 @@
                 <artifactId>commons-email</artifactId>
                 <version>${commons-email.version}</version>
             </dependency>
-            <!--mybatis-plus-generator 代码生成依赖-->
             <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-generator</artifactId>
-                <version>${mybatis-plus-boot-starter.version}</version>
-            </dependency>
-            <!--mybatis-plus 代码生成器模版依赖-->
-            <dependency>
-                <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity-engine-core</artifactId>
-                <version>${velocity-engine-core.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

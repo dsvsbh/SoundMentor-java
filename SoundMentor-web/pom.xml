@@ -41,15 +41,13 @@
             <artifactId>SoundMentor-pojo</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--mybatis-plus-generator 代码生成依赖-->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--mybatis-plus 代码生成器模版依赖-->
         <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 </project>
