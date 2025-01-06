@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.service;
 
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IOrganizationService extends IService<OrganizationDO> {
 
+    Long createOrganization(CreateOrganizationDTO dto);
 }

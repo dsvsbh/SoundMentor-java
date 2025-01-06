@@ -56,5 +56,8 @@ public class OrganizationDO implements Serializable {
      */
     private LocalDateTime updatedTime;
 
-
+    /**
+     *  组织的容量
+     */
+    private Integer capacity;
 }

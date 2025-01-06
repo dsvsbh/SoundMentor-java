@@ -38,4 +38,5 @@ public final class SoundMentorConstant {
      **/
     public static final Integer VERIFY_CODE_EXPIRE_TIME = 5;
 
+    public static final String REPEAT_SUBMIT_KEY = "repeat:submit:";
 }
