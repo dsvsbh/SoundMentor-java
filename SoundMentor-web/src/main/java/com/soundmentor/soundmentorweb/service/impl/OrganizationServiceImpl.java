@@ -48,9 +48,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Transactional
     public Integer createOrganization(CreateOrganizationDTO dto) {
         Integer capacity = dto.getCapacity();
-        if(capacity<0||capacity>organizationProperties.getDefaultOrganizationCapacity())
+        if(Objects.isNull(capacity))
         {
-            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"组织容量应该在"+organizationProperties.getDefaultOrganizationCapacity()+"以内");
+            capacity=organizationProperties.getDefaultOrganizationCapacity();
+        } else {
+            if(capacity<0||capacity>organizationProperties.getDefaultOrganizationCapacity())
+            {
+                throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"组织容量应该在"+organizationProperties.getDefaultOrganizationCapacity()+"以内");
+            }
         }
         Integer userId = userInfoApi.getUser().getId();
         Integer count = ouService.lambdaQuery()
@@ -63,7 +68,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         OrganizationDO organizationDO = OrganizationDO.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .capacity(dto.getCapacity())
+                .capacity(capacity)
                 .createdTime(LocalDateTime.now())
                 .updatedTime(LocalDateTime.now())
                 .build();
