@@ -63,6 +63,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setCode(ResultCodeEnum.OK.code());
         responseDTO.setMessage(ResultCodeEnum.OK.message());
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return responseDTO;
     }
 
@@ -70,6 +71,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(ResultCodeEnum.FAIL.message());
         responseDTO.setCode(ResultCodeEnum.FAIL.code());
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return responseDTO;
     }
 
@@ -77,6 +79,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(ResultCodeEnum.message());
         responseDTO.setCode(ResultCodeEnum.code());
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return responseDTO;
     }
 
@@ -84,6 +87,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(e.getMessage());
         responseDTO.setCode(ResultCodeEnum.INTERNAL_ERROR.getCode());
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return responseDTO;
     }
 
@@ -91,6 +95,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(ResultCodeEnum.message());
         responseDTO.setCode(ResultCodeEnum.code());
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         responseDTO.setData(data);
         return responseDTO;
     }
@@ -99,6 +104,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(ResultCodeEnum.valueOfCode(code).getMsg());
         responseDTO.setCode(code);
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         responseDTO.setData(data);
         return responseDTO;
     }
@@ -107,6 +113,7 @@ public class ResponseDTO<T> implements Serializable {
         ResponseDTO<T> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage(msg);
         responseDTO.setCode(code);
+        responseDTO.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return responseDTO;
     }
 

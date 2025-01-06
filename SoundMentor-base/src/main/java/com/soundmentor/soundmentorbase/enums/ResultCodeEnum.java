@@ -23,11 +23,11 @@ public enum ResultCodeEnum {
      *
      * @since 1.0.0
      */
-    OK("0", "ok"),
+    OK("0", "OK"),
     /**
      * 错误状态码
      **/
-    FAIL("1", "fail"),
+    FAIL("1", "FAIL"),
     /**
      * 用于直接显示提示用户的错误，内容由输入内容决定
      */
