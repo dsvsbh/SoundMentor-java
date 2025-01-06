@@ -2,7 +2,6 @@ package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
-import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;

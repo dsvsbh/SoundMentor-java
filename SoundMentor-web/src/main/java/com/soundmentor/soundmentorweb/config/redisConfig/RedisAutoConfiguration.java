@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.config.redisConfig;
 
+import com.soundmentor.soundmentorweb.biz.util.cache.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,7 +33,6 @@ public class RedisAutoConfiguration {
             clientConfigurationBuilder.useSsl().disablePeerVerification();
         };
     }
-
     public static final RedisSerializer<String> STRING_SERIALIZER = new StringRedisSerializer();
     public static final FastJson2JsonRedisSerializer<Object> SERIALIZER = new FastJson2JsonRedisSerializer<Object>(Object.class);
 
@@ -58,6 +58,10 @@ public class RedisAutoConfiguration {
         template.setHashKeySerializer(STRING_SERIALIZER);
         template.afterPropertiesSet();
         return template;
+    }
+    @Bean
+    public RedisUtil getRedisCache() {
+        return new RedisUtil();
     }
 }
 

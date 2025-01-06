@@ -1,7 +1,6 @@
 package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
-import com.soundmentor.soundmentorpojo.DTO.basic.StringParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserInfoParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;

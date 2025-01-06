@@ -28,7 +28,6 @@ public class UserOpenController {
     @Resource
     private UserBiz userBiz;
 
-
     /**
      * 发送邮件
      * @PARAM:
