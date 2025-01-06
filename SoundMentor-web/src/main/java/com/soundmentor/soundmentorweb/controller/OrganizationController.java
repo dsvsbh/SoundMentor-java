@@ -22,7 +22,7 @@ public class OrganizationController {
     private final IOrganizationService organizationService;
     @PostMapping("/create")
     @RepeatSubmit
-    public ResponseDTO<Long> createOrganization(@RequestBody @Valid CreateOrganizationDTO dto){
+    public ResponseDTO<Integer> createOrganization(@RequestBody @Valid CreateOrganizationDTO dto){
         return ResponseDTO.OK(organizationService.createOrganization(dto));
     }
 

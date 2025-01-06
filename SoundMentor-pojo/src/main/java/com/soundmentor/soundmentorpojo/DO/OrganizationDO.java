@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -26,6 +23,7 @@ import lombok.experimental.Accessors;
 @TableName("organization")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrganizationDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

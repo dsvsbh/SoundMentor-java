@@ -14,5 +14,5 @@ import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
  */
 public interface IOrganizationService extends IService<OrganizationDO> {
 
-    Long createOrganization(CreateOrganizationDTO dto);
+    Integer createOrganization(CreateOrganizationDTO dto);
 }

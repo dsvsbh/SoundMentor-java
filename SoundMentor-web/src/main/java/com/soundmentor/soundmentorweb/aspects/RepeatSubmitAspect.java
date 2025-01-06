@@ -10,6 +10,7 @@ import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorweb.annotation.RepeatSubmit;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -34,7 +35,7 @@ public class RepeatSubmitAspect {
      * @param joinPoint
      */
     @Before("repeatSubmit()")
-    public void doBefore(ProceedingJoinPoint joinPoint) {
+    public void doBefore(JoinPoint joinPoint) {
         RepeatSubmit annotation = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RepeatSubmit.class);
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
