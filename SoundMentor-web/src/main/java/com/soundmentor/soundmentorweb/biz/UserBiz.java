@@ -2,7 +2,6 @@ package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
-import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
@@ -11,7 +10,6 @@ import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.*;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
-import com.soundmentor.soundmentorweb.biz.util.treadLocal.UserAuthCenter;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import com.soundmentor.soundmentorweb.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -133,7 +131,7 @@ public class UserBiz {
      * @RETURN: @return
      **/
     public UserDTO getWebUser() {
-        UserDO userDO = UserAuthCenter.getWebUser();
+        UserDO userDO = userInfoApi.getUser();
         return userParamConvert.convert(userDO);
     }
 

@@ -3,11 +3,12 @@ package com.soundmentor.soundmentorweb.biz.util.limit;
 import cn.hutool.core.util.ArrayUtil;
 import com.soundmentor.soundmentorbase.common.request.RequestKeyRead;
 import com.soundmentor.soundmentorbase.utils.ElUtil;
-import com.soundmentor.soundmentorweb.biz.util.treadLocal.UserAuthCenter;
+import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,9 @@ import java.util.Map;
  * @date 2024/07/16
  **/
 public class WebUserKey extends RequestKeyRead {
+    @Resource
+    private UserInfoApi userInfoApi;
+
     /**
      * 读取key的实际值
      *
@@ -30,7 +34,7 @@ public class WebUserKey extends RequestKeyRead {
     public String readKeyValue(JoinPoint jp, String key) {
         if (ElUtil.containElString(key)) {
             Map<String, Object> map = this.readJoinPointArgs(jp);
-            map.put("webUser", UserAuthCenter.getWebUser());
+            map.put("webUser", userInfoApi.getUser());
             return ElUtil.replaceElString(key, map);
         } else {
             return key;

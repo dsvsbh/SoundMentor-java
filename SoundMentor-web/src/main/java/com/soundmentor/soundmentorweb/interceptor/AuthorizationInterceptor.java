@@ -7,7 +7,6 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
-import com.soundmentor.soundmentorweb.biz.util.treadLocal.UserAuthCenter;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +26,14 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try {
-            String token = request.getHeader(UserAuthCenter.TOKEN_HEADER);
+            String token = request.getHeader("Authorization");
             AssertUtil.isTrue(StrUtil.isNotBlank(token), ResultCodeEnum.UNAUTHORIZED.getCode(), "用户未登录");
-            UserAuthCenter.setToken(token);
             Map<String, Object> stringObjectMap = JwtUtil.validateToken(token);
             String userId = stringObjectMap.get("userId").toString();
             AssertUtil.notNull(userId, "token已失效，请重新登录！");
             UserDO userDO = (UserDO)redisTemplate.opsForValue().get(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY, userId));
             AssertUtil.ifNull(userDO, "用户信息已失效，请重新登录！");
-            UserAuthCenter.setWebUser(userDO);
-            // userInfoApi.setUser(userDO);
+            userInfoApi.setUser(userDO);
             return true;
         } catch (Exception e) {
             log.info("用户未认证，请先登录");

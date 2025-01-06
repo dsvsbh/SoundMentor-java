@@ -1,11 +1,13 @@
 package com.soundmentor.soundmentorweb.controller;
 
+import com.soundmentor.soundmentorbase.utils.annotation.RequestDuplicationCondition;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.basic.StringParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserInfoParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
+import com.soundmentor.soundmentorweb.biz.util.limit.WebUserKey;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -41,6 +43,8 @@ public class UserController {
      * 获取用户信息
      */
     @GetMapping(GET_WEB_USER)
+    @RequestDuplicationCondition(keyPrefix = "EMAIL:SEND:", key = "",
+            keyReadClass = WebUserKey.class, requestIntervalMs = 100L)
     public ResponseDTO<UserDTO> getUserInfo(){
         return ResponseDTO.OK(userBiz.getWebUser());
     }
