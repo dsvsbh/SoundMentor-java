@@ -33,9 +33,6 @@ mybatis:
     map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-# 日志打印配置
-logging:
-  config: classpath:log4j2.xml
 
 organization:
   # 创建组织时默认最大用户容量
