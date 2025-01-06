@@ -8,9 +8,7 @@ import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorbase.utils.MailUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
-import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
-import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
-import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
+import com.soundmentor.soundmentorpojo.DTO.user.req.*;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
@@ -62,7 +60,10 @@ public class UserBiz {
      * @PARAM: @param userDO
      * @RETURN: @return
      **/
-    public Boolean updateUser(UserDO userDO) {
+    public Boolean updateUser(UpdateUserInfoParam param) {
+        UserDO userDO = userParamConvert.convert(param);
+        UserDO user = userInfoApi.getUser();
+        userDO.setId(user.getId());
         return userService.updateUser(userDO);
     }
 
@@ -145,5 +146,19 @@ public class UserBiz {
         AssertUtil.isTrue(verifyTrue, "验证码错误");
         String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
         return userService.updatePassword(param.getEmail(), password);
+    }
+
+    /**
+     * 密码修改
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    public Boolean updatePassword(UpdateUserPasswordParam param) {
+        UserDO userDO = userInfoApi.getUser();
+        // 密码解析
+        String password = AESUtil.encrypt(param.getOldPassword(), SoundMentorConstant.AES_KEY);
+        AssertUtil.isTrue(password.equals(userDO.getPassword()), "旧密码错误");
+        String newPassword = AESUtil.encrypt(param.getNewPassword(), SoundMentorConstant.AES_KEY);
+        return userService.updatePassword(userDO.getEmail(), newPassword);
     }
 }
