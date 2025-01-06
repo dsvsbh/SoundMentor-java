@@ -60,9 +60,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(new AuthorizationInterceptor(redisTemplate, userInfoApi))
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/user"+UserController.ADD_USER,
-                        "/user"+UserController.LOGIN,
-                        "/user"+UserController.SEND_EMAIL
+                        "/openApi/**"
                 );
     }
 }
