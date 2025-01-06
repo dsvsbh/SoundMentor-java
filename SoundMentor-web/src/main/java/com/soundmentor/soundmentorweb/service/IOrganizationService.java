@@ -2,7 +2,11 @@ package com.soundmentor.soundmentorweb.service;
 
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
+import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +19,10 @@ import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 public interface IOrganizationService extends IService<OrganizationDO> {
 
     Integer createOrganization(CreateOrganizationDTO dto);
+
+    List<OrganizationListDTO> OrganizationList();
+
+    String getShareCode(Integer organizationId);
+
+    void join(JoinOrganizationDTO dto);
 }

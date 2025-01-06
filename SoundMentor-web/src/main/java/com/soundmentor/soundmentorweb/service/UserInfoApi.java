@@ -14,6 +14,6 @@ public interface UserInfoApi {
     void setUser(UserDO user);
     UserDO getUser();
     List<OrganizationDO> getOrganizations();
-    OrganizationRole getOrganizationRole(Long organizationId);
+    OrganizationRole getOrganizationRole(Integer organizationId);
     void removeUser();
 }

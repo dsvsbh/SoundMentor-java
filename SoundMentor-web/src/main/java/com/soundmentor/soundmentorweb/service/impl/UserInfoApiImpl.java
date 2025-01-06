@@ -45,7 +45,7 @@ public class UserInfoApiImpl implements UserInfoApi {
     }
 
     @Override
-    public OrganizationRole getOrganizationRole(Long organizationId) {
+    public OrganizationRole getOrganizationRole(Integer organizationId) {
         OrganizationUserDO organizationUserDO = organizationUserService.getOne(new LambdaQueryWrapper<OrganizationUserDO>()
                 .eq(OrganizationUserDO::getUserId, getUser().getId())
                 .eq(OrganizationUserDO::getOrganizationId, organizationId));

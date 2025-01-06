@@ -39,4 +39,6 @@ public final class SoundMentorConstant {
     public static final Integer VERIFY_CODE_EXPIRE_TIME = 5;
 
     public static final String REPEAT_SUBMIT_KEY = "repeat:submit:";
+
+    public static final String ORGANIZATION_SHARE_CODE_KEY="organization:share:code:";
 }
