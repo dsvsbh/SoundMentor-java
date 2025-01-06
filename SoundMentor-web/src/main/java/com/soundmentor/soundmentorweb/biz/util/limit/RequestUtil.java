@@ -1,12 +1,12 @@
-package com.soundmentor.soundmentorbase.utils;
+package com.soundmentor.soundmentorweb.biz.util.limit;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.common.request.RequestKeyRead;
 import com.soundmentor.soundmentorbase.common.request.RequestParamMd5;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestDuplicationCondition;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingCondition;
+import com.soundmentor.soundmentorweb.annotation.RequestDuplicationCondition;
+import com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingCondition;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 
@@ -75,7 +75,7 @@ public class RequestUtil {
      * 构建请求 param md5
      *
      * @param duplication 重复
-     * @param jp          太平绅士
+     * @param jp          切入点
      * @return {@link String}
      */
     public static String buildRequestParamMd5(RequestDuplicationCondition duplication, JoinPoint jp) {

@@ -1,12 +1,12 @@
 package com.soundmentor.soundmentorweb.controller.openApi;
 
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestDuplicationCondition;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
+import com.soundmentor.soundmentorweb.annotation.RequestDuplicationCondition;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
 import com.soundmentor.soundmentorweb.biz.util.limit.WebUserKey;
 import org.springframework.web.bind.annotation.*;

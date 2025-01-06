@@ -1,6 +1,6 @@
-package com.soundmentor.soundmentorbase.utils.base.redisConfig;
+package com.soundmentor.soundmentorweb.config.redisConfig;
 
-import com.soundmentor.soundmentorbase.utils.RedisCache;
+import com.soundmentor.soundmentorweb.biz.util.cache.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -60,8 +60,8 @@ public class RedisAutoConfiguration {
         return template;
     }
     @Bean
-    public RedisCache getRedisCache() {
-        return new RedisCache();
+    public RedisUtil getRedisCache() {
+        return new RedisUtil();
     }
 }
 

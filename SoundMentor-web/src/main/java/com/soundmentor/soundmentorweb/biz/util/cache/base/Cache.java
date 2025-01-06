@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorbase.utils.base;
+package com.soundmentor.soundmentorweb.biz.util.cache.base;
 
 import java.util.List;
 import java.util.Map;

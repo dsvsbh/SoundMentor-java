@@ -1,11 +1,10 @@
-package com.soundmentor.soundmentorbase.utils.base;
+package com.soundmentor.soundmentorweb.biz.util.cache.base;
 
 import cn.hutool.core.collection.CollUtil;
-import com.soundmentor.soundmentorbase.utils.RedisCache;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingCondition;
 
-
-import com.soundmentor.soundmentorbase.utils.base.redisConfig.RedisAutoConfiguration;
+import com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingCondition;
+import com.soundmentor.soundmentorweb.biz.util.cache.RedisUtil;
+import com.soundmentor.soundmentorweb.config.redisConfig.RedisAutoConfiguration;
 import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.RedisCallback;
 
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class RequestLimitRedisCache implements RequestLimitCache {
     @Resource
-    private RedisCache redisCache;
+    private RedisUtil redisCache;
 
     /**
      * 检查是否重复提交。true，允许提交，false不允许提交

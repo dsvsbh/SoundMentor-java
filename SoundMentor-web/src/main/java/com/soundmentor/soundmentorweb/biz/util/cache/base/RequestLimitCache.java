@@ -1,6 +1,6 @@
-package com.soundmentor.soundmentorbase.utils.base;
+package com.soundmentor.soundmentorweb.biz.util.cache.base;
 
-import com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingCondition;
+import com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingCondition;
 
 /**
  * 请求限流的缓存

@@ -15,9 +15,8 @@ import java.util.Map;
 /**
  * webUser的key
  *
- * @author 卫庄
- * @module
- * @date 2024/07/16
+ * @Author: Make
+ * @DATE: 2025/01/06
  **/
 public class WebUserKey extends RequestKeyRead {
     @Resource

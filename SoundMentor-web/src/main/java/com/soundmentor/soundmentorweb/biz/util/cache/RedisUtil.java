@@ -1,10 +1,10 @@
-package com.soundmentor.soundmentorbase.utils;
+package com.soundmentor.soundmentorweb.biz.util.cache;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.soundmentor.soundmentorbase.exception.BizException;
-import com.soundmentor.soundmentorbase.utils.base.Cache;
+import com.soundmentor.soundmentorweb.biz.util.cache.base.Cache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @DATE: 2025/01/06
  **/
 @Slf4j
-public class RedisCache implements Cache {
+public class RedisUtil implements Cache {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -50,7 +50,7 @@ public class RedisCache implements Cache {
     public <T> List<T> multiGet(Collection<String> keys) {
         return syncExec(syncCmd -> Optional.ofNullable(syncCmd.opsForValue().multiGet(keys))
                 .orElse(Collections.emptyList()).stream()
-                .map(RedisCache::<T>redisResultTrans)
+                .map(RedisUtil::<T>redisResultTrans)
                 .collect(Collectors.toList()));
     }
 
@@ -327,7 +327,7 @@ public class RedisCache implements Cache {
     public <T> List<T> hashAllValue(String key) {
         List<Object> value = syncExec(syncCmd -> syncCmd.opsForHash().values(key));
         return CollUtil.isNotEmpty(value) ? value.stream()
-                .map(RedisCache::<T>redisResultTrans)
+                .map(RedisUtil::<T>redisResultTrans)
                 .collect(Collectors.toList()) : Collections.emptyList();
     }
 
@@ -425,7 +425,7 @@ public class RedisCache implements Cache {
     public <T> Set<T> zSetRangeByScore(String redisKey, double min, double max) {
         Set<Object> set = syncExec(syncCmd -> syncCmd.boundZSetOps(redisKey).rangeByScore(min, max));
         return CollUtil.isNotEmpty(set) ?
-                set.stream().map(RedisCache::<T>redisResultTrans).collect(Collectors.toSet())
+                set.stream().map(RedisUtil::<T>redisResultTrans).collect(Collectors.toSet())
                 : Collections.emptySet();
     }
 

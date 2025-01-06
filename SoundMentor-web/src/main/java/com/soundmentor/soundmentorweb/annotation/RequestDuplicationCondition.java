@@ -1,12 +1,14 @@
-package com.soundmentor.soundmentorbase.utils.annotation;
+package com.soundmentor.soundmentorweb.annotation;
 
 import com.soundmentor.soundmentorbase.common.request.RequestKeyRead;
+import com.soundmentor.soundmentorbase.common.request.RequestParamMd5;
 import com.soundmentor.soundmentorbase.enums.base.LimitCacheEnum;
 
 import java.lang.annotation.*;
 
+
 /**
- * 请求限流拉黑。在请求达到一定频率的时候会进行拉黑操作
+ * 用于标记一个方法重复提交的注解。可以针对方法进行防止重复提交
  *
  * @Author: Make
  * @DATE: 2025/01/06
@@ -14,7 +16,7 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestLimitBlockingCondition {
+public @interface RequestDuplicationCondition {
     /**
      * key的前缀，用来组合key进行限制
      *
@@ -44,23 +46,35 @@ public @interface RequestLimitBlockingCondition {
     LimitCacheEnum cacheType() default LimitCacheEnum.REDIS;
 
     /**
-     * 请求阈值的时间单位。单位s
+     * 请求间隔毫秒
      *
      * @return {@link Long}
      */
-    long requestThresholdTime();
+    long requestIntervalMs();
 
     /**
-     * 请求阈值。 在请求时间间隔内，达到了请求次数。就会被封禁
+     * 是否按照参数的md5进行限制
      *
-     * @return long
+     * @return boolean
      */
-    int requestThreshold();
+    boolean limitParamMd5() default false;
 
     /**
-     * 封禁时间,单位s 为0时永久封禁
+     * 参数md5读取。如果不为 RequestParamMd5 时，则会进行读取操作。并判断是否是同样参数。起到的效果则为一定时间内，不允许相同内容的重复提交
+     * 如果是默认的 RequestParamMd5 时，则不会判断，起到的效果则为一定时间内不允许多次调用此接口
      *
-     * @return long
+     * @return {@link Class}<{@link ?} {@link extends} {@link RequestParamMd5}>
      */
-    long prohibitionTime();
+    Class<? extends RequestParamMd5> paramMd5() default RequestParamMd5.class;
+
+
+    /**
+     * 错误code
+     * <p>
+     * 默认是 ResultCodeEnum.INTERNAL_ERROR
+     *
+     * @return {@link String}
+     */
+    String errorCode() default "2025001";
 }
+

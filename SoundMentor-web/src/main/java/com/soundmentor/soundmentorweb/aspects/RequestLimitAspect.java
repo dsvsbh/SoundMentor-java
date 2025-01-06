@@ -1,12 +1,12 @@
-package com.soundmentor.soundmentorbase.utils.aspect;
+package com.soundmentor.soundmentorweb.aspects;
 
 import com.soundmentor.soundmentorbase.enums.base.LimitCacheEnum;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
-import com.soundmentor.soundmentorbase.utils.RequestUtil;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingCondition;
-import com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingList;
-import com.soundmentor.soundmentorbase.utils.base.RequestLimitLocalCache;
-import com.soundmentor.soundmentorbase.utils.base.RequestLimitRedisCache;
+import com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingCondition;
+import com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingList;
+import com.soundmentor.soundmentorweb.biz.util.cache.base.RequestLimitLocalCache;
+import com.soundmentor.soundmentorweb.biz.util.cache.base.RequestLimitRedisCache;
+import com.soundmentor.soundmentorweb.biz.util.limit.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,7 +34,7 @@ public class RequestLimitAspect {
     /**
      * 限流拉黑的切点
      */
-    @Pointcut(value = "@annotation(com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingCondition)")
+    @Pointcut(value = "@annotation(com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingCondition)")
     public void requestLimitBlockingAction() {
     }
 
@@ -72,7 +72,7 @@ public class RequestLimitAspect {
     /**
      * 限流拉黑的切点
      */
-    @Pointcut(value = "@annotation(com.soundmentor.soundmentorbase.utils.annotation.RequestLimitBlockingList)")
+    @Pointcut(value = "@annotation(com.soundmentor.soundmentorweb.annotation.RequestLimitBlockingList)")
     public void requestLimitBlockingListAction() {
     }
 

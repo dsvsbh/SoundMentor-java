@@ -36,7 +36,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      **/
     @Override
     public Boolean updateUser(UserDO userDO) {
-        return this.updateUser(userDO);
+        return this.updateById(userDO);
     }
 
     /**

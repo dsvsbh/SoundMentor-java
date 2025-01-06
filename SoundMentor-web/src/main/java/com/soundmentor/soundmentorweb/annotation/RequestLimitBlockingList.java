@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorbase.utils.annotation;
+package com.soundmentor.soundmentorweb.annotation;
 
 import java.lang.annotation.*;
 
