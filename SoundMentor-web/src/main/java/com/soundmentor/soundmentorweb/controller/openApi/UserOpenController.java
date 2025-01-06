@@ -1,12 +1,14 @@
 package com.soundmentor.soundmentorweb.controller.openApi;
 
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
+import com.soundmentor.soundmentorbase.utils.annotation.RequestDuplicationCondition;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
+import com.soundmentor.soundmentorweb.biz.util.limit.WebUserKey;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,6 +37,8 @@ public class UserOpenController {
      * @RETURN: @return
      **/
     @PostMapping( SEND_EMAIL)
+    @RequestDuplicationCondition(keyPrefix = "EMAIL:SEND:", key = "",
+            keyReadClass = WebUserKey.class, requestIntervalMs = 30000L)
     public ResponseDTO<Boolean> sendEmail(@RequestParam("email") String email) throws MessagingException {
         AssertUtil.hasLength(email, "邮箱不能为空");
         return ResponseDTO.OK(userBiz.sendEmail(email));

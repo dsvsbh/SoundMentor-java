@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config.redisConfig;
+package com.soundmentor.soundmentorbase.utils.base.redisConfig;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
