@@ -31,6 +31,22 @@
         <java.version>8</java.version>
     </properties>
     <dependencies>
+        <!--   直接排空logging依赖，引入log4j依赖     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--引入log4j2日志依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.soundmentor</groupId>
             <artifactId>SoundMentor-base</artifactId>

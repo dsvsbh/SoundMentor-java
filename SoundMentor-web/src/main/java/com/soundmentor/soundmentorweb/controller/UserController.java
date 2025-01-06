@@ -1,19 +1,11 @@
 package com.soundmentor.soundmentorweb.controller;
 
-
-import com.soundmentor.soundmentorbase.utils.AssertUtil;
-import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
-import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
-import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
-import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
-import javax.validation.Valid;
+
 
 /**
  *
@@ -28,7 +20,6 @@ public class UserController {
     public static final String GET_WEB_USER = "/getWebUser";
     @Resource
     private UserBiz userBiz;
-
 
     /**
      * 用户登出

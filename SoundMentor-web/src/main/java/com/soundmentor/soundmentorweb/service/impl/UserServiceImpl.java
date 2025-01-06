@@ -49,4 +49,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return this.getOne(Wrappers.<UserDO> lambdaQuery()
             .eq(UserDO::getUsername, username));
     }
+
+    /**
+     * 通过邮箱修改密码
+     *
+     * @param email    用户邮箱
+     * @param password 新的密码
+     * @return 更新操作是否成功，成功返回true，失败返回false
+     */
+    @Override
+    public Boolean updatePassword(String email, String password) {
+        return this.update(Wrappers.<UserDO> lambdaUpdate()
+                .set(UserDO::getPassword, password)
+                .eq(UserDO::getEmail, email));
+    }
 }

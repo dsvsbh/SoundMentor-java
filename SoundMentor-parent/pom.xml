@@ -28,6 +28,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <hutool.version>5.7.20</hutool.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <logging.version>2.3.4.RELEASE</logging.version>
     </properties>
 
 
@@ -89,7 +90,6 @@
                 <version>${mysql.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
             <!-- MyBatis-Plus Starter -->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -185,6 +185,16 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

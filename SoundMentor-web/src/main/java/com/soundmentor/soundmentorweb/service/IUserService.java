@@ -32,4 +32,12 @@ public interface IUserService extends IService<UserDO> {
      * @RETURN: @return <p>
      **/
     UserDO getByUserName(String username);
+
+    /**
+     * 通过邮箱修改密码
+     * @param password
+     * @PARAM: @param email
+     * @RETURN: @return
+     **/
+    Boolean updatePassword(String email, String password);
 }

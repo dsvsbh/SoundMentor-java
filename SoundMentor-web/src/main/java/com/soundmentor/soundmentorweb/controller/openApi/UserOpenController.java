@@ -3,6 +3,7 @@ package com.soundmentor.soundmentorweb.controller.openApi;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
+import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
@@ -23,6 +24,7 @@ public class UserOpenController {
     public static final String ADD_USER = "/addUser";
     public static final String LOGIN = "/login";
     public static final String SEND_EMAIL = "/sendEmail";
+    public static final String FORGET_PASSWORD = "/forgetPassword";
     @Resource
     private UserBiz userBiz;
 
@@ -56,5 +58,15 @@ public class UserOpenController {
     @PostMapping(LOGIN)
     public ResponseDTO<UserDTO> login(@Valid @RequestBody UserLoginParamByPassword param){
         return ResponseDTO.OK(userBiz.login(param));
+    }
+
+    /**
+     * 忘记密码
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    @PostMapping(FORGET_PASSWORD)
+    public ResponseDTO<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordParam param){
+        return ResponseDTO.OK(userBiz.fogetPassword(param));
     }
 }

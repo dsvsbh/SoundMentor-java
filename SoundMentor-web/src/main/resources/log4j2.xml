@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="30">
+    <!--先定义所有的appender-->
+    <appenders>
+        <!--控制台日志-->
+        <console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS}  %-5level [%thread] %logger{36} - %tmessage%n"/>
+        </console>
+        <!--异步输出到控制台-->
+        <Async name="AsyncConsole">
+            <AppenderRef ref="Console"/>
+        </Async>
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <root level="INFO">
+            <appender-ref ref="AsyncConsole"/>
+        </root>
+    </loggers>
+</configuration>

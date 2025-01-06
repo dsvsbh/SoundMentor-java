@@ -9,6 +9,7 @@ import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorbase.utils.MailUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
+import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
@@ -100,12 +101,11 @@ public class UserBiz {
     public UserDTO login(UserLoginParamByPassword param) {
         UserDO userDO = userService.getByUserName(param.getUsername());
         AssertUtil.ifNull(userDO, "用户不存在");
-        try{
-            String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
-            AssertUtil.isTrue(password.equals(userDO.getPassword()), "密码错误");
-        }catch (Exception e){
-            throw new BizException("密码解析错误");
-        }
+
+        // 密码解析
+        String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
+        AssertUtil.isTrue(password.equals(userDO.getPassword()), "密码错误");
+
         String token = JwtUtil.generateToken(userDO.getUsername(),userDO.getId().toString());
         UserDTO userDTO = userParamConvert.convert(userDO);
         userDTO.setToken(token);
@@ -133,5 +133,17 @@ public class UserBiz {
     public UserDTO getWebUser() {
         UserDO userDO = userInfoApi.getUser();
         return userParamConvert.convert(userDO);
+    }
+
+    /**
+     * 忘记密码
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    public Boolean fogetPassword(ForgetPasswordParam param) {
+        Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
+        AssertUtil.isTrue(verifyTrue, "验证码错误");
+        String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
+        return userService.updatePassword(param.getEmail(), password);
     }
 }
