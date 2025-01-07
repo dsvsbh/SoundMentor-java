@@ -28,6 +28,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <hutool.version>5.7.20</hutool.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <redisson.version>3.15.3</redisson.version>
     </properties>
 
 
@@ -195,6 +196,13 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

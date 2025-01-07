@@ -38,7 +38,17 @@ public final class SoundMentorConstant {
      **/
     public static final Integer VERIFY_CODE_EXPIRE_TIME = 5;
 
+    /**
+     * 防止重复提交key
+     */
     public static final String REPEAT_SUBMIT_KEY = "repeat:submit:";
 
+    /**
+     * 组织分享码key
+     */
     public static final String ORGANIZATION_SHARE_CODE_KEY="organization:share:code:";
+    /**
+     * 组织加入锁key
+     */
+    public static final String ORGANIZATION_JOIN_LOCK_KEY ="organization:join:lock:";
 }

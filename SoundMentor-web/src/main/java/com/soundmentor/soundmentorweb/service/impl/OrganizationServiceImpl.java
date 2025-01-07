@@ -18,6 +18,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.soundmentor.soundmentorweb.service.IOrganizationUserService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private final IOrganizationUserService ouService;
     private final OrganizationProperties organizationProperties;
     private final RedisTemplate<String,String> redisTemplate;
+    private final RedissonClient redissonClient;
 
     @Override
     @Transactional
@@ -127,8 +131,74 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return shareCode;
     }
 
+    /**
+     * 通过分享码进入组织
+     * @param dto
+     */
     @Override
     public void join(JoinOrganizationDTO dto) {
-        //todo 根据验证码进入组织
+        String shareCode = dto.getShareCode();
+        Integer organizationId = dto.getOrganizationId();
+        String s = redisTemplate.opsForValue().get(SoundMentorConstant.ORGANIZATION_SHARE_CODE_KEY + organizationId);
+        if(Objects.isNull(s))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"分享码不存在或已经失效");
+        }
+        if(!StringUtils.equals(shareCode,s))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"分享码不正确");
+        }
+        OrganizationDO organization = this.getById(organizationId);
+        if(Objects.isNull(organization))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"组织不存在");
+        }
+        OrganizationUserDO one = ouService.lambdaQuery()
+                .eq(OrganizationUserDO::getOrganizationId, organizationId)
+                .eq(OrganizationUserDO::getUserId, userInfoApi.getUser().getId())
+                .one();
+        if (!Objects.isNull(one))
+        {
+            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"您已经加入该组织");
+        }
+        Integer capacity = organization.getCapacity();
+        joinOrganization(capacity,organizationId);
+    }
+
+    /**
+     *  加入组织
+     * @param capacity
+     * @param organizationId
+     */
+    private void joinOrganization(Integer capacity,Integer organizationId) {
+        Integer count = ouService.lambdaQuery()
+                .eq(OrganizationUserDO::getOrganizationId, organizationId)
+                .count();
+        if(count>=capacity)
+        {
+            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"组织已满");
+        }
+        //做分布式锁防止并发加入组织导致的人数超出
+        RLock lock = redissonClient.getLock(SoundMentorConstant.ORGANIZATION_JOIN_LOCK_KEY + organizationId);
+        try {
+            boolean isLock = lock.tryLock(5000, TimeUnit.MILLISECONDS);
+            if(isLock)//拿到锁加入组织
+            {
+                Integer userId = userInfoApi.getUser().getId();
+                OrganizationUserDO build = OrganizationUserDO.builder()
+                        .userId(userId)
+                        .organizationId(organizationId)
+                        .organizationRole(OrganizationRole.USER.getCode())//通过邀请码加入默认为普通用户
+                        .build();
+                ouService.save(build);
+            } else {
+                //没拿到锁的自旋
+                Thread.sleep(50);
+                joinOrganization(capacity,organizationId);
+            }
+        } catch (Exception e)
+        {
+            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"加入组织失败");
+        }
     }
 }

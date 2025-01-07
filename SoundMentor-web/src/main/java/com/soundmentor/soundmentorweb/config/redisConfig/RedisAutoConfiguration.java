@@ -2,6 +2,9 @@ package com.soundmentor.soundmentorweb.config.redisConfig;
 
 import com.soundmentor.soundmentorweb.biz.util.cache.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
@@ -62,6 +65,16 @@ public class RedisAutoConfiguration {
     @Bean
     public RedisUtil getRedisCache() {
         return new RedisUtil();
+    }
+
+    @Bean
+    public RedissonClient redissonClient() {
+
+        // 如果有密码则填写
+        Config config = new Config();
+        config.useSingleServer()
+                .setAddress("redis://121.43.62.36:6379");
+        return Redisson.create(config);
     }
 }
 
