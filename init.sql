@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization` (
-                                `id` int NOT NULL AUTO_INCREMENT COMMENT '组织ID',
-                                `name` varchar(100) NOT NULL COMMENT '组织名称',
-                                `description` text COMMENT '组织描述',
-                                `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-                                `capacity` int NOT NULL COMMENT '组织的容量',
-                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织表';
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '组织ID',
+  `name` varchar(100) NOT NULL COMMENT '组织名称',
+  `description` text COMMENT '组织描述',
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `capacity` int NOT NULL COMMENT '组织的容量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `organization` (
 
 LOCK TABLES `organization` WRITE;
 /*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'组织','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'组织','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999);
+INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'组织','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'组织','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999),(27,'testjoin','testjoin','2025-01-07 22:08:48','2025-01-07 22:08:48',10),(28,'testjoin','testjoin','2025-01-07 22:13:26','2025-01-07 22:13:26',1);
 /*!40000 ALTER TABLE `organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,12 +51,12 @@ DROP TABLE IF EXISTS `organization_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization_user` (
-                                     `id` int NOT NULL AUTO_INCREMENT,
-                                     `organization_id` int NOT NULL,
-                                     `user_id` int NOT NULL,
-                                     `organization_role` int NOT NULL DEFAULT '0',
-                                     PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `organization_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `organization_role` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `organization_user` (
 
 LOCK TABLES `organization_user` WRITE;
 /*!40000 ALTER TABLE `organization_user` DISABLE KEYS */;
-INSERT INTO `organization_user` VALUES (20,20,2,2),(21,21,2,2),(22,22,2,2),(23,23,5,2),(24,24,5,2),(25,25,2,2),(26,26,2,2);
+INSERT INTO `organization_user` VALUES (20,20,2,2),(21,21,2,2),(22,22,2,2),(23,23,5,2),(24,24,5,2),(25,25,2,2),(26,26,2,2),(27,27,2,2),(28,27,5,0),(29,28,2,2);
 /*!40000 ALTER TABLE `organization_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,19 +77,19 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-                        `id` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-                        `name` varchar(100) NOT NULL COMMENT '用户名称',
-                        `email` varchar(100) NOT NULL COMMENT '用户邮箱',
-                        `phone` varchar(100) NOT NULL COMMENT '用户手机号',
-                        `username` varchar(100) NOT NULL COMMENT '用户名/账号',
-                        `password` varchar(255) NOT NULL COMMENT '用户密码',
-                        `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                        `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-                        `head_img` varchar(100) DEFAULT NULL COMMENT '用户头像',
-                        PRIMARY KEY (`id`),
-                        UNIQUE KEY `email` (`email`),
-                        UNIQUE KEY `phone` (`phone`),
-                        UNIQUE KEY `username` (`username`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `name` varchar(100) NOT NULL COMMENT '用户名称',
+  `email` varchar(100) NOT NULL COMMENT '用户邮箱',
+  `phone` varchar(100) NOT NULL COMMENT '用户手机号',
+  `username` varchar(100) NOT NULL COMMENT '用户名/账号',
+  `password` varchar(255) NOT NULL COMMENT '用户密码',
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `head_img` varchar(100) DEFAULT NULL COMMENT '用户头像',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `phone` (`phone`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,4 +112,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-06 20:02:49
+-- Dump completed on 2025-01-07 22:45:42

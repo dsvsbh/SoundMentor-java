@@ -78,4 +78,35 @@
             <artifactId>redisson</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId><!--用spring maven插件打包-->
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.3.RELEASE</version>
+                <configuration>
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.soundmentor.soundmentorweb.SoundMentorWebApplication</mainClass> <!-- 打成jar包运行的入口 -->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
