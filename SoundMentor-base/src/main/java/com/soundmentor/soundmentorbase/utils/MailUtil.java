@@ -20,11 +20,12 @@ public class MailUtil {
         Properties props = new Properties();
         // 表示SMTP发送邮件，必须进行身份验证
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.enable", true);
         props.put("mail.smtp.starttls.enale", "true");
         // 此处填写SMTP服务器
         props.put("mail.smtp.host", "smtp.163.com");
         // 端口号，SSL 端口为 465
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.port", "465");
         // 此处填写，发件人的账号
         props.put("mail.user", userName163);
         // 此处填写16位 STMP 授权码
