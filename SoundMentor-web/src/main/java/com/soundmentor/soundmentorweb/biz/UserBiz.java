@@ -6,19 +6,18 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
-import com.soundmentor.soundmentorbase.utils.MailUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.*;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
+import com.soundmentor.soundmentorweb.service.impl.MailService;
 import com.soundmentor.soundmentorweb.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +37,8 @@ public class UserBiz {
     private UserParamConvert userParamConvert;
     @Resource
     private UserInfoApi userInfoApi;
+    @Resource
+    private MailService mailService;
 
     /**
      * 新增用户
@@ -82,12 +83,12 @@ public class UserBiz {
             return true;
         }
         // 否则发送验证码
-        Integer code = MailUtil.achieveCode();
+        Integer code = mailService.achieveCode();
         try{
-            MailUtil.sendTestMail(email, code);
+            mailService.sendTestMail(email, code);
             redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email)
                     , code,SoundMentorConstant.VERIFY_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
-        }catch (MessagingException e){
+        }catch (Exception e){
             log.error("发送邮件失败",e);
             throw new BizException("发送邮件失败");
         }
