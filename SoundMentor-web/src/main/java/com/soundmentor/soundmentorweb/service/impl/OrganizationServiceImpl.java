@@ -10,9 +10,11 @@ import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
+import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 import com.soundmentor.soundmentorweb.config.OrganizationProperties;
 import com.soundmentor.soundmentorweb.mapper.OrganizationMapper;
+import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.soundmentor.soundmentorweb.service.IOrganizationUserService;
@@ -47,6 +49,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private final OrganizationProperties organizationProperties;
     private final RedisTemplate<String,String> redisTemplate;
     private final RedissonClient redissonClient;
+    private final OrganizationMapper organizationMapper;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
@@ -81,6 +85,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 .organizationId(organizationDO.getId())
                 .userId(userId)
                 .organizationRole(OrganizationRole.CREATOR.getCode())
+                .createTime(LocalDateTime.now())
                 .build();
         ouService.save(organizationUserDO);
         return organizationDO.getId();
@@ -89,26 +94,18 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<OrganizationListDTO> OrganizationList() {
         Integer userId = userInfoApi.getUser().getId();
-        List<OrganizationUserDO> list = ouService.lambdaQuery()
-                .eq(OrganizationUserDO::getUserId, userId)
-                .list();
-        List<Integer> organizationIds = list.stream()
-                .map(OrganizationUserDO::getOrganizationId)
-                .collect(Collectors.toList());
-        return this.lambdaQuery()
-                .in(OrganizationDO::getId, organizationIds)
-                .list()
-                .stream()
-                .map(i -> {
-                    OrganizationListDTO organizationListDTO = new OrganizationListDTO();
-                    organizationListDTO.setName(i.getName());
-                    organizationListDTO.setDescription(i.getDescription());
-                    organizationListDTO.setCapacity(i.getCapacity());
-                    organizationListDTO.setId(i.getId());
-                    organizationListDTO.setCreatedTime(i.getCreatedTime());
-                    organizationListDTO.setUpdatedTime(i.getUpdatedTime());
-                    return organizationListDTO;
-                }).collect(Collectors.toList());
+        List<OrganizationDO> list=organizationMapper.getUserOrganizationList(userId);
+        return list.stream()
+        .map(i -> {
+            OrganizationListDTO organizationListDTO = new OrganizationListDTO();
+            organizationListDTO.setName(i.getName());
+            organizationListDTO.setDescription(i.getDescription());
+            organizationListDTO.setCapacity(i.getCapacity());
+            organizationListDTO.setId(i.getId());
+            organizationListDTO.setCreatedTime(i.getCreatedTime());
+            organizationListDTO.setUpdatedTime(i.getUpdatedTime());
+            return organizationListDTO;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -165,6 +162,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         joinOrganization(capacity,organizationId);
     }
 
+    @Override
+    public List<OrganizationUserListDTO> userList(Integer organizationId) {
+        return userMapper.getOrganizationUserList(organizationId);
+    }
+
     /**
      *  加入组织
      * @param capacity
@@ -189,6 +191,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                         .userId(userId)
                         .organizationId(organizationId)
                         .organizationRole(OrganizationRole.USER.getCode())//通过邀请码加入默认为普通用户
+                        .createTime(LocalDateTime.now())
                         .build();
                 ouService.save(build);
             } else {

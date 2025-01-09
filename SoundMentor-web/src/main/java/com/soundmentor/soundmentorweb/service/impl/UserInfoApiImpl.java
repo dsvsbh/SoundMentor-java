@@ -37,12 +37,6 @@ public class UserInfoApiImpl implements UserInfoApi {
         return userInfo.get();
     }
 
-    @Override
-    public List<OrganizationDO> getOrganizations() {
-        List<OrganizationUserDO> list = organizationUserService.lambdaQuery().eq(OrganizationUserDO::getUserId, getUser().getId()).list();
-        List<Integer> organizationIds = list.stream().map(OrganizationUserDO::getOrganizationId).collect(Collectors.toList());
-        return organizationService.lambdaQuery().in(OrganizationDO::getId, organizationIds).list();
-    }
 
     @Override
     public OrganizationRole getOrganizationRole(Integer organizationId) {

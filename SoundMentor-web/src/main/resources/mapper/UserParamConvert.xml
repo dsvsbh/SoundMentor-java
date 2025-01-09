@@ -9,9 +9,14 @@
         <result column="email" property="email" />
         <result column="phone" property="phone" />
         <result column="username" property="username" />
+        <result column="head_img" property="headImg" />
         <result column="password" property="password" />
         <result column="created_time" property="createdTime" />
         <result column="updated_time" property="updatedTime" />
     </resultMap>
+    <select id="getOrganizationUserList"
+            resultType="com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO">
+            select u.id as userId, ou.organization_role as organizationRole, u.name, u.head_img , ou.create_time as entryTime from organization_user ou, user u where ou.user_id = u.id and ou.organization_id = #{organizationId}
+    </select>
 
 </mapper>

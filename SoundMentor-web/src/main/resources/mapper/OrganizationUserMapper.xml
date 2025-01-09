@@ -8,6 +8,7 @@
         <result column="organization_id" property="organizationId" />
         <result column="user_id" property="userId" />
         <result column="organization_role" property="organizationRole" />
+        <result column="create_time" property="createTime" />
     </resultMap>
 
 </mapper>

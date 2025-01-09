@@ -13,7 +13,6 @@ import java.util.List;
 public interface UserInfoApi {
     void setUser(UserDO user);
     UserDO getUser();
-    List<OrganizationDO> getOrganizations();
     OrganizationRole getOrganizationRole(Integer organizationId);
     void removeUser();
 }

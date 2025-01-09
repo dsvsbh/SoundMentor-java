@@ -9,6 +9,10 @@
         <result column="description" property="description" />
         <result column="created_time" property="createdTime" />
         <result column="updated_time" property="updatedTime" />
+        <result column="capacity" property="capacity" />
     </resultMap>
+    <select id="getUserOrganizationList" resultType="com.soundmentor.soundmentorpojo.DO.OrganizationDO">
+        select o.id, o.name, o.description, o.created_time, o.updated_time, o.capacity  from organization_user ou, organization o where ou.organization_id = o.id and ou.user_id = #{userId}
+    </select>
 
 </mapper>

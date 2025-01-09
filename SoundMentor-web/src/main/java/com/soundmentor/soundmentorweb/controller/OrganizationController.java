@@ -3,6 +3,7 @@ package com.soundmentor.soundmentorweb.controller;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
+import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 import com.soundmentor.soundmentorweb.annotation.RepeatSubmit;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
@@ -64,5 +65,15 @@ public class OrganizationController {
     public ResponseDTO join(@RequestBody JoinOrganizationDTO dto){
         organizationService.join(dto);
         return ResponseDTO.OK();
+    }
+
+    /**
+     * 查询组织成员列表
+     * @param organizationId
+     * @return
+     */
+    @GetMapping("/userList/{organizationId}")
+    public ResponseDTO<List<OrganizationUserListDTO>> userList(@PathVariable Integer organizationId){
+        return ResponseDTO.OK(organizationService.userList(organizationId));
     }
 }
