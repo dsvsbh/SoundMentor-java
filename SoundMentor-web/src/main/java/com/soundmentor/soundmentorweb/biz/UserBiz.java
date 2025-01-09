@@ -80,6 +80,7 @@ public class UserBiz {
         Integer redisCode = (Integer) redisTemplate.opsForValue().get(
                 StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email));
         if(redisCode != null){
+            log.info("验证码已发送，请勿重复发送");
             return true;
         }
         // 否则发送验证码
