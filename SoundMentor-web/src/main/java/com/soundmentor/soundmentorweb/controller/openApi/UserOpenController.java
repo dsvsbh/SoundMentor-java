@@ -10,7 +10,7 @@ import com.soundmentor.soundmentorweb.biz.UserBiz;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
+
 import javax.validation.Valid;
 
 /**
@@ -34,7 +34,7 @@ public class UserOpenController {
      * @RETURN: @return
      **/
     @PostMapping( SEND_EMAIL)
-    public ResponseDTO<Boolean> sendEmail(@RequestParam("email") String email) throws MessagingException {
+    public ResponseDTO<Boolean> sendEmail(@RequestParam("email") String email){
         AssertUtil.hasLength(email, "邮箱不能为空");
         return ResponseDTO.OK(userBiz.sendEmail(email));
     }
@@ -45,7 +45,7 @@ public class UserOpenController {
      * @RETURN: @return
      **/
     @PostMapping(ADD_USER)
-    public ResponseDTO<Integer> addUser(@Valid @RequestBody AddUserParam param) throws Exception {
+    public ResponseDTO<Integer> addUser(@Valid @RequestBody AddUserParam param){
         return ResponseDTO.OK(userBiz.addUser(param));
     }
 

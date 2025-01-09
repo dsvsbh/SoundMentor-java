@@ -2,22 +2,22 @@ package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
-import com.soundmentor.soundmentorbase.utils.MailUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.*;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
+import com.soundmentor.soundmentorweb.service.impl.MailService;
 import com.soundmentor.soundmentorweb.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -37,13 +37,16 @@ public class UserBiz {
     private UserParamConvert userParamConvert;
     @Resource
     private UserInfoApi userInfoApi;
+    @Resource
+    private MailService mailService;
 
     /**
      * 新增用户
      * @PARAM: @param userDO
      * @RETURN: @return
      **/
-    public Integer addUser(AddUserParam param) throws Exception {
+    public Integer addUser(AddUserParam param){
+        AssertUtil.isTrue(isValidEmail(param.getEmail()), "邮箱格式错误");
         Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
         AssertUtil.isTrue(verifyTrue, "验证码错误");
         UserDO userDO = userParamConvert.convert(param);
@@ -71,11 +74,25 @@ public class UserBiz {
      * @PARAM:
      * @RETURN: @return
      **/
-    public Boolean sendEmail(String email) throws MessagingException {
-        Integer code = MailUtil.achieveCode();
-        MailUtil.sendTestMail(email, code);
-        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email)
-                , code,SoundMentorConstant.VERIFY_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
+    public Boolean sendEmail(String email){
+        AssertUtil.isTrue(isValidEmail(email), "邮箱格式错误");
+        // redis里面有不重复发送验证码
+        Integer redisCode = (Integer) redisTemplate.opsForValue().get(
+                StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email));
+        if(redisCode != null){
+            log.info("验证码已发送，请勿重复发送");
+            return true;
+        }
+        // 否则发送验证码
+        Integer code = mailService.achieveCode();
+        try{
+            mailService.sendTestMail(email, code);
+            redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email)
+                    , code,SoundMentorConstant.VERIFY_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
+        }catch (Exception e){
+            log.error("发送邮件失败",e);
+            throw new BizException("发送邮件失败");
+        }
         return true;
     }
 
@@ -143,8 +160,19 @@ public class UserBiz {
     public Boolean fogetPassword(ForgetPasswordParam param) {
         Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
         AssertUtil.isTrue(verifyTrue, "验证码错误");
+        AssertUtil.isTrue(isValidEmail(param.getEmail()), "邮箱格式错误");
         String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
         return userService.updatePassword(param.getEmail(), password);
+    }
+
+    /**
+     * 验证邮箱格式
+     * @PARAM: @param email
+     * @RETURN: @return boolean
+     **/
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
     }
 
     /**
