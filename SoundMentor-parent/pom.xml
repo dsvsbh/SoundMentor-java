@@ -20,8 +20,7 @@
         <org.apache.poi.version>4.1.2</org.apache.poi.version>
         <java.jwt.version>0.9.1</java.jwt.version>
         <!--    邮箱验证依赖    -->
-        <javax.activation.version>1.1.1</javax.activation.version>
-        <javax.mail.version>1.4.7</javax.mail.version>
+        <mail.version>1.6.2</mail.version>
         <commons-email.version>1.4</commons-email.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <guava.version>30.1-jre</guava.version>
@@ -113,11 +112,6 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
-                <artifactId>commons-email</artifactId>
-                <version>${commons-email.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
@@ -192,7 +186,7 @@
             <dependency>
                 <groupId>com.sun.mail</groupId>
                 <artifactId>javax.mail</artifactId>
-                <version>1.6.2</version>
+                <version>${mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
