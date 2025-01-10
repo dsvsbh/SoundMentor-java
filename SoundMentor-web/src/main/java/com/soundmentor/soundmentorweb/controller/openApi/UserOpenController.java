@@ -6,13 +6,20 @@ import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
+import com.soundmentor.soundmentorweb.MQ.Producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 import javax.validation.Valid;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import cn.hutool.core.lang.UUID;
 /**
  * 用户相关免登接口
  * @Author: Make
@@ -27,6 +34,9 @@ public class UserOpenController {
     public static final String FORGET_PASSWORD = "/forgetPassword";
     @Resource
     private UserBiz userBiz;
+    @Resource
+    private MqProducer mqProducer;
+
 
     /**
      * 发送邮件
@@ -67,5 +77,60 @@ public class UserOpenController {
     @PostMapping(FORGET_PASSWORD)
     public ResponseDTO<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordParam param){
         return ResponseDTO.OK(userBiz.fogetPassword(param));
+    }
+
+    /**
+     * MQ测试：发送Direct模式消息
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @GetMapping("/sendDirectMessage")
+    public ResponseDTO<String> sendDirectMessage() {
+        String messageId = String.valueOf(UUID.randomUUID());
+        String messageData = "test message, hello!";
+        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Map<String,Object> map=new HashMap<>();
+        map.put("messageId",messageId);
+        map.put("messageData",messageData);
+        map.put("createTime",createTime);
+        //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+        mqProducer.send("TestDirectExchange", "TestDirectRouting", map);
+        return ResponseDTO.OK("OK");
+    }
+
+    /**
+     * MQ测试：发送主题模式消息
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @GetMapping("/sendTopicMessage1")
+    public ResponseDTO<String> sendTopicMessage1() {
+        String messageId = String.valueOf(UUID.randomUUID());
+        String messageData = "message: M A N ";
+        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Map<String, Object> manMap = new HashMap<>();
+        manMap.put("messageId", messageId);
+        manMap.put("messageData", messageData);
+        manMap.put("createTime", createTime);
+        mqProducer.send("topicExchange", "topic.man", manMap);
+        return ResponseDTO.OK("OK");
+    }
+
+    /**
+     * MQ测试：发送广播消息
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @GetMapping("/sendTopicMessage2")
+    public ResponseDTO<String> sendTopicMessage2() {
+        String messageId = String.valueOf(UUID.randomUUID());
+        String messageData = "message: woman is all ";
+        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Map<String, Object> womanMap = new HashMap<>();
+        womanMap.put("messageId", messageId);
+        womanMap.put("messageData", messageData);
+        womanMap.put("createTime", createTime);
+        mqProducer.send("topicExchange", "topic.woman", womanMap);
+        return ResponseDTO.OK("OK");
     }
 }

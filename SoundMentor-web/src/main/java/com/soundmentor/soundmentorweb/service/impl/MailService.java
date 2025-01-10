@@ -29,11 +29,10 @@ public class MailService {
             helper.setFrom(FROM_EMAIL);
             helper.setTo(email);
             helper.setSubject("Sound - Mentot 验证码");
-            // 获取当前日期
             LocalDate currentDate = LocalDate.now();
-            // 定义日期格式
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.CHINA);
-            String content = StrUtil.format(SoundMentorConstant.MAIL_CONTENT, code, currentDate.format(formatter));
+            /// String content = StrUtil.format(SoundMentorConstant.MAIL_CONTENT, code, currentDate.format(formatter));
+            String content = StrUtil.format("尊敬的用户:你好!<br>验证码为:{}(有效期为5分钟,请勿告知他人)<br>日期：{}", code, currentDate.format(formatter));
             helper.setText(content, true);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
