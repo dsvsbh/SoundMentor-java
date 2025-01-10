@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.service;
 
+import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
@@ -21,7 +22,7 @@ public interface IOrganizationService extends IService<OrganizationDO> {
 
     Integer createOrganization(CreateOrganizationDTO dto);
 
-    List<OrganizationListDTO> OrganizationList();
+    List<OrganizationListDTO> OrganizationList(OrganizationRole role);
 
     String getShareCode(Integer organizationId);
 

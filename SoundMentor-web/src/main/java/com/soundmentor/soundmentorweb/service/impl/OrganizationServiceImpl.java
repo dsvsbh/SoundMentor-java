@@ -92,20 +92,17 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<OrganizationListDTO> OrganizationList() {
+    public List<OrganizationListDTO> OrganizationList(OrganizationRole role) {
         Integer userId = userInfoApi.getUser().getId();
-        List<OrganizationDO> list=organizationMapper.getUserOrganizationList(userId);
-        return list.stream()
-        .map(i -> {
-            OrganizationListDTO organizationListDTO = new OrganizationListDTO();
-            organizationListDTO.setName(i.getName());
-            organizationListDTO.setDescription(i.getDescription());
-            organizationListDTO.setCapacity(i.getCapacity());
-            organizationListDTO.setId(i.getId());
-            organizationListDTO.setCreatedTime(i.getCreatedTime());
-            organizationListDTO.setUpdatedTime(i.getUpdatedTime());
-            return organizationListDTO;
-        }).collect(Collectors.toList());
+        OrganizationUserDO queryParam = new OrganizationUserDO();
+        queryParam.setUserId(userId);
+        if(Objects.isNull(role))
+        {
+            queryParam.setOrganizationRole(null);
+        } else {
+            queryParam.setOrganizationRole(role.getCode());
+        }
+        return organizationMapper.getUserOrganizationList(queryParam);
     }
 
     @Override

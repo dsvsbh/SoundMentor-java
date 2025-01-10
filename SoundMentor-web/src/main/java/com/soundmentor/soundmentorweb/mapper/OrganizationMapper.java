@@ -2,6 +2,8 @@ package com.soundmentor.soundmentorweb.mapper;
 
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
+import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
 
 import java.util.List;
 
@@ -15,5 +17,5 @@ import java.util.List;
  */
 public interface OrganizationMapper extends BaseMapper<OrganizationDO> {
 
-    List<OrganizationDO> getUserOrganizationList(Integer userId);
+    List<OrganizationListDTO> getUserOrganizationList(OrganizationUserDO queryParam);
 }

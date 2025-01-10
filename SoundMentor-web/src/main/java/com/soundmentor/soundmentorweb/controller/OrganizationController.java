@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.controller;
 
+import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
@@ -42,8 +43,8 @@ public class OrganizationController {
      * @return
      */
     @GetMapping("/list")
-    public ResponseDTO<List<OrganizationListDTO>> list(){
-        return ResponseDTO.OK(organizationService.OrganizationList());
+    public ResponseDTO<List<OrganizationListDTO>> list(@RequestParam OrganizationRole role){
+        return ResponseDTO.OK(organizationService.OrganizationList(role));
     }
 
     /**

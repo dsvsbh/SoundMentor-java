@@ -1,6 +1,7 @@
 package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
+import com.soundmentor.soundmentorpojo.DTO.file.FileUploadResDTO;
 import com.soundmentor.soundmentorweb.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +20,12 @@ public class FileController {
     private final FileService fileService;
 
     /**
-     * 文件上传接口（测试用，前端不用管）
+     * 文件上传接口,任务执行前需要上传文件返回文件地址
      * @param file
      * @return
      */
     @PostMapping("/upload")
-    public ResponseDTO<String> upload(@RequestParam("file") MultipartFile file){
-        String filePath = fileService.uploadFile(file);
-        return ResponseDTO.OK(filePath);
+    public ResponseDTO<FileUploadResDTO> upload(@RequestParam("file") MultipartFile file){
+        return ResponseDTO.OK(fileService.uploadFile(file));
     }
 }

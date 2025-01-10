@@ -16,6 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `file`
+--
+
+DROP TABLE IF EXISTS `file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `file` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '文件唯一标识',
+  `origin_name` varchar(255) NOT NULL COMMENT '文件原始名称',
+  `path` varchar(255) NOT NULL COMMENT '文件存储路径',
+  `file_size` bigint NOT NULL COMMENT '文件大小',
+  `file_type` int NOT NULL COMMENT '文件类型',
+  `creator` int NOT NULL COMMENT '文件创建者（用户ID）',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文件创建时间',
+  `md5` varchar(255) NOT NULL COMMENT '文件的唯一标识',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `path` (`path`),
+  UNIQUE KEY `md5` (`md5`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `file`
+--
+
+LOCK TABLES `file` WRITE;
+/*!40000 ALTER TABLE `file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `organization`
 --
 
@@ -23,14 +54,14 @@ DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '组织ID',
-  `name` varchar(100) NOT NULL COMMENT '组织名称',
-  `description` text COMMENT '组织描述',
-  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  `capacity` int NOT NULL COMMENT '组织的容量',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `capacity` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,8 +70,33 @@ CREATE TABLE `organization` (
 
 LOCK TABLES `organization` WRITE;
 /*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'廖天娇','常起任华表。程达传收。老气海我对按物美是。酸方新没备无王些支。下则京打。参完一些油第中物安。种什和了何接列。心产题样研该划个济民。','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'组织','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'组织','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999),(27,'testjoin','testjoin','2025-01-07 22:08:48','2025-01-07 22:08:48',10),(28,'testjoin','testjoin','2025-01-07 22:13:26','2025-01-07 22:13:26',1);
+INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'','','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'','','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999),(27,'testjoin','testjoin','2025-01-07 22:08:48','2025-01-07 22:08:48',10),(28,'testjoin','testjoin','2025-01-07 22:13:26','2025-01-07 22:13:26',1);
 /*!40000 ALTER TABLE `organization` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `organization_file`
+--
+
+DROP TABLE IF EXISTS `organization_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organization_file` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '记录唯一标识',
+  `organization_id` int NOT NULL COMMENT '组织ID',
+  `file_id` int NOT NULL COMMENT '文件ID，关联文件表',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织文件关系表，用于存储组织与文件之间的关系';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `organization_file`
+--
+
+LOCK TABLES `organization_file` WRITE;
+/*!40000 ALTER TABLE `organization_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `organization_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -55,6 +111,7 @@ CREATE TABLE `organization_user` (
   `organization_id` int NOT NULL,
   `user_id` int NOT NULL,
   `organization_role` int NOT NULL DEFAULT '0',
+  `create_time` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -65,7 +122,7 @@ CREATE TABLE `organization_user` (
 
 LOCK TABLES `organization_user` WRITE;
 /*!40000 ALTER TABLE `organization_user` DISABLE KEYS */;
-INSERT INTO `organization_user` VALUES (20,20,2,2),(21,21,2,2),(22,22,2,2),(23,23,5,2),(24,24,5,2),(25,25,2,2),(26,26,2,2),(27,27,2,2),(28,27,5,0),(29,28,2,2);
+INSERT INTO `organization_user` VALUES (20,20,2,2,'2025-01-09 16:15:57'),(21,21,2,2,'2025-01-09 16:16:01'),(22,22,2,2,'2025-01-09 16:16:03'),(23,23,5,2,'2025-01-09 16:16:02'),(24,24,5,2,'2025-01-09 16:16:04'),(25,25,2,2,'2025-01-09 16:16:06'),(26,26,2,2,'2025-01-09 16:16:05'),(27,27,2,2,'2025-01-09 16:16:07'),(28,27,5,0,'2025-01-09 16:16:09'),(29,28,2,2,'2025-01-09 16:16:08');
 /*!40000 ALTER TABLE `organization_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,20 +134,20 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `name` varchar(100) NOT NULL COMMENT '用户名称',
-  `email` varchar(100) NOT NULL COMMENT '用户邮箱',
-  `phone` varchar(100) NOT NULL COMMENT '用户手机号',
-  `username` varchar(100) NOT NULL COMMENT '用户名/账号',
-  `password` varchar(255) NOT NULL COMMENT '用户密码',
-  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  `head_img` varchar(100) DEFAULT NULL COMMENT '用户头像',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL COMMENT '/',
+  `password` varchar(255) NOT NULL,
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `head_img` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +156,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'容子欣','1939729609@qq.com','46236141025','嬴诚','k+glZME5LBcwGi+tx9vmJg==','2025-01-05 17:45:05','2025-01-05 09:45:05',NULL),(2,'liuzhicheng','291396312@qq.com','18570687868','lzc','CwIfXN2Osf90jwST7FA6yg==','2025-01-05 21:15:25','2025-01-05 13:15:24',NULL),(5,'make','484005691@qq.com','13464696188','Make','k+glZME5LBcwGi+tx9vmJg==','2025-01-05 21:28:35','2025-01-05 13:28:35','https://loremflickr.com/400/400?lock=2968877270854327'),(6,'name','3515746178@qq.com','12345678901','111','k+glZME5LBcwGi+tx9vmJg==','2025-01-08 13:22:44','2025-01-08 13:22:44','default');
+INSERT INTO `user` VALUES (1,'','1939729609@qq.com','46236141025','','k+glZME5LBcwGi+tx9vmJg==','2025-01-05 17:45:05','2025-01-05 09:45:05',NULL),(2,'liuzhicheng','291396312@qq.com','18570687868','lzc','CwIfXN2Osf90jwST7FA6yg==','2025-01-05 21:15:25','2025-01-05 13:15:24',NULL),(5,'make','484005691@qq.com','13464696188','Make','k+glZME5LBcwGi+tx9vmJg==','2025-01-05 21:28:35','2025-01-05 13:28:35','https://loremflickr.com/400/400?lock=2968877270854327'),(6,'name','3515746178@qq.com','12345678901','111','k+glZME5LBcwGi+tx9vmJg==','2025-01-08 13:22:44','2025-01-08 13:22:44','default');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -112,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-08 21:49:35
+-- Dump completed on 2025-01-10 17:46:32

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soundmentor.soundmentorweb.mapper.OrganizationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.soundmentor.soundmentorpojo.DO.OrganizationDO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="capacity" property="capacity" />
+    </resultMap>
+    <select id="getUserOrganizationList" resultType="com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO">
+        select o.id, o.name, o.description, o.created_time as createdTime, o.updated_time as updatedTime, o.capacity,ou.organization_role as organizationRole,(select count(*) from organization_user ou2 where ou2.organization_id = o.id) as userCount, (select count(*) from organization_file orf where orf.organization_id = o.id) as fileCount
+        from organization_user ou, organization o
+        <where>
+            ou.organization_id = o.id
+            and ou.user_id = #{userId}
+            <if test="organizationRole != null">
+                and ou.organization_role = #{organizationRole}
+            </if>
+        </where>
+    </select>
+
+</mapper>
