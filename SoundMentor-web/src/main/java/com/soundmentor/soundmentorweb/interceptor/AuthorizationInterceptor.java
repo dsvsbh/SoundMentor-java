@@ -30,9 +30,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             AssertUtil.isTrue(StrUtil.isNotBlank(token), ResultCodeEnum.UNAUTHORIZED.getCode(), "用户未登录");
             Map<String, Object> stringObjectMap = JwtUtil.validateToken(token);
             String userId = stringObjectMap.get("userId").toString();
-            AssertUtil.notNull(userId, "token已失效，请重新登录！");
+            AssertUtil.notNull(userId, ResultCodeEnum.UNAUTHORIZED.getCode(),"token已失效，请重新登录！");
             UserDO userDO = (UserDO)redisTemplate.opsForValue().get(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY, userId));
-            AssertUtil.ifNull(userDO, "用户信息已失效，请重新登录！");
+            AssertUtil.ifNull(userDO, ResultCodeEnum.UNAUTHORIZED.getCode(),"用户信息已失效，请重新登录！");
             userInfoApi.setUser(userDO);
             return true;
         } catch (Exception e) {

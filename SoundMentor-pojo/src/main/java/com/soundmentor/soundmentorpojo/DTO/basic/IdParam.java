@@ -22,5 +22,5 @@ public class IdParam {
      * @see String
      */
     @NotNull(message = "ID不能为空")
-    protected Long id;
+    protected Integer id;
 }

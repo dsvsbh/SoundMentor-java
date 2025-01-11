@@ -60,6 +60,10 @@ organization:
   # 用户最多加入组织数量
   MaxOrganizations: 10
 
+user:
+  # 用户最大声音样本库数量限制
+  maxSound: 10
+
 minio:
   url: http://121.43.62.36:9000
   access-key: minioadmin

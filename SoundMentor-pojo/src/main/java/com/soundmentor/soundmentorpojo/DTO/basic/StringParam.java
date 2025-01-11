@@ -22,5 +22,5 @@ public class StringParam {
      * @see String
      */
     @NotNull(message = "参数不能为空")
-    protected  String param;
+    protected  String data;
 }

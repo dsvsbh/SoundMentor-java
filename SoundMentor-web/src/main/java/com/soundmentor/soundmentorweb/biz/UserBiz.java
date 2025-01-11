@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
@@ -46,9 +47,9 @@ public class UserBiz {
      * @RETURN: @return
      **/
     public Integer addUser(AddUserParam param){
-        AssertUtil.isTrue(isValidEmail(param.getEmail()), "邮箱格式错误");
+        AssertUtil.isTrue(isValidEmail(param.getEmail()), ResultCodeEnum.INVALID_PARAM.getCode(),"邮箱格式错误");
         Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
-        AssertUtil.isTrue(verifyTrue, "验证码错误");
+        AssertUtil.isTrue(verifyTrue, ResultCodeEnum.INVALID_PARAM.getCode(),"验证码错误");
         UserDO userDO = userParamConvert.convert(param);
         // 密码加密
         String password = AESUtil.encrypt(userDO.getPassword(), SoundMentorConstant.AES_KEY);
@@ -75,7 +76,7 @@ public class UserBiz {
      * @RETURN: @return
      **/
     public Boolean sendEmail(String email){
-        AssertUtil.isTrue(isValidEmail(email), "邮箱格式错误");
+        AssertUtil.isTrue(isValidEmail(email), ResultCodeEnum.INVALID_PARAM.getCode(),"邮箱格式错误");
         // redis里面有不重复发送验证码
         Integer redisCode = (Integer) redisTemplate.opsForValue().get(
                 StrUtil.format(SoundMentorConstant.REDIS_EAMIL_VERIFY_KEY,email));
@@ -121,7 +122,7 @@ public class UserBiz {
 
         // 密码解析
         String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
-        AssertUtil.isTrue(password.equals(userDO.getPassword()), "密码错误");
+        AssertUtil.isTrue(password.equals(userDO.getPassword()), ResultCodeEnum.UNAUTHORIZED.getCode(),"密码错误");
 
         String token = JwtUtil.generateToken(userDO.getUsername(),userDO.getId().toString());
         UserDTO userDTO = userParamConvert.convert(userDO);
@@ -159,8 +160,8 @@ public class UserBiz {
      **/
     public Boolean fogetPassword(ForgetPasswordParam param) {
         Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
-        AssertUtil.isTrue(verifyTrue, "验证码错误");
-        AssertUtil.isTrue(isValidEmail(param.getEmail()), "邮箱格式错误");
+        AssertUtil.isTrue(verifyTrue, ResultCodeEnum.UNAUTHORIZED.getCode(),"验证码错误");
+        AssertUtil.isTrue(isValidEmail(param.getEmail()), ResultCodeEnum.INVALID_PARAM.getCode(),"邮箱格式错误");
         String password = AESUtil.encrypt(param.getPassword(), SoundMentorConstant.AES_KEY);
         return userService.updatePassword(param.getEmail(), password);
     }
@@ -184,7 +185,7 @@ public class UserBiz {
         UserDO userDO = userInfoApi.getUser();
         // 密码解析
         String password = AESUtil.encrypt(param.getOldPassword(), SoundMentorConstant.AES_KEY);
-        AssertUtil.isTrue(password.equals(userDO.getPassword()), "旧密码错误");
+        AssertUtil.isTrue(password.equals(userDO.getPassword()), ResultCodeEnum.INVALID_PARAM.getCode(),"旧密码错误");
         String newPassword = AESUtil.encrypt(param.getNewPassword(), SoundMentorConstant.AES_KEY);
         return userService.updatePassword(userDO.getEmail(), newPassword);
     }
