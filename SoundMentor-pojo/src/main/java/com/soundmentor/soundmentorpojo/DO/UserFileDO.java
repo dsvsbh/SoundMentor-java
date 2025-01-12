@@ -11,53 +11,28 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 文件表，用于存储文件的基本信息
+ * 
  * </p>
  *
  * @author liuzhicheng
- * @since 2025-01-10
+ * @since 2025-01-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("file")
-public class FileDO implements Serializable {
+@TableName("user_file")
+public class UserFileDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 文件唯一标识
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 文件原始名称
-     */
-    private String originName;
+    private Integer userId;
 
-    /**
-     * 文件存储路径
-     */
-    private String path;
+    private Integer fileId;
 
-    /**
-     * 文件大小
-     */
-    private Long fileSize;
-
-    /**
-     * 文件类型
-     */
-    private Integer fileType;
-
-    /**
-     * 文件创建时间
-     */
     private LocalDateTime createTime;
 
-    /**
-     * 文件md5值
-     */
-    private String md5;
+
 }

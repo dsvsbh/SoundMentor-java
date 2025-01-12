@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -23,18 +23,17 @@ DROP TABLE IF EXISTS `file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `file` (
-                        `id` int NOT NULL AUTO_INCREMENT COMMENT '文件唯一标识',
-                        `origin_name` varchar(255) NOT NULL COMMENT '文件原始名称',
-                        `path` varchar(255) NOT NULL COMMENT '文件存储路径',
-                        `file_size` bigint NOT NULL COMMENT '文件大小',
-                        `file_type` int NOT NULL COMMENT '文件类型',
-                        `creator` int NOT NULL COMMENT '文件创建者（用户ID）',
-                        `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文件创建时间',
-                        `md5` varchar(255) NOT NULL COMMENT '文件的唯一标识',
-                        PRIMARY KEY (`id`),
-                        UNIQUE KEY `path` (`path`),
-                        UNIQUE KEY `md5` (`md5`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '文件唯一标识',
+  `origin_name` varchar(255) NOT NULL COMMENT '文件原始名称',
+  `path` varchar(255) NOT NULL COMMENT '文件存储路径',
+  `file_size` bigint NOT NULL COMMENT '文件大小',
+  `file_type` int NOT NULL COMMENT '文件类型',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文件创建时间',
+  `md5` varchar(255) NOT NULL COMMENT '文件的唯一标识',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `path` (`path`),
+  UNIQUE KEY `md5` (`md5`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +42,7 @@ CREATE TABLE `file` (
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
+INSERT INTO `file` VALUES (1,'01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf','http://121.43.62.36:9000/doc/1736660981975_01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf',509863,3,'2025-01-12 13:49:43','af7e83ed32e798b8ff73924e4479f149');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,13 +54,13 @@ DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization` (
-                                `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                                `name` varchar(100) NOT NULL,
-                                `description` text,
-                                `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                                `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                                `capacity` int NOT NULL,
-                                PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `capacity` int NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -82,11 +82,11 @@ DROP TABLE IF EXISTS `organization_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization_file` (
-                                     `id` int NOT NULL AUTO_INCREMENT COMMENT '记录唯一标识',
-                                     `organization_id` int NOT NULL COMMENT '组织ID',
-                                     `file_id` int NOT NULL COMMENT '文件ID，关联文件表',
-                                     `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
-                                     PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '记录唯一标识',
+  `organization_id` int NOT NULL COMMENT '组织ID',
+  `file_id` int NOT NULL COMMENT '文件ID，关联文件表',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织文件关系表，用于存储组织与文件之间的关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -107,12 +107,12 @@ DROP TABLE IF EXISTS `organization_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organization_user` (
-                                     `id` int NOT NULL AUTO_INCREMENT,
-                                     `organization_id` int NOT NULL,
-                                     `user_id` int NOT NULL,
-                                     `organization_role` int NOT NULL DEFAULT '0',
-                                     `create_time` timestamp NOT NULL,
-                                     PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT,
+  `organization_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `organization_role` int NOT NULL DEFAULT '0',
+  `create_time` timestamp NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,19 +134,19 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-                        `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                        `name` varchar(100) NOT NULL,
-                        `email` varchar(100) NOT NULL,
-                        `phone` varchar(100) NOT NULL,
-                        `username` varchar(100) NOT NULL COMMENT '/',
-                        `password` varchar(255) NOT NULL,
-                        `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                        `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                        `head_img` varchar(100) DEFAULT NULL,
-                        PRIMARY KEY (`id`),
-                        UNIQUE KEY `email` (`email`),
-                        UNIQUE KEY `phone` (`phone`),
-                        UNIQUE KEY `username` (`username`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL COMMENT '/',
+  `password` varchar(255) NOT NULL,
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `head_img` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `phone` (`phone`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,6 +161,32 @@ INSERT INTO `user` VALUES (1,'','1939729609@qq.com','46236141025','','k+glZME5LB
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_file`
+--
+
+DROP TABLE IF EXISTS `user_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_file` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `file_id` int DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_file`
+--
+
+LOCK TABLES `user_file` WRITE;
+/*!40000 ALTER TABLE `user_file` DISABLE KEYS */;
+INSERT INTO `user_file` VALUES (1,2,1,'2025-01-12 13:49:43'),(2,5,1,'2025-01-12 13:52:12');
+/*!40000 ALTER TABLE `user_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_sound_rel`
 --
 
@@ -168,12 +194,12 @@ DROP TABLE IF EXISTS `user_sound_rel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_sound_rel` (
-                                  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键，自增长的唯一标识符',
-                                  `user_id` int NOT NULL COMMENT '关联用户的唯一标识，不能为空',
-                                  `sound_url` varchar(255) NOT NULL COMMENT '用户声音文件的存储地址',
-                                  `is_training_finished` tinyint(1) DEFAULT '0' COMMENT '标识声音相关训练是否完成，默认值为假（未完成）',
-                                  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
-                                  PRIMARY KEY (`id`)
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键，自增长的唯一标识符',
+  `user_id` int NOT NULL COMMENT '关联用户的唯一标识，不能为空',
+  `sound_url` varchar(255) NOT NULL COMMENT '用户声音文件的存储地址',
+  `is_training_finished` tinyint(1) DEFAULT '0' COMMENT '标识声音相关训练是否完成，默认值为假（未完成）',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -195,4 +221,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-11 15:25:21
+-- Dump completed on 2025-01-12 13:53:50

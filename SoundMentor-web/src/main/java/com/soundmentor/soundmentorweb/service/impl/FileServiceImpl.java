@@ -6,11 +6,14 @@ import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.FileDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
+import com.soundmentor.soundmentorpojo.DO.UserFileDO;
 import com.soundmentor.soundmentorpojo.DTO.file.FileUploadResDTO;
 import com.soundmentor.soundmentorweb.config.MinioConfig;
 import com.soundmentor.soundmentorweb.mapper.FileMapper;
 import com.soundmentor.soundmentorweb.mapper.OrganizationMapper;
+import com.soundmentor.soundmentorweb.mapper.UserFileMapper;
 import com.soundmentor.soundmentorweb.service.FileService;
+import com.soundmentor.soundmentorweb.service.IUserFileService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -18,6 +21,7 @@ import io.minio.PutObjectArgs;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -34,12 +38,16 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
     private MinioConfig minioConfig;
     @Resource
     private UserInfoApi userInfoApi;
+    @Resource
+    private IUserFileService userFileService;
 
     /**
-     * 上传文件到 MinIO,并返回文件路径
+     * 上传文件到 MinIO,并返回文件路径 todo 关联用户和文件
      * @param file
      * @return
      */
+    @Transactional
+    @Override
     public FileUploadResDTO uploadFile(MultipartFile file) {
         String md5=null;
         try {
@@ -49,6 +57,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
         }
         FileDO one = lambdaQuery().eq(FileDO::getMd5, md5).one();
         if (one != null) {// 文件已存在，直接返回文件路径
+            //关联用户
+            UserFileDO userFileDO = new UserFileDO();
+            userFileDO.setFileId(one.getId());
+            userFileDO.setUserId(userInfoApi.getUser().getId());
+            userFileDO.setCreateTime(LocalDateTime.now());
+            userFileService.bindUserFile(userFileDO);
             return new FileUploadResDTO(file.getOriginalFilename(),one.getPath());
         }
         // 遍历文件类型枚举，找到文件对应类型和对应的 bucket
@@ -82,10 +96,15 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             fileDO.setPath(path);
             fileDO.setOriginName(file.getOriginalFilename());
             fileDO.setCreateTime(LocalDateTime.now());
-            fileDO.setCreator(userInfoApi.getUser().getId());
             fileDO.setFileType(fileTypeEnum.getCode());
             fileDO.setMd5(md5);
             this.save(fileDO);
+            //关联用户
+            UserFileDO userFileDO = new UserFileDO();
+            userFileDO.setFileId(fileDO.getId());
+            userFileDO.setUserId(userInfoApi.getUser().getId());
+            userFileDO.setCreateTime(LocalDateTime.now());
+            userFileService.bindUserFile(userFileDO);
             return new FileUploadResDTO(file.getOriginalFilename(),path);
         } catch (Exception e)
         {
