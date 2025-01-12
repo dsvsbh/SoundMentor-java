@@ -7,12 +7,11 @@ import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
-import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
-import com.soundmentor.soundmentorweb.config.OrganizationProperties;
+import com.soundmentor.soundmentorweb.config.properties.OrganizationProperties;
 import com.soundmentor.soundmentorweb.mapper.OrganizationMapper;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
@@ -31,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * <p>

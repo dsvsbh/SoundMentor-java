@@ -47,8 +47,8 @@ public class UserSoundRelDO implements Serializable {
     /**
      * 标识声音相关训练是否完成，默认值为假（未完成）
      */
-    @TableField("is_training_finished")
-    private Boolean isTrainingFinished;
+    @TableField("status")
+    private Integer status;
 
     /**
      * 记录这行数据的创建时间，默认是当前系统时间

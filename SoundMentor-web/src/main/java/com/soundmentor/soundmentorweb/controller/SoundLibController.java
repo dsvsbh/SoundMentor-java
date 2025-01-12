@@ -48,7 +48,7 @@ public class SoundLibController {
      * @RETURN: @return
      **/
     @PostMapping(ADD_SOUND)
-    public ResponseDTO<Boolean> addSound(@Valid @RequestBody StringParam param){
+    public ResponseDTO<Integer> addSound(@Valid @RequestBody StringParam param){
         return ResponseDTO.OK(userSoundBiz.addSound(param.getData()));
     }
 
@@ -70,7 +70,7 @@ public class SoundLibController {
      **/
     @PostMapping(DEL_SOUND_LIST)
     public ResponseDTO<Boolean> delSoundList(@Valid @RequestBody IdListParam param){
-        AssertUtil.notNull(param.getIdList(), "ID集合不能为空");
+        AssertUtil.notEmpty(param.getIdList(), "ID集合不能为空");
         return ResponseDTO.OK(userSoundBiz.delSoundList(param.getIdList()));
     }
 

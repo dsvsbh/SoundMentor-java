@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -61,7 +61,7 @@ CREATE TABLE `organization` (
   `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `capacity` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `organization` (
 
 LOCK TABLES `organization` WRITE;
 /*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'','','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'','','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999),(27,'testjoin','testjoin','2025-01-07 22:08:48','2025-01-07 22:08:48',10),(28,'testjoin','testjoin','2025-01-07 22:13:26','2025-01-07 22:13:26',1);
+INSERT INTO `organization` VALUES (20,'test','test','2025-01-06 17:00:34','2025-01-06 17:00:34',100),(21,'test','test','2025-01-06 17:00:48','2025-01-06 17:00:48',100),(22,'test','test','2025-01-06 17:00:59','2025-01-06 17:00:59',100),(23,'','','2025-01-06 18:28:37','2025-01-06 18:28:37',22),(24,'','','2025-01-06 18:36:44','2025-01-06 18:36:44',22),(25,'','zuzhi','2025-01-06 19:16:53','2025-01-06 19:16:53',50),(26,'','zuzhi','2025-01-06 19:17:05','2025-01-06 19:17:05',999),(27,'testjoin','testjoin','2025-01-07 22:08:48','2025-01-07 22:08:48',10),(28,'testjoin','testjoin','2025-01-07 22:13:26','2025-01-07 22:13:26',1),(29,'test','111','2025-01-12 06:36:55','2025-01-12 06:36:55',3);
 /*!40000 ALTER TABLE `organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `organization_user` (
   `organization_role` int NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `organization_user` (
 
 LOCK TABLES `organization_user` WRITE;
 /*!40000 ALTER TABLE `organization_user` DISABLE KEYS */;
-INSERT INTO `organization_user` VALUES (20,20,2,2,'2025-01-09 16:15:57'),(21,21,2,2,'2025-01-09 16:16:01'),(22,22,2,2,'2025-01-09 16:16:03'),(23,23,5,2,'2025-01-09 16:16:02'),(24,24,5,2,'2025-01-09 16:16:04'),(25,25,2,2,'2025-01-09 16:16:06'),(26,26,2,2,'2025-01-09 16:16:05'),(27,27,2,2,'2025-01-09 16:16:07'),(28,27,5,0,'2025-01-09 16:16:09'),(29,28,2,2,'2025-01-09 16:16:08');
+INSERT INTO `organization_user` VALUES (20,20,2,2,'2025-01-09 16:15:57'),(21,21,2,2,'2025-01-09 16:16:01'),(22,22,2,2,'2025-01-09 16:16:03'),(23,23,5,2,'2025-01-09 16:16:02'),(24,24,5,2,'2025-01-09 16:16:04'),(25,25,2,2,'2025-01-09 16:16:06'),(26,26,2,2,'2025-01-09 16:16:05'),(27,27,2,2,'2025-01-09 16:16:07'),(28,27,5,0,'2025-01-09 16:16:09'),(29,28,2,2,'2025-01-09 16:16:08'),(30,29,6,2,'2025-01-12 06:36:55');
 /*!40000 ALTER TABLE `organization_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,10 +197,11 @@ CREATE TABLE `user_sound_rel` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键，自增长的唯一标识符',
   `user_id` int NOT NULL COMMENT '关联用户的唯一标识，不能为空',
   `sound_url` varchar(255) NOT NULL COMMENT '用户声音文件的存储地址',
-  `is_training_finished` tinyint(1) DEFAULT '0' COMMENT '标识声音相关训练是否完成，默认值为假（未完成）',
+  `status` int DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_user_sound_url` (`user_id`,`sound_url`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,6 +210,7 @@ CREATE TABLE `user_sound_rel` (
 
 LOCK TABLES `user_sound_rel` WRITE;
 /*!40000 ALTER TABLE `user_sound_rel` DISABLE KEYS */;
+INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21');
 /*!40000 ALTER TABLE `user_sound_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -221,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-12 13:53:50
+-- Dump completed on 2025-01-12 15:09:07

@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class DirectRabbitConfig {
-    private static final String QUEUE_NAME = "TestDirectQueue";
-    private static final String EXCHANGE_NAME = "TestDirectExchange";
-    private static final String ROUTING_KEY = "TestDirectRouting";
+    private static final String QUEUE_NAME = "SoundTrainDirectQueue";
+    private static final String EXCHANGE_NAME = "SoundTrainDirectExchange";
+    private static final String ROUTING_KEY = "SoundTrainDirectRouting";
     /**
      * 创建队列
      * @PARAM:
@@ -44,7 +44,7 @@ public class DirectRabbitConfig {
     }
 
     /**
-     * 绑定  将队列和交换机绑定, 并设置用于匹配键：TestDirectRouting
+     * 绑定  将队列和交换机绑定, 并设置用于匹配键：SoundTrainDirectRouting
      * @PARAM:
      * @RETURN: @return
      **/
