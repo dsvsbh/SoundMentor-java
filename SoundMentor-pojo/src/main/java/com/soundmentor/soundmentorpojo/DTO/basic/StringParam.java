@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,6 +22,6 @@ public class StringParam {
      *
      * @see String
      */
-    @NotNull(message = "参数不能为空")
+    @NotBlank(message = "参数不能为空")
     protected  String data;
 }

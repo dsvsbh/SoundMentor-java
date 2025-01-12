@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config;
+package com.soundmentor.soundmentorweb.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -18,10 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class IdListParam implements Serializable {
     private static final long serialVersionUID = 1L;
-
     /**
      * ID集合
      **/
-    @NotNull(message = "ID集合不能为空")
-    private List<Integer> IdList;
+    @NotNull(message = "ID集合不能为空!")
+    private List<Integer> idList;
 }

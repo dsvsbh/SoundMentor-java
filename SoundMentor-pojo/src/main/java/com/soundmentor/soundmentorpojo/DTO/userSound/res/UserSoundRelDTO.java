@@ -27,9 +27,9 @@ public class UserSoundRelDTO implements Serializable {
     private String soundUrl;
 
     /**
-     * 标识声音相关训练是否完成，默认值为假（未完成）
+     * 标识声音相关训练是否完成，默认值为0（未完成）
      */
-    private Boolean isTrainingFinished;
+    private Integer status;
 
     /**
      * 记录这行数据的创建时间，默认是当前系统时间

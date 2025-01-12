@@ -1,11 +1,14 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorweb.mapper.UserSoundRelMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +21,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, UserSoundRelDO> implements IUserSoundRelService {
 
+    /**
+     * 根据用户id获取用户声音列表
+     * @PARAM: @param userId
+     * @RETURN: @return
+     **/
+    @Override
+    public List<UserSoundRelDO> getSoundByUserId(Integer userId) {
+        return this.list(Wrappers.<UserSoundRelDO> lambdaQuery().eq(UserSoundRelDO::getUserId,userId));
+    }
+
+    /**
+     * 添加用户声音
+     * @PARAM: @param addDO
+     * @RETURN: @return
+     **/
+    @Override
+    public Boolean addSound(UserSoundRelDO addDO) {
+        return this.save(addDO);
+    }
+
+    /**
+     * 根据id获取用户声音
+     * @PARAM: @param ids
+     * @RETURN: @return
+     **/
+    @Override
+    public List<UserSoundRelDO> getSoundByIds(List<Integer> ids) {
+        return this.listByIds(ids);
+    }
+
+    /**
+     * 删除用户声音
+     * @PARAM: @param ids
+     * @RETURN: @return
+     **/
+    @Override
+    public Boolean delSoundList(List<Integer> ids) {
+        return this.removeByIds(ids);
+    }
 }
