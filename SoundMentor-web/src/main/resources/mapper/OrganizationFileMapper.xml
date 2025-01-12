@@ -3,7 +3,7 @@
 <mapper namespace="com.soundmentor.soundmentorweb.mapper.OrganizationFileMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.soundmentor.soundmentorweb.DO.OrganizationFile">
+    <resultMap id="BaseResultMap" type="com.soundmentor.soundmentorpojo.DO.OrganizationFileDO">
         <id column="id" property="id" />
         <result column="organization_id" property="organizationId" />
         <result column="file_id" property="fileId" />

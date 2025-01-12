@@ -99,6 +99,11 @@ public class OrganizationController {
         return ResponseDTO.OK();
     }
 
+    /**
+     * 解散组织
+     * @param organizationId
+     * @return
+     */
     @DeleteMapping("/remove/{organizationId}")
     public ResponseDTO remove(@PathVariable Integer organizationId)
     {
