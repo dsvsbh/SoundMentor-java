@@ -1,6 +1,7 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.map.MapUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
@@ -8,11 +9,10 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
-import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
-import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
-import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO;
+import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 import com.soundmentor.soundmentorweb.config.OrganizationProperties;
+import com.soundmentor.soundmentorweb.mapper.OrganizationFileMapper;
 import com.soundmentor.soundmentorweb.mapper.OrganizationMapper;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
@@ -51,7 +51,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private final RedissonClient redissonClient;
     private final OrganizationMapper organizationMapper;
     private final UserMapper userMapper;
-
+    private final OrganizationFileMapper ofMapper;
     @Override
     @Transactional
     public Integer createOrganization(CreateOrganizationDTO dto) {
@@ -162,6 +162,48 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<OrganizationUserListDTO> userList(Integer organizationId) {
         return userMapper.getOrganizationUserList(organizationId);
+    }
+
+    @Override
+    public void updateRole(UpdateOrgUserRoleDTO dto) {
+        OrganizationRole organizationRole = userInfoApi.getOrganizationRole(dto.getOrganizationId());
+        if(!OrganizationRole.CREATOR.equals(organizationRole))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织的创建者，权限不够");
+        }
+        ouService.lambdaUpdate()
+                .set(OrganizationUserDO::getOrganizationRole, dto.getRole().getCode())
+                .eq(OrganizationUserDO::getUserId, dto.getUserId())
+                .eq(OrganizationUserDO::getOrganizationId, dto.getOrganizationId())
+                .update();
+    }
+
+    @Override
+    public void removeUserFromOrg(RemoveOrganizationUserDTO dto) {
+        OrganizationRole organizationRole = userInfoApi.getOrganizationRole(dto.getOrganizationId());
+        if(!OrganizationRole.CREATOR.equals(organizationRole))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织的创建者，权限不够");
+        }
+        ouService.lambdaUpdate()
+                .eq(OrganizationUserDO::getUserId, dto.getUserId())
+                .eq(OrganizationUserDO::getOrganizationId, dto.getOrganizationId())
+                .remove();
+    }
+
+    @Override
+    @Transactional
+    public void removeOrganization(Integer organizationId) {
+        OrganizationRole organizationRole = userInfoApi.getOrganizationRole(organizationId);
+        if(!OrganizationRole.CREATOR.equals(organizationRole))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织的创建者，权限不够");
+        }
+        ouService.lambdaUpdate()
+                .eq(OrganizationUserDO::getOrganizationId, organizationId)
+                .remove();
+        ofMapper.deleteByMap(MapUtil.of("organization_id",organizationId));
+        this.removeById(organizationId);
     }
 
     /**

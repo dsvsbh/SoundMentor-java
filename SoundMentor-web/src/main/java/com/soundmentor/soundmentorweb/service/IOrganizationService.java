@@ -3,9 +3,7 @@ package com.soundmentor.soundmentorweb.service;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.soundmentor.soundmentorpojo.DTO.organization.JoinOrganizationDTO;
-import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO;
-import com.soundmentor.soundmentorpojo.DTO.organization.OrganizationUserListDTO;
+import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 
 import java.util.List;
@@ -29,4 +27,10 @@ public interface IOrganizationService extends IService<OrganizationDO> {
     void join(JoinOrganizationDTO dto);
 
     List<OrganizationUserListDTO> userList(Integer organizationId);
+
+    void updateRole(UpdateOrgUserRoleDTO dto);
+
+    void removeUserFromOrg(RemoveOrganizationUserDTO dto);
+
+    void removeOrganization(Integer organizationId);
 }
