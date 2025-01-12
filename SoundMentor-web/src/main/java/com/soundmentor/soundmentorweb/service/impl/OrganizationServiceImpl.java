@@ -11,7 +11,8 @@ import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
-import com.soundmentor.soundmentorweb.config.OrganizationProperties;
+
+import com.soundmentor.soundmentorweb.config.properties.OrganizationProperties;
 import com.soundmentor.soundmentorweb.mapper.OrganizationFileMapper;
 import com.soundmentor.soundmentorweb.mapper.OrganizationMapper;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;

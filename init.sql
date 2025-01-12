@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -201,7 +201,7 @@ CREATE TABLE `user_sound_rel` (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_sound_url` (`user_id`,`sound_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +210,7 @@ CREATE TABLE `user_sound_rel` (
 
 LOCK TABLES `user_sound_rel` WRITE;
 /*!40000 ALTER TABLE `user_sound_rel` DISABLE KEYS */;
-INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21');
+INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21'),(10,5,'/mp3/123/test09.mp3',0,'2025-01-12 15:12:01');
 /*!40000 ALTER TABLE `user_sound_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -223,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-12 15:09:07
+-- Dump completed on 2025-01-12 16:22:35
