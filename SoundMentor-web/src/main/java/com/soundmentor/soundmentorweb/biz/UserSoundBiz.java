@@ -83,6 +83,7 @@ public class UserSoundBiz {
         userSoundRelService.addSound(addDO);
         TaskDO taskDO = new TaskDO();
         taskDO.setTaskDetail(JSON.toJSONString(addDO));
+        taskDO.setResult("{}");
         taskDO.setStatus(TaskStatusEnum.CREATED.getCode());
         taskDO.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
         taskDO.setCreateTime(LocalDateTime.now());
@@ -92,6 +93,7 @@ public class UserSoundBiz {
         message.setId(taskDO.getId());
         message.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
         message.setMessageBody(addDO);
+        message.setStatus(TaskStatusEnum.CREATED.getCode());
         message.setCreateTime(LocalDateTime.now());
         mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
         log.info("消息ID:{},发送成功！",taskDO.getId());

@@ -47,6 +47,11 @@ public class TaskDO implements Serializable {
     private Integer status;
 
     /**
+     * 任务结果信息，JSON格式
+     */
+    private String result;
+
+    /**
      * 创建时间，默认为当前时间
      */
     private LocalDateTime createTime;

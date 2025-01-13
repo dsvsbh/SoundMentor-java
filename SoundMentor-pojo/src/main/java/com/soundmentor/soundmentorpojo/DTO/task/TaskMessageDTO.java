@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class TaskMessageDTO<T> implements Serializable {
     private Integer id;
     private Integer type;
+    private Integer status;
     private LocalDateTime createTime;
     private T messageBody;
 }
