@@ -1,18 +1,27 @@
 package com.soundmentor.soundmentorweb.biz;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.UUID;
+import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
+import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
+import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
+import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
 import com.soundmentor.soundmentorweb.MQ.Producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
+import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.config.properties.UserProperties;
+import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -41,6 +50,8 @@ public class UserSoundBiz {
     private UserInfoApi userInfoApi;
     @Resource
     private MqProducer mqProducer;
+    @Resource
+    private TaskMapper taskMapper;
     /**
      * 是否能继续添加声音到声音样本库
      * @PARAM:
@@ -61,24 +72,29 @@ public class UserSoundBiz {
      * @PARAM: @param data
      * @RETURN: @return
      **/
+    @Transactional
     public Integer addSound(String soundUrl) {
         AssertUtil.isTrue(canAddSound(), ResultCodeEnum.INTERNAL_ERROR.getCode(),"声音库数量已达到最大限制！");
         UserSoundRelDO addDO = new UserSoundRelDO();
         addDO.setSoundUrl(soundUrl);
         addDO.setUserId(userInfoApi.getUser().getId());
         addDO.setCreateTime(LocalDateTime.now());
-        addDO.setStatus(0);
-        Boolean res = userSoundRelService.addSound(addDO);
-        if(res){
-            String messageId = String.valueOf(UUID.randomUUID());
-            String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            Map<String, Object> map = new HashMap<>();
-            map.put("messageId", messageId);
-            map.put("messageData", addDO);
-            map.put("createTime", createTime);
-            mqProducer.send("SoundTrainDirectExchange", "SoundTrainDirectRouting", map);
-            log.info("消息ID:{},发送成功！",messageId);
-        }
+        addDO.setStatus(TaskStatusEnum.CREATED.getCode());
+        userSoundRelService.addSound(addDO);
+        TaskDO taskDO = new TaskDO();
+        taskDO.setTaskDetail(JSON.toJSONString(addDO));
+        taskDO.setStatus(TaskStatusEnum.CREATED.getCode());
+        taskDO.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
+        taskDO.setCreateTime(LocalDateTime.now());
+        taskDO.setUpdateTime(LocalDateTime.now());
+        taskMapper.insert(taskDO);
+        TaskMessageDTO<UserSoundRelDO> message = new TaskMessageDTO<>();
+        message.setId(taskDO.getId());
+        message.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
+        message.setMessageBody(addDO);
+        message.setCreateTime(LocalDateTime.now());
+        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
+        log.info("消息ID:{},发送成功！",taskDO.getId());
         return addDO.getId();
     }
 

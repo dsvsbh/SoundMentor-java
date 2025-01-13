@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class DirectRabbitConfig {
-    private static final String QUEUE_NAME = "SoundTrainDirectQueue";
-    private static final String EXCHANGE_NAME = "SoundTrainDirectExchange";
-    private static final String ROUTING_KEY = "SoundTrainDirectRouting";
+    public static final String QUEUE_NAME_SOUND_TRAIN = "SoundTrainDirectQueue";
+    public static final String EXCHANGE_NAME_SOUND_TRAIN = "SoundTrainDirectExchange";
+    public static final String ROUTING_KEY_SOUND_TRAIN = "SoundTrainDirectRouting";
     /**
      * 创建队列
      * @PARAM:
@@ -30,7 +30,7 @@ public class DirectRabbitConfig {
          * exclusive:是否独占,默认是false,只能被当前创建的连接使用，而且当连接关闭后队列即被删除。
          * autoDelete:是否自动删除,默认是false,当没有生产者或者消费者使用此队列，该队列会自动删除。
          */
-        return new Queue(QUEUE_NAME,true);
+        return new Queue(QUEUE_NAME_SOUND_TRAIN,true);
     }
 
     /**
@@ -40,7 +40,7 @@ public class DirectRabbitConfig {
      **/
     @Bean
     DirectExchange TestDirectExchange() {
-        return new DirectExchange(EXCHANGE_NAME,true,false);
+        return new DirectExchange(EXCHANGE_NAME_SOUND_TRAIN,true,false);
     }
 
     /**
@@ -50,7 +50,7 @@ public class DirectRabbitConfig {
      **/
     @Bean
     Binding bindingDirect() {
-        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with(ROUTING_KEY);
+        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
     }
 
     @Bean

@@ -127,6 +127,34 @@ INSERT INTO `organization_user` VALUES (20,20,2,2,'2025-01-09 16:15:57'),(21,21,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `task`
+--
+
+DROP TABLE IF EXISTS `task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `task` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '任务ID，自动递增',
+  `task_detail` json NOT NULL COMMENT '任务详细信息，JSON格式',
+  `type` int NOT NULL COMMENT '任务类型，VARCHAR类型',
+  `status` int NOT NULL COMMENT '任务状态，VARCHAR类型',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，默认为当前时间',
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间，更新时自动更新为当前时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='任务表，存储所有任务的详细信息和状态';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+INSERT INTO `task` VALUES (2,'{\"id\": 12, \"status\": 0, \"userId\": 2, \"soundUrl\": \"test\", \"createTime\": \"2025-01-12T23:29:57.170\"}',1,0,'2025-01-12 23:29:57','2025-01-12 23:29:57'),(10,'{\"id\": 21, \"status\": 0, \"userId\": 2, \"soundUrl\": \"test1\", \"createTime\": \"2025-01-13T11:52:51.404\"}',1,0,'2025-01-13 11:52:51','2025-01-13 11:52:51'),(11,'{\"id\": 22, \"status\": 0, \"userId\": 2, \"soundUrl\": \"test11\", \"createTime\": \"2025-01-13T15:05:12.489\"}',1,0,'2025-01-13 15:05:13','2025-01-13 15:05:13'),(12,'{\"id\": 23, \"status\": 0, \"userId\": 2, \"soundUrl\": \"test112\", \"createTime\": \"2025-01-13T15:09:50.584\"}',1,0,'2025-01-13 15:09:51','2025-01-13 15:09:51'),(13,'{\"id\": 24, \"status\": 0, \"userId\": 2, \"soundUrl\": \"test1123\", \"createTime\": \"2025-01-13T15:15:35.360\"}',1,0,'2025-01-13 15:15:35','2025-01-13 15:15:35');
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -201,7 +229,7 @@ CREATE TABLE `user_sound_rel` (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_sound_url` (`user_id`,`sound_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +238,7 @@ CREATE TABLE `user_sound_rel` (
 
 LOCK TABLES `user_sound_rel` WRITE;
 /*!40000 ALTER TABLE `user_sound_rel` DISABLE KEYS */;
-INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21'),(10,5,'/mp3/123/test09.mp3',0,'2025-01-12 15:12:01');
+INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21'),(10,5,'/mp3/123/test09.mp3',0,'2025-01-12 15:12:01'),(12,2,'test',0,'2025-01-12 23:29:57'),(21,2,'test1',0,'2025-01-13 11:52:51'),(22,2,'test11',0,'2025-01-13 15:05:12'),(23,2,'test112',0,'2025-01-13 15:09:51'),(24,2,'test1123',0,'2025-01-13 15:15:35');
 /*!40000 ALTER TABLE `user_sound_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -223,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-12 16:22:35
+-- Dump completed on 2025-01-13 15:29:37
