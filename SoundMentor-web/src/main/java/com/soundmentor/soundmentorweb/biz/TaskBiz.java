@@ -36,7 +36,7 @@ public class TaskBiz {
         res.setCreateTime(taskDO.getCreateTime());
         res.setStatus(taskDO.getStatus());
         res.setType(taskDO.getType());
-        res.setMessageBody(taskDO.getTaskDetail());
+        res.setMessageBody(taskDO.getResult());
         return res;
     }
 
