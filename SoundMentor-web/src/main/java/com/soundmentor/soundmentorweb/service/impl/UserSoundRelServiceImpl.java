@@ -60,4 +60,14 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
     public Boolean delSoundList(List<Integer> ids) {
         return this.removeByIds(ids);
     }
+
+    /**
+     * 更新用户声音
+     * @PARAM: @param updateDO
+     * @RETURN: @return
+     **/
+    @Override
+    public Boolean updateSound(UserSoundRelDO updateDO) {
+        return this.updateById(updateDO);
+    }
 }

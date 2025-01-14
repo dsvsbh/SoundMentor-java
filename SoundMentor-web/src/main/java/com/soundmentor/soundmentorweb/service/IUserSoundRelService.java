@@ -43,4 +43,11 @@ public interface IUserSoundRelService extends IService<UserSoundRelDO> {
      * @RETURN: @return
      **/
     Boolean delSoundList(List<Integer> ids);
+
+    /**
+     * 根据id更新声音
+     * @PARAM: @param updateDO
+     * @RETURN: @return
+     **/
+    Boolean updateSound(UserSoundRelDO updateDO);
 }

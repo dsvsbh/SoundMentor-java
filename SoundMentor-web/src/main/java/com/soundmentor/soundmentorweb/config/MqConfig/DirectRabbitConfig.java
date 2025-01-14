@@ -18,6 +18,10 @@ public class DirectRabbitConfig {
     public static final String QUEUE_NAME_SOUND_TRAIN = "SoundTrainDirectQueue";
     public static final String EXCHANGE_NAME_SOUND_TRAIN = "SoundTrainDirectExchange";
     public static final String ROUTING_KEY_SOUND_TRAIN = "SoundTrainDirectRouting";
+
+    public static final String QUEUE_NAME_TASK_BACK = "TaskBack";
+    public static final String EXCHANGE_NAME_TASK_BACK = "TaskBackDirectExchange";
+    public static final String ROUTING_KEY_TASK_BACK = "TaskBackDirectRouting";
     /**
      * 创建队列
      * @PARAM:
@@ -34,6 +38,16 @@ public class DirectRabbitConfig {
     }
 
     /**
+     * 创建任务返回结果队列
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    public Queue TaskBackQueue() {
+        return new Queue(QUEUE_NAME_TASK_BACK,true);
+    }
+
+    /**
      * 创建Direct交换机
      * @PARAM:
      * @RETURN: @return
@@ -44,6 +58,16 @@ public class DirectRabbitConfig {
     }
 
     /**
+     * 创建任务返回结果交换机
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    DirectExchange TaskBackExchange() {
+        return new DirectExchange(EXCHANGE_NAME_TASK_BACK,true,false);
+    }
+
+    /**
      * 绑定  将队列和交换机绑定, 并设置用于匹配键：SoundTrainDirectRouting
      * @PARAM:
      * @RETURN: @return
@@ -51,6 +75,16 @@ public class DirectRabbitConfig {
     @Bean
     Binding bindingDirect() {
         return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
+    }
+
+    /**
+     * 任务返回结果绑定
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    Binding bindingDirectBack() {
+        return BindingBuilder.bind(TaskBackQueue()).to(TaskBackExchange()).with(ROUTING_KEY_TASK_BACK);
     }
 
     @Bean

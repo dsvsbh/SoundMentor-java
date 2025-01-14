@@ -1,6 +1,8 @@
 package com.soundmentor.soundmentorweb.factory;
 
 import com.soundmentor.soundmentorweb.handler.TaskHandler;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ConcurrentHashMap;

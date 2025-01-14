@@ -40,12 +40,29 @@ spring:
           socketFactory:
             port: 465
             class: javax.net.ssl.SSLSocketFactory
-  #配置rabbitMq 服务器
+  # 配置 rabbitMq 服务器
   rabbitmq:
     host: 121.43.62.36
     port: 5672
     username: admin
     password: 123456
+    template:
+      retry:
+        enabled: true # 开启生产者重试
+        initial-interval: 1000ms # 初始重试间隔
+        multiplier: 2 # 每次重试间隔的乘数
+        max-attempts: 3 # 最大重试次数
+        max-interval: 10000ms # 最大重试间隔
+    listener:
+      simple:
+        retry:
+          enabled: true # 开启消费者重试
+          initial-interval: 1000ms # 初始重试间隔
+          multiplier: 2 # 每次重试间隔的乘数
+          max-attempts: 3 # 最大重试次数
+          max-interval: 10000ms # 最大重试间隔
+        recovery:
+          enabled: true # 开启消费者重试失败后的恢复策略
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

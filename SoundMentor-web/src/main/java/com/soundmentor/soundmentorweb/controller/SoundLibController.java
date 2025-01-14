@@ -42,15 +42,15 @@ public class SoundLibController {
         return ResponseDTO.OK(userSoundBiz.canAddSound());
     }
 
-    /**
-     * 往声音样本库中添加声音,训练声音
-     * @PARAM:
-     * @RETURN: @return
-     **/
-    @PostMapping(ADD_SOUND)
-    public ResponseDTO<Integer> addSound(@Valid @RequestBody StringParam param){
-        return ResponseDTO.OK(userSoundBiz.addSound(param.getData()));
-    }
+///    /**
+///    * 往声音样本库中添加声音,训练声音
+///     * @PARAM:
+///     * @RETURN: @return
+///     **/
+///    @PostMapping(ADD_SOUND)
+///    public ResponseDTO<Integer> addSound(@Valid @RequestBody StringParam param){
+///        return ResponseDTO.OK(userSoundBiz.addSound(param.getData()));
+///    }
 
     /**
      * 获取声音样本库声音

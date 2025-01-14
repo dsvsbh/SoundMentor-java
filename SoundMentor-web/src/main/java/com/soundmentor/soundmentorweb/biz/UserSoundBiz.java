@@ -95,8 +95,9 @@ public class UserSoundBiz {
         message.setMessageBody(addDO);
         message.setStatus(TaskStatusEnum.CREATED.getCode());
         message.setCreateTime(LocalDateTime.now());
-        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
-        log.info("消息ID:{},发送成功！",taskDO.getId());
+        // mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
+        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_TASK_BACK, DirectRabbitConfig.ROUTING_KEY_TASK_BACK,message);
+        log.info("消息ID:{},发送成功！----------->> {}",taskDO.getId(),taskDO.toString());
         return taskDO.getId();
     }
 
@@ -137,5 +138,14 @@ public class UserSoundBiz {
         List<UserSoundRelDO> soundList = userSoundRelService.getSoundByUserId(userInfoApi.getUser().getId());
         AssertUtil.ifNull(soundList, ResultCodeEnum.DATA_NOT_FUND.getCode(),"声音不存在");
         return soundList.stream().map(userParamConvert::convert).collect(Collectors.toList());
+    }
+
+    /**
+     * 更新声音
+     * @PARAM: @param updateDO
+     * @RETURN: @return
+     **/
+    public Boolean updateSound(UserSoundRelDO updateDO){
+        return userSoundRelService.updateSound(updateDO);
     }
 }
