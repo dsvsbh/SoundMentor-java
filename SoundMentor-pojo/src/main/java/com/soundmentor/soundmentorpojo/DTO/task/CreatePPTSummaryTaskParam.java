@@ -7,4 +7,6 @@ import lombok.Data;
 public class CreatePPTSummaryTaskParam implements CreateTaskParam{
     private TaskTypeEnum type;
     private TaskTypeEnum taskType;
+    private String pptUrl;
+
 }

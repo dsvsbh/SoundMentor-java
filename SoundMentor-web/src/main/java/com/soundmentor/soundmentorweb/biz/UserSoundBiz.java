@@ -3,9 +3,11 @@ package com.soundmentor.soundmentorweb.biz;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSON;
+import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
 import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
+import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
@@ -75,14 +77,30 @@ public class UserSoundBiz {
     @Transactional
     public Integer addSound(String soundUrl) {
         AssertUtil.isTrue(canAddSound(), ResultCodeEnum.INTERNAL_ERROR.getCode(),"声音库数量已达到最大限制！");
-        UserSoundRelDO addDO = new UserSoundRelDO();
-        addDO.setSoundUrl(soundUrl);
-        addDO.setUserId(userInfoApi.getUser().getId());
-        addDO.setCreateTime(LocalDateTime.now());
-        addDO.setStatus(TaskStatusEnum.CREATED.getCode());
-        userSoundRelService.addSound(addDO);
+        try{
+            if(!FileTypeEnum.MP3.getSuffix().equals(soundUrl.substring(soundUrl.lastIndexOf("."))))
+            {
+                throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "请上传mp3格式文件");
+            }
+        } catch (Exception e) {
+            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "请上传mp3格式文件");
+        }
+
+        UserSoundRelDO userSoundRelDO = userSoundRelService.lambdaQuery()
+                .eq(UserSoundRelDO::getSoundUrl, soundUrl)
+                .eq(UserSoundRelDO::getUserId, userInfoApi.getUser().getId())
+                .one();
+        if(userSoundRelDO==null)
+        {
+            userSoundRelDO = new UserSoundRelDO();
+            userSoundRelDO.setSoundUrl(soundUrl);
+            userSoundRelDO.setUserId(userInfoApi.getUser().getId());
+            userSoundRelDO.setCreateTime(LocalDateTime.now());
+            userSoundRelDO.setStatus(TaskStatusEnum.CREATED.getCode());
+            userSoundRelService.addSound(userSoundRelDO);
+        }
         TaskDO taskDO = new TaskDO();
-        taskDO.setTaskDetail(JSON.toJSONString(addDO));
+        taskDO.setTaskDetail(JSON.toJSONString(userSoundRelDO));
         taskDO.setResult("{}");
         taskDO.setStatus(TaskStatusEnum.CREATED.getCode());
         taskDO.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
@@ -92,7 +110,7 @@ public class UserSoundBiz {
         TaskMessageDTO<UserSoundRelDO> message = new TaskMessageDTO<>();
         message.setId(taskDO.getId());
         message.setType(TaskTypeEnum.VOICE_TRAIN.getCode());
-        message.setMessageBody(addDO);
+        message.setMessageBody(userSoundRelDO);
         message.setStatus(TaskStatusEnum.CREATED.getCode());
         message.setCreateTime(LocalDateTime.now());
         mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);

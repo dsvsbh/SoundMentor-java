@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.handler;
 
+import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PPTSummaryVoiceHandler implements TaskHandler{
     @Override
     public Integer getTaskType() {
-        return 0;
+        return TaskTypeEnum.PPT_SUMMARY_VOICE.getCode();
     }
 
     @Override
