@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.MQ.Producer;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @DATE: 2025/01/10
  **/
 @Component
+@Slf4j
 public class MqProducer<T> {
     @Autowired
     RabbitTemplate rabbitTemplate;

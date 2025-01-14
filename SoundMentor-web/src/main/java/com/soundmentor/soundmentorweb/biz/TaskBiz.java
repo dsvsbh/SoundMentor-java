@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 /**
  * 任务相关业务逻辑
@@ -41,11 +42,35 @@ public class TaskBiz {
     }
 
     /**
+     * 获取任务详情
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    public String getTaskDetail(Integer id) {
+        TaskDO taskDO = taskService.getById(id);
+        return taskDO.getTaskDetail();
+    }
+
+    /**
      * 创建任务
      * @PARAM: @param param
      * @RETURN: @return
      **/
     public Integer createTask(CreateTaskParam param) {
         return taskHandlerFactory.getTaskHandler(param.getTaskType().getCode()).createTask(param);
+    }
+
+    /**
+     * 更新任务记录
+     * @PARAM: @param taskMessage
+     * @RETURN: @return
+     **/
+    public Boolean updateTask(TaskMessageDTO taskMessage) {
+        TaskDO taskDO = new TaskDO();
+        taskDO.setId(taskMessage.getId());
+        taskDO.setStatus(taskMessage.getStatus());
+        taskDO.setResult(taskMessage.getMessageBody().toString());
+        taskDO.setUpdateTime(LocalDateTime.now());
+        return taskService.updateById(taskDO);
     }
 }

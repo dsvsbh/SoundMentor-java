@@ -95,9 +95,9 @@ public class UserSoundBiz {
         message.setMessageBody(addDO);
         message.setStatus(TaskStatusEnum.CREATED.getCode());
         message.setCreateTime(LocalDateTime.now());
-        // mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
-        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_TASK_BACK, DirectRabbitConfig.ROUTING_KEY_TASK_BACK,message);
-        log.info("消息ID:{},发送成功！----------->> {}",taskDO.getId(),taskDO.toString());
+        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_SOUND_TRAIN, DirectRabbitConfig.ROUTING_KEY_SOUND_TRAIN,message);
+        /// mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_TASK_BACK, DirectRabbitConfig.ROUTING_KEY_TASK_BACK,message);
+        log.info("消息ID:{},发送成功！----------->> {}",taskDO.getId(),message.toString());
         return taskDO.getId();
     }
 

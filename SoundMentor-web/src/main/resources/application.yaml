@@ -79,7 +79,7 @@ organization:
 
 user:
   # 用户最大声音样本库数量限制
-  maxSound: 10
+  maxSound: 100
 
 minio:
   url: http://121.43.62.36:9000
