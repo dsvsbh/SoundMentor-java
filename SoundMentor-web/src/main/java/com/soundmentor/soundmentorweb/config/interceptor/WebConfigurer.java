@@ -1,11 +1,9 @@
-package com.soundmentor.soundmentorweb.config;
+package com.soundmentor.soundmentorweb.config.interceptor;
 
-import com.soundmentor.soundmentorweb.controller.UserController;
-import com.soundmentor.soundmentorweb.interceptor.AuthorizationInterceptor;
+import com.soundmentor.soundmentorweb.config.interceptor.AuthorizationInterceptor;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;

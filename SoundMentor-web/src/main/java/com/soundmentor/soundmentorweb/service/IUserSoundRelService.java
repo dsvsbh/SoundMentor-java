@@ -50,4 +50,12 @@ public interface IUserSoundRelService extends IService<UserSoundRelDO> {
      * @RETURN: @return
      **/
     Boolean updateSound(UserSoundRelDO updateDO);
+
+    /**
+     * 根据用户文件路径获取声音
+     * @param soundUrl
+     * @PARAM: @param id
+     * @RETURN: @return <p>
+     **/
+    UserSoundRelDO getByPath(Integer id, String soundUrl);
 }

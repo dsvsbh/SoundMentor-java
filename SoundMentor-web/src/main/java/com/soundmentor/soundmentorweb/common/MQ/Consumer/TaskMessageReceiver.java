@@ -1,9 +1,9 @@
-package com.soundmentor.soundmentorweb.MQ.Consumer;
+package com.soundmentor.soundmentorweb.common.MQ.Consumer;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
-import com.soundmentor.soundmentorweb.factory.TaskHandlerFactory;
+import com.soundmentor.soundmentorweb.common.factory.factory.TaskHandlerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

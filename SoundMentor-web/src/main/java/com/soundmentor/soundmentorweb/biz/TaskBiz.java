@@ -3,7 +3,7 @@ package com.soundmentor.soundmentorweb.biz;
 import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
-import com.soundmentor.soundmentorweb.factory.TaskHandlerFactory;
+import com.soundmentor.soundmentorweb.common.factory.factory.TaskHandlerFactory;
 import com.soundmentor.soundmentorweb.service.ITaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

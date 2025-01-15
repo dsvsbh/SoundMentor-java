@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.aspects;
+package com.soundmentor.soundmentorweb.common.aop.aspects;
 
 import cn.hutool.core.util.BooleanUtil;
 import com.alibaba.fastjson.JSON;
@@ -6,17 +6,14 @@ import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
-import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
-import com.soundmentor.soundmentorweb.annotation.RepeatSubmit;
+import com.soundmentor.soundmentorweb.common.aop.annotation.RepeatSubmit;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class RepeatSubmitAspect {
     private final UserInfoApi userInfoApi;
     private final RedisTemplate redisTemplate;
-    @Pointcut("@annotation(com.soundmentor.soundmentorweb.annotation.RepeatSubmit)")
+    @Pointcut("@annotation(com.soundmentor.soundmentorweb.common.aop.annotation.RepeatSubmit)")
     public void repeatSubmit() {
     }
 

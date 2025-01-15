@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.interceptor;
+package com.soundmentor.soundmentorweb.config.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;

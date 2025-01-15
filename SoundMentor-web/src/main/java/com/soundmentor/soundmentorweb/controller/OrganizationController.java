@@ -4,16 +4,14 @@ import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
-import com.soundmentor.soundmentorweb.annotation.RepeatSubmit;
+import com.soundmentor.soundmentorweb.common.aop.annotation.RepeatSubmit;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 组织相关接口

@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config;
+package com.soundmentor.soundmentorweb.config.interceptor;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;

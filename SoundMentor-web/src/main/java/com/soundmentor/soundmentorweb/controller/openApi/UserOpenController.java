@@ -6,20 +6,14 @@ import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
-import com.soundmentor.soundmentorweb.MQ.Producer.MqProducer;
+import com.soundmentor.soundmentorweb.common.MQ.Producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import cn.hutool.core.lang.UUID;
+
 /**
  * 用户相关免登接口
  * @Author: Make

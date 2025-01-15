@@ -1,7 +1,5 @@
 package com.soundmentor.soundmentorweb.biz;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
@@ -14,7 +12,7 @@ import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
-import com.soundmentor.soundmentorweb.MQ.Producer.MqProducer;
+import com.soundmentor.soundmentorweb.common.MQ.Producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.config.properties.UserProperties;
@@ -27,11 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -85,11 +79,7 @@ public class UserSoundBiz {
         } catch (Exception e) {
             throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "请上传mp3格式文件");
         }
-
-        UserSoundRelDO userSoundRelDO = userSoundRelService.lambdaQuery()
-                .eq(UserSoundRelDO::getSoundUrl, soundUrl)
-                .eq(UserSoundRelDO::getUserId, userInfoApi.getUser().getId())
-                .one();
+        UserSoundRelDO userSoundRelDO = userSoundRelService.getByPath(userInfoApi.getUser().getId(),soundUrl);
         if(userSoundRelDO==null)
         {
             userSoundRelDO = new UserSoundRelDO();

@@ -70,4 +70,17 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
     public Boolean updateSound(UserSoundRelDO updateDO) {
         return this.updateById(updateDO);
     }
+
+    /**
+     * 根据路径获取用户声音
+     * @param soundUrl
+     * @PARAM: @param id
+     * @RETURN: @return <p>
+     **/
+    @Override
+    public UserSoundRelDO getByPath(Integer id, String soundUrl) {
+        return this.getOne(Wrappers.<UserSoundRelDO> lambdaQuery()
+                .eq(UserSoundRelDO::getSoundUrl, soundUrl)
+                .eq(UserSoundRelDO::getUserId, id));
+    }
 }

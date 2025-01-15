@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config;
+package com.soundmentor.soundmentorweb.config.MinioConfig;
 
 import io.minio.MinioClient;
 import io.minio.errors.MinioException;

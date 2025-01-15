@@ -1,14 +1,11 @@
-package com.soundmentor.soundmentorweb.MQ.Producer;
+package com.soundmentor.soundmentorweb.common.MQ.Producer;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * MQ发送消息,泛型表示消息体类型
