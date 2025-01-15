@@ -1,6 +1,6 @@
-package com.soundmentor.soundmentorweb.common.factory.factory;
+package com.soundmentor.soundmentorweb.common.factory;
 
-import com.soundmentor.soundmentorweb.common.factory.handler.TaskHandler;
+import com.soundmentor.soundmentorweb.common.handler.TaskHandler;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ConcurrentHashMap;

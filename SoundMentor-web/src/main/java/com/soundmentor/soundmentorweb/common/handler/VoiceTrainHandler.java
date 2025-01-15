@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.common.factory.handler;
+package com.soundmentor.soundmentorweb.common.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;

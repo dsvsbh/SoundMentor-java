@@ -7,11 +7,12 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.FileDO;
 import com.soundmentor.soundmentorpojo.DO.UserFileDO;
 import com.soundmentor.soundmentorpojo.DTO.file.FileUploadResDTO;
-import com.soundmentor.soundmentorweb.config.minioConfig.MinioConfig;
+import com.soundmentor.soundmentorweb.config.MinioConfig.MinioConfig;
 import com.soundmentor.soundmentorweb.mapper.FileMapper;
 import com.soundmentor.soundmentorweb.service.FileService;
 import com.soundmentor.soundmentorweb.service.IUserFileService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
+import io.minio.DownloadObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 
@@ -21,8 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 
 @Service
@@ -77,7 +81,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
         // 上传文件
         try(InputStream inputStream = file.getInputStream())
         {
-            String objectName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String objectName = System.currentTimeMillis() + "_" + md5 + fileTypeEnum.getSuffix();
             // 上传文件到 MinIO
             minioClient.putObject(
                     PutObjectArgs.builder()

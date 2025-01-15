@@ -1,8 +1,8 @@
-package com.soundmentor.soundmentorweb.common.factory.handler;
+package com.soundmentor.soundmentorweb.common.handler;
 
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
-import com.soundmentor.soundmentorweb.common.factory.factory.TaskHandlerFactory;
+import com.soundmentor.soundmentorweb.common.factory.TaskHandlerFactory;
 
 import javax.annotation.PostConstruct;
 

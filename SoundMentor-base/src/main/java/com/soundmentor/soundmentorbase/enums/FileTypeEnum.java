@@ -10,7 +10,6 @@ public enum FileTypeEnum {
     DOC(1,".doc", "doc"),
     DOCX(2,".docx", "doc"),
     PDF(3,".pdf", "doc"),
-    PPT(4,".ppt", "ppt"),
     PPTX(5,".pptx", "ppt"),
     PNG(6,".png", "img"),
     JPG(7,".jpg", "img"),

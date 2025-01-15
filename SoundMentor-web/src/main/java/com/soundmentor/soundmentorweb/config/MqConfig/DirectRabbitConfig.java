@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config.mqConfig;
+package com.soundmentor.soundmentorweb.config.MqConfig;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
