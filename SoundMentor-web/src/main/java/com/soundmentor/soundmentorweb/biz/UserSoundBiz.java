@@ -14,7 +14,7 @@ import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
 import com.soundmentor.soundmentorweb.common.MQ.Producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
-import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
+import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.config.properties.UserProperties;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;

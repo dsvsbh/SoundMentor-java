@@ -7,7 +7,7 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.FileDO;
 import com.soundmentor.soundmentorpojo.DO.UserFileDO;
 import com.soundmentor.soundmentorpojo.DTO.file.FileUploadResDTO;
-import com.soundmentor.soundmentorweb.config.MinioConfig.MinioConfig;
+import com.soundmentor.soundmentorweb.config.minioConfig.MinioConfig;
 import com.soundmentor.soundmentorweb.mapper.FileMapper;
 import com.soundmentor.soundmentorweb.service.FileService;
 import com.soundmentor.soundmentorweb.service.IUserFileService;
