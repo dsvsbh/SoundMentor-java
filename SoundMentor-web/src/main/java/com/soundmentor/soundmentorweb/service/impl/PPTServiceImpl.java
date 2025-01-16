@@ -90,17 +90,6 @@ public class PPTServiceImpl implements PPTService {
     @Transactional(rollbackFor = Exception.class)
     public void taskExec(Integer userPptId, Integer page,XSLFSlide slide)
     {
-        UserPptDetailDO userPptDetailDO = userPptDetailMapper.selectOne(new LambdaQueryWrapper<UserPptDetailDO>()
-                .eq(UserPptDetailDO::getUserPptId, userPptId)
-                .eq(UserPptDetailDO::getPptPage, page));
-        if(Objects.isNull(userPptDetailDO))
-        {
-            userPptDetailDO = new UserPptDetailDO();
-            userPptDetailDO.setUserPptId(userPptId);
-            userPptDetailDO.setPptPage(page);
-            userPptDetailDO.setCreateTime(LocalDateTime.now());
-            userPptDetailMapper.insert(userPptDetailDO);
-        }
         TaskDO taskDO = new TaskDO();
         PPTPageSummaryTaskDTO pptPageSummaryTaskDTO = new PPTPageSummaryTaskDTO();
         pptPageSummaryTaskDTO.setUserPptId(userPptId);
@@ -112,13 +101,27 @@ public class PPTServiceImpl implements PPTService {
         taskDO.setCreateTime(LocalDateTime.now());
         taskDO.setStatus(TaskStatusEnum.CREATED.getCode());
         taskMapper.insert(taskDO);
-        //todo mq发消息调python
-        /*
-        TaskMessageDTO<TaskDO> taskMessage = new TaskMessageDTO<>();
+        TaskMessageDTO<PPTPageSummaryTaskDTO> taskMessage = new TaskMessageDTO<>();
         taskMessage.setId(taskDO.getId());
+        taskMessage.setType(TaskTypeEnum.PPT_SUMMARY.getCode());
+        taskMessage.setStatus(TaskStatusEnum.CREATED.getCode());
+        taskMessage.setMessageBody(pptPageSummaryTaskDTO);
+        taskMessage.setCreateTime(LocalDateTime.now());
         mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_PPT_SUMMARY, DirectRabbitConfig.ROUTING_KEY_PPT_SUMMARY,taskMessage);
-         */
-        userPptDetailDO.setLastTaskId(taskDO.getId());
-        userPptDetailMapper.updateById(userPptDetailDO);
+        UserPptDetailDO userPptDetailDO = userPptDetailMapper.selectOne(new LambdaQueryWrapper<UserPptDetailDO>()
+                .eq(UserPptDetailDO::getUserPptId, userPptId)
+                .eq(UserPptDetailDO::getPptPage, page));
+        if(Objects.isNull(userPptDetailDO))
+        {
+            userPptDetailDO = new UserPptDetailDO();
+            userPptDetailDO.setUserPptId(userPptId);
+            userPptDetailDO.setPptPage(page);
+            userPptDetailDO.setCreateTime(LocalDateTime.now());
+            userPptDetailDO.setLastTaskId(taskDO.getId());
+            userPptDetailMapper.insert(userPptDetailDO);
+        } else {
+            userPptDetailDO.setLastTaskId(taskDO.getId());
+            userPptDetailMapper.updateById(userPptDetailDO);
+        }
     }
 }
