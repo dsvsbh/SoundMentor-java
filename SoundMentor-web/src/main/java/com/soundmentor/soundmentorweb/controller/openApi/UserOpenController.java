@@ -6,7 +6,7 @@ import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.ForgetPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UserLoginParamByPassword;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
-import com.soundmentor.soundmentorweb.common.MQ.Producer.MqProducer;
+import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.UserBiz;
 import org.springframework.web.bind.annotation.*;
 

@@ -10,6 +10,9 @@ import com.soundmentor.soundmentorpojo.DO.UserPptDetailDO;
 import com.soundmentor.soundmentorpojo.DO.UserPptRelDO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PPTPageSummaryTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreatePPTSummaryTaskParam;
+import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
+import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
+import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.mapper.UserPptDetailMapper;
 import com.soundmentor.soundmentorweb.mapper.UserPptRelMapper;
@@ -43,6 +46,8 @@ public class PPTServiceImpl implements PPTService {
     private  ThreadPoolExecutor threadPoolExecutor;
     @Autowired
     private TaskMapper taskMapper;
+    @Resource
+    private MqProducer mqProducer;
 
     @Override
     public Integer createPPTSummary(CreatePPTSummaryTaskParam param) {
@@ -82,7 +87,7 @@ public class PPTServiceImpl implements PPTService {
      * @param page 页码
      * @param slide ppt页对象
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void taskExec(Integer userPptId, Integer page,XSLFSlide slide)
     {
         UserPptDetailDO userPptDetailDO = userPptDetailMapper.selectOne(new LambdaQueryWrapper<UserPptDetailDO>()
@@ -108,6 +113,11 @@ public class PPTServiceImpl implements PPTService {
         taskDO.setStatus(TaskStatusEnum.CREATED.getCode());
         taskMapper.insert(taskDO);
         //todo mq发消息调python
+        /*
+        TaskMessageDTO<TaskDO> taskMessage = new TaskMessageDTO<>();
+        taskMessage.setId(taskDO.getId());
+        mqProducer.send(DirectRabbitConfig.EXCHANGE_NAME_PPT_SUMMARY, DirectRabbitConfig.ROUTING_KEY_PPT_SUMMARY,taskMessage);
+         */
         userPptDetailDO.setLastTaskId(taskDO.getId());
         userPptDetailMapper.updateById(userPptDetailDO);
     }

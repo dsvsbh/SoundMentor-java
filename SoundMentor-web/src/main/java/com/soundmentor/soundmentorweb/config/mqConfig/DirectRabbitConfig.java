@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.config.MqConfig;
+package com.soundmentor.soundmentorweb.config.mqConfig;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -15,10 +15,17 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class DirectRabbitConfig {
+    // 声音训练队列
     public static final String QUEUE_NAME_SOUND_TRAIN = "SoundTrainDirectQueue";
     public static final String EXCHANGE_NAME_SOUND_TRAIN = "SoundTrainDirectExchange";
     public static final String ROUTING_KEY_SOUND_TRAIN = "SoundTrainDirectRouting";
 
+    // PPT总结队列
+    public static final String QUEUE_NAME_PPT_SUMMARY = "PPTSummaryDirectQueue";
+    public static final String EXCHANGE_NAME_PPT_SUMMARY = "PPTSummaryDirectExchange";
+    public static final String ROUTING_KEY_PPT_SUMMARY = "PPTSummaryDirectRouting";
+
+    // 任务返回结果队列
     public static final String QUEUE_NAME_TASK_BACK = "TaskBack";
     public static final String EXCHANGE_NAME_TASK_BACK = "TaskBackDirectExchange";
     public static final String ROUTING_KEY_TASK_BACK = "TaskBackDirectRouting";
@@ -38,6 +45,16 @@ public class DirectRabbitConfig {
     }
 
     /**
+     * 创建PPT总结队列
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    public Queue PPTDirectQueue() {
+        return new Queue(QUEUE_NAME_PPT_SUMMARY,true);
+    }
+
+    /**
      * 创建任务返回结果队列
      * @PARAM:
      * @RETURN: @return
@@ -48,15 +65,24 @@ public class DirectRabbitConfig {
     }
 
     /**
-     * 创建Direct交换机
+     * 创声音训练Direct交换机
      * @PARAM:
      * @RETURN: @return
      **/
     @Bean
-    DirectExchange TestDirectExchange() {
+    DirectExchange SoundTrainDirectExchange() {
         return new DirectExchange(EXCHANGE_NAME_SOUND_TRAIN,true,false);
     }
 
+    /**
+     * 创建PPT总结交换机
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    DirectExchange PPTDirectExchange() {
+        return new DirectExchange(EXCHANGE_NAME_PPT_SUMMARY,true,false);
+    }
     /**
      * 创建任务返回结果交换机
      * @PARAM:
@@ -73,8 +99,18 @@ public class DirectRabbitConfig {
      * @RETURN: @return
      **/
     @Bean
-    Binding bindingDirect() {
-        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
+    Binding bindingDirectSoundTrain() {
+        return BindingBuilder.bind(TestDirectQueue()).to(SoundTrainDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
+    }
+
+    /**
+     * PPT总结绑定
+     * @PARAM:
+     * @RETURN: @return
+     **/
+    @Bean
+    Binding bindingDirectPPT() {
+        return BindingBuilder.bind(PPTDirectQueue()).to(SoundTrainDirectExchange()).with(ROUTING_KEY_PPT_SUMMARY);
     }
 
     /**

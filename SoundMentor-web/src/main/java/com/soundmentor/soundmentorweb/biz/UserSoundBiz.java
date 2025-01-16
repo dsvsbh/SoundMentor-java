@@ -12,9 +12,9 @@ import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
-import com.soundmentor.soundmentorweb.common.MQ.Producer.MqProducer;
+import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
-import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
+import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.config.properties.UserProperties;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
@@ -68,7 +68,7 @@ public class UserSoundBiz {
      * @PARAM: @param data
      * @RETURN: @return
      **/
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer addSound(String soundUrl) {
         AssertUtil.isTrue(canAddSound(), ResultCodeEnum.INTERNAL_ERROR.getCode(),"声音库数量已达到最大限制！");
         try{

@@ -54,7 +54,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private final UserMapper userMapper;
     private final OrganizationFileMapper ofMapper;
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer createOrganization(CreateOrganizationDTO dto) {
         Integer capacity = dto.getCapacity();
         if(Objects.isNull(capacity))
@@ -193,7 +193,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void removeOrganization(Integer organizationId) {
         OrganizationRole organizationRole = userInfoApi.getOrganizationRole(organizationId);
         if(!OrganizationRole.CREATOR.equals(organizationRole))

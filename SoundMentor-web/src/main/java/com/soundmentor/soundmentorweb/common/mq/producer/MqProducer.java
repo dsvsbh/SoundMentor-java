@@ -1,4 +1,4 @@
-package com.soundmentor.soundmentorweb.common.MQ.Producer;
+package com.soundmentor.soundmentorweb.common.mq.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;

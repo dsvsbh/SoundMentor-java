@@ -1,8 +1,8 @@
-package com.soundmentor.soundmentorweb.common.MQ.Consumer;
+package com.soundmentor.soundmentorweb.common.mq.consumer;
 
 import com.alibaba.fastjson.JSON;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
-import com.soundmentor.soundmentorweb.config.MqConfig.DirectRabbitConfig;
+import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.common.factory.TaskHandlerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
