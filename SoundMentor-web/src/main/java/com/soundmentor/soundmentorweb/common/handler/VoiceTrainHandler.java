@@ -38,7 +38,7 @@ public class VoiceTrainHandler implements TaskHandler{
         userSoundBiz.updateSound(userSoundRelDO);
         // 更新任务记录
         taskBiz.updateTask(taskMessage);
-        log.info("声音训练任务执行成功：{}", userSoundRelDO.toString());
+        log.info("声音训练任务执行结束：{}", userSoundRelDO.toString());
     }
 
     @Override
