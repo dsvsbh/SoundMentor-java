@@ -35,7 +35,7 @@ public class DirectRabbitConfig {
      * @RETURN: @return
      **/
     @Bean
-    public Queue TestDirectQueue() {
+    public Queue SoundTrainDirectQueue() {
         /*
          * durable:是否持久化,默认是false,持久化队列：会被存储在磁盘上，当消息代理重启时仍然存在，暂存队列：当前连接有效
          * exclusive:是否独占,默认是false,只能被当前创建的连接使用，而且当连接关闭后队列即被删除。
@@ -100,7 +100,7 @@ public class DirectRabbitConfig {
      **/
     @Bean
     Binding bindingDirectSoundTrain() {
-        return BindingBuilder.bind(TestDirectQueue()).to(SoundTrainDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
+        return BindingBuilder.bind(SoundTrainDirectQueue()).to(SoundTrainDirectExchange()).with(ROUTING_KEY_SOUND_TRAIN);
     }
 
     /**
@@ -110,7 +110,7 @@ public class DirectRabbitConfig {
      **/
     @Bean
     Binding bindingDirectPPT() {
-        return BindingBuilder.bind(PPTDirectQueue()).to(SoundTrainDirectExchange()).with(ROUTING_KEY_PPT_SUMMARY);
+        return BindingBuilder.bind(PPTDirectQueue()).to(PPTDirectExchange()).with(ROUTING_KEY_PPT_SUMMARY);
     }
 
     /**
