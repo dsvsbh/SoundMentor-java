@@ -3,18 +3,16 @@ package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.basic.IdParam;
+import com.soundmentor.soundmentorpojo.DTO.ppt.PPTTaskResultDTO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorweb.biz.TaskBiz;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -47,9 +45,34 @@ public class TaskController {
      * @PARAM: @param param
      * @RETURN: @return
      **/
-    @PostMapping(GET_TASK_BY_ID)
-    public ResponseDTO<TaskMessageDTO<String>> getTaskById(@Valid @RequestBody IdParam param)
+    @GetMapping(GET_TASK_BY_ID+"/{taskId}")
+    public ResponseDTO<TaskMessageDTO<String>> getTaskById(@PathVariable Integer taskId)
     {
-        return ResponseDTO.OK(taskBiz.getTaskById(param.getId()));
+        return ResponseDTO.OK(taskBiz.getTaskById(taskId));
     }
+
+    /**
+     *  ppt任务轮询结果接口
+     * @param userPptId
+     * @return
+     */
+    @GetMapping("/getPptTask/{userPptId}")
+    public ResponseDTO<List<PPTTaskResultDTO>> getPptTask(@PathVariable Integer userPptId)
+    {
+        return ResponseDTO.OK(taskBiz.getPptTask(userPptId));
+    }
+
+    /**
+     * 用户编辑ppt任务的结果(讲解，音频)
+     * @param list
+     * @return
+     */
+    @PutMapping("/updatePPTResult")
+    public ResponseDTO updatePPTResult(@RequestBody List<PPTTaskResultDTO> list)
+    {
+        taskBiz.updatePPTResult(list);
+        return ResponseDTO.OK();
+    }
+
+
 }
