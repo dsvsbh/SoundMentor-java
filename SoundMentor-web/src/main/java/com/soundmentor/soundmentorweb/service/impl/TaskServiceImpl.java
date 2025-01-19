@@ -17,5 +17,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, TaskDO> implements ITaskService {
-
 }

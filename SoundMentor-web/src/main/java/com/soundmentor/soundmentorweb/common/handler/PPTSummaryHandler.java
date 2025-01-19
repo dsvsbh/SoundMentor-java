@@ -12,12 +12,15 @@ import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.mapper.UserPptDetailMapper;
 import com.soundmentor.soundmentorweb.service.PPTService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 
 @Component
+@Slf4j
 public class PPTSummaryHandler implements TaskHandler{
     @Resource
     private PPTService pptService;
@@ -31,8 +34,16 @@ public class PPTSummaryHandler implements TaskHandler{
     }
 
     @Override
-    public void handleTimeoutTask(Integer taskId) {
-
+    public void handleTimeoutTask(TaskDO task) {
+        if(task.getStatus().equals(TaskStatusEnum.CREATED.getCode())||task.getStatus().equals(TaskStatusEnum.RUNNING.getCode()))
+        {
+            log.info("PPT页生成讲解任务超时{}", task.getId());
+            task.setStatus(TaskStatusEnum.FAIL.getCode());
+            HashMap<String, String> result = new HashMap<>();
+            result.put("failReason", "PPT页生成讲解任务超时");
+            task.setResult(JSON.toJSONString(result));
+            taskMapper.updateById(task);
+        }
     }
 
     @Override
@@ -54,6 +65,11 @@ public class PPTSummaryHandler implements TaskHandler{
     public Integer createTask(CreateTaskParam createTaskParam) {
         CreatePPTSummaryTaskParam param = (CreatePPTSummaryTaskParam) createTaskParam;
         return pptService.createPPTSummary(param);
+    }
+
+    @Override
+    public Integer timeLimit() {
+        return 5*60*1000;
     }
 
 

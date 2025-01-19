@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.common.handler;
 
+import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorweb.common.factory.TaskHandlerFactory;
@@ -24,9 +25,9 @@ public interface TaskHandler {
 
     /**
      * 处理超时任务
-     * @param taskId
+     * @param task
      */
-    void handleTimeoutTask(Integer taskId);
+    void handleTimeoutTask(TaskDO task);
 
     /**
      * 任务完成
@@ -39,4 +40,10 @@ public interface TaskHandler {
      * @return
      */
     Integer createTask(CreateTaskParam param);
+
+    /**
+     * 任务执行的时间限制(ms)
+     * @return
+     */
+    Integer timeLimit();
 }

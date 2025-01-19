@@ -1,6 +1,7 @@
 package com.soundmentor.soundmentorweb.common.handler;
 
 import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
+import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ public class PPTSummaryVoiceHandler implements TaskHandler{
     }
 
     @Override
-    public void handleTimeoutTask(Integer taskId) {
+    public void handleTimeoutTask(TaskDO task) {
 
     }
 
@@ -24,6 +25,11 @@ public class PPTSummaryVoiceHandler implements TaskHandler{
 
     @Override
     public Integer createTask(CreateTaskParam createTaskParam) {
+        return 0;
+    }
+
+    @Override
+    public Integer timeLimit() {
         return 0;
     }
 

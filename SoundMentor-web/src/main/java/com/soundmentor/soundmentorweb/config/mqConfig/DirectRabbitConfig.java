@@ -1,11 +1,11 @@
 package com.soundmentor.soundmentorweb.config.mqConfig;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.concurrent.DelayQueue;
 
 /**
  * 直连交换机，一对一
@@ -29,6 +29,11 @@ public class DirectRabbitConfig {
     public static final String QUEUE_NAME_TASK_BACK = "TaskBack";
     public static final String EXCHANGE_NAME_TASK_BACK = "TaskBackDirectExchange";
     public static final String ROUTING_KEY_TASK_BACK = "TaskBackDirectRouting";
+
+    //延时队列
+    public static final String QUEUE_NAME_DELAY = "delayQueue";
+    public static final String EXCHANGE_NAME_DELAY = "delayExchange";
+    public static final String ROUTING_KEY_DELAY = "delayRouting";
     /**
      * 创建队列
      * @PARAM:
@@ -65,6 +70,15 @@ public class DirectRabbitConfig {
     }
 
     /**
+     * 延时队列
+     * @return
+     */
+    @Bean
+    public Queue delayQueue() {
+        return new Queue(QUEUE_NAME_DELAY,true);
+    }
+
+    /**
      * 创声音训练Direct交换机
      * @PARAM:
      * @RETURN: @return
@@ -91,6 +105,17 @@ public class DirectRabbitConfig {
     @Bean
     DirectExchange TaskBackExchange() {
         return new DirectExchange(EXCHANGE_NAME_TASK_BACK,true,false);
+    }
+
+    /**
+     * 延时交换机
+     * @return
+     */
+    @Bean
+    CustomExchange delayExchange() {
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("x-delayed-type", "direct");
+        return new CustomExchange(EXCHANGE_NAME_DELAY,"x-delayed-message",true,false,args);
     }
 
     /**
@@ -121,6 +146,14 @@ public class DirectRabbitConfig {
     @Bean
     Binding bindingDirectBack() {
         return BindingBuilder.bind(TaskBackQueue()).to(TaskBackExchange()).with(ROUTING_KEY_TASK_BACK);
+    }
+    /**
+     * 延时绑定
+     * @return
+     */
+    @Bean
+    Binding bindingDirectDelay() {
+        return BindingBuilder.bind(delayQueue()).to(delayExchange()).with(ROUTING_KEY_DELAY).noargs();
     }
 
     @Bean
