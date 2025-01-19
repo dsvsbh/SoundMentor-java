@@ -2,13 +2,17 @@ package com.soundmentor.soundmentorweb.service.impl;
 
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.soundmentor.soundmentorbase.enums.SoundLibEnum;
+import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorweb.mapper.UserSoundRelMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -82,5 +86,26 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
         return this.getOne(Wrappers.<UserSoundRelDO> lambdaQuery()
                 .eq(UserSoundRelDO::getSoundUrl, soundUrl)
                 .eq(UserSoundRelDO::getUserId, id));
+    }
+
+    /**
+     * 获取用户训练声音
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    @Override
+    public List<UserSoundLibDTO> getUserTrainSoundLib(Integer id) {
+        List<UserSoundRelDO> soundList = this.list(Wrappers.<UserSoundRelDO> lambdaQuery()
+                        .eq(UserSoundRelDO::getUserId, id)
+                        .eq(UserSoundRelDO::getStatus, TaskStatusEnum.SUCCESS.getCode()));
+
+        return soundList.stream().map(sound -> {
+            UserSoundLibDTO userSoundLibDTO = new UserSoundLibDTO();
+            userSoundLibDTO.setCode(SoundLibEnum.USER_TRAIN.getCode());
+            userSoundLibDTO.setName(sound.getSoundName());
+            userSoundLibDTO.setSoundUrl(sound.getSoundUrl());
+            userSoundLibDTO.setParamName(sound.getSoundName());
+            return userSoundLibDTO;
+        }).collect(Collectors.toList());
     }
 }

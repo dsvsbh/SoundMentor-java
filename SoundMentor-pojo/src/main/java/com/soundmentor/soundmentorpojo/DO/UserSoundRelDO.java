@@ -45,6 +45,12 @@ public class UserSoundRelDO implements Serializable {
     private String soundUrl;
 
     /**
+     * 声音名称
+     **/
+    @TableField("sound_name")
+    private String soundName;
+
+    /**
      * 标识声音相关训练是否完成，默认值为假（未完成）
      */
     @TableField("status")

@@ -3,6 +3,7 @@ package com.soundmentor.soundmentorweb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 
 import java.util.List;
 
@@ -58,4 +59,11 @@ public interface IUserSoundRelService extends IService<UserSoundRelDO> {
      * @RETURN: @return <p>
      **/
     UserSoundRelDO getByPath(Integer id, String soundUrl);
+
+    /**
+     * 获取用户自定义训练声音
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    List<UserSoundLibDTO> getUserTrainSoundLib(Integer id);
 }

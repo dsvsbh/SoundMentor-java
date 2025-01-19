@@ -6,8 +6,13 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 用户训练声音查询
+ * @Author: Make
+ * @DATE: 2025/01/19
+ **/
 @Data
-public class UserSoundRelDTO implements Serializable {
+public class UserTrainSoundDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +31,10 @@ public class UserSoundRelDTO implements Serializable {
      */
     private String soundUrl;
 
+    /**
+     * 声音名称
+     **/
+    private String soundName;
     /**
      * 标识声音相关训练是否完成，默认值为0（未完成）
      */

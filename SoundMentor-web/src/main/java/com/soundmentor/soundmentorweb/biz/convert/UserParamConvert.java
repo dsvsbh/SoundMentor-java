@@ -4,12 +4,9 @@ import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.AddUserParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserInfoParam;
-import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
-import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 /**
@@ -22,5 +19,5 @@ public interface UserParamConvert {
     UserDO convert(AddUserParam param);
     UserDTO convert(UserDO userDO);
     UserDO convert(UpdateUserInfoParam param);
-    UserSoundRelDTO convert(UserSoundRelDO param);
+    UserTrainSoundDTO convert(UserSoundRelDO param);
 }

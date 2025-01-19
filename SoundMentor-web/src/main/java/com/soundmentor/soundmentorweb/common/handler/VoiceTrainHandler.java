@@ -44,6 +44,6 @@ public class VoiceTrainHandler implements TaskHandler{
     @Override
     public Integer createTask(CreateTaskParam createTaskParam) {
         CreateVoiceTrainParam param = (CreateVoiceTrainParam) createTaskParam;
-        return userSoundBiz.addSound(param.getSoundPath());
+        return userSoundBiz.addSound(param);
     }
 }

@@ -4,13 +4,11 @@ import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.basic.IdListParam;
 import com.soundmentor.soundmentorpojo.DTO.basic.IdParam;
-import com.soundmentor.soundmentorpojo.DTO.basic.StringParam;
-import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.biz.UserSoundBiz;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -29,11 +27,12 @@ public class SoundLibController {
     private static final String GET_SOUND = "getSound";
     private static final String DEL_SOUND_LIST = "delSoundList";
     private static final String GET_SOUND_LIST = "getSoundLIST";
+    private static final String GET_SOUND_LIB = "getSoundLib";
 
     @Resource
     private UserSoundBiz userSoundBiz;
     /**
-     * 是否能添加声音
+     * 是否能添加训练声音
      * @PARAM:
      * @RETURN: @return
      **/
@@ -42,29 +41,20 @@ public class SoundLibController {
         return ResponseDTO.OK(userSoundBiz.canAddSound());
     }
 
-///    /**
-///    * 往声音样本库中添加声音,训练声音
-///     * @PARAM:
-///     * @RETURN: @return
-///     **/
-///    @PostMapping(ADD_SOUND)
-///    public ResponseDTO<Integer> addSound(@Valid @RequestBody StringParam param){
-///        return ResponseDTO.OK(userSoundBiz.addSound(param.getData()));
-///    }
 
     /**
-     * 获取声音样本库声音
+     * 获取声音样本库训练声音
      * @PARAM:
      * @RETURN: @return
      **/
     @PostMapping(GET_SOUND)
-    public ResponseDTO<UserSoundRelDTO> getSound(@Valid @RequestBody IdParam param){
+    public ResponseDTO<UserTrainSoundDTO> getSound(@Valid @RequestBody IdParam param){
         return ResponseDTO.OK(userSoundBiz.getSound(param.getId()));
 
     }
 
     /**
-     * 删除声音样本库声音
+     * 删除声音样本库训练声音
      * @PARAM:
      * @RETURN: @return
      **/
@@ -75,13 +65,23 @@ public class SoundLibController {
     }
 
     /**
-     * 获取声音样本库声音列表
+     * 获取声音样本库训练声音列表
      * @PARAM:
      * @RETURN: @return
      **/
     @PostMapping(GET_SOUND_LIST)
-    public ResponseDTO<List<UserSoundRelDTO>> getSoundList(){
+    public ResponseDTO<List<UserTrainSoundDTO>> getSoundList(){
         return ResponseDTO.OK(userSoundBiz.getSoundList());
+    }
+
+    /**
+     * 获取声音样本库
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    @GetMapping(GET_SOUND_LIB)
+    public ResponseDTO<List<UserSoundLibDTO>> getSoundLib(@Valid @RequestBody UserSoundLibQueryParam param){
+        return ResponseDTO.OK(userSoundBiz.getSoundLib(param.getType()));
     }
 
 }

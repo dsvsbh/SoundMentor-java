@@ -1,17 +1,16 @@
 package com.soundmentor.soundmentorweb.biz;
 
 import com.alibaba.fastjson.JSON;
-import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
-import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
-import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
-import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
+import com.soundmentor.soundmentorbase.enums.*;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.task.CreateVoiceTrainParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
-import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundRelDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,7 @@ public class UserSoundBiz {
     @Resource
     private TaskMapper taskMapper;
     /**
-     * 是否能继续添加声音到声音样本库
+     * 是否能继续添加训练声音到声音样本库
      * @PARAM:
      * @RETURN: @return
      **/
@@ -64,13 +64,17 @@ public class UserSoundBiz {
     }
 
     /**
-     * 添加声音进行训练
+     * 添加训练声音进行训练
      * @PARAM: @param data
      * @RETURN: @return
      **/
     @Transactional(rollbackFor = Exception.class)
-    public Integer addSound(String soundUrl) {
+    public Integer addSound(CreateVoiceTrainParam param) {
         AssertUtil.isTrue(canAddSound(), ResultCodeEnum.INTERNAL_ERROR.getCode(),"声音库数量已达到最大限制！");
+        String soundUrl = param.getSoundPath();
+        AssertUtil.hasLength(soundUrl,ResultCodeEnum.INVALID_PARAM.getCode(),"声音文件路径不能为空");
+        String soundName = param.getSoundName();
+        AssertUtil.hasLength(soundName,ResultCodeEnum.INVALID_PARAM.getCode(),"声音名称不能为空");
         try{
             if(!FileTypeEnum.MP3.getSuffix().equals(soundUrl.substring(soundUrl.lastIndexOf("."))))
             {
@@ -87,6 +91,7 @@ public class UserSoundBiz {
             userSoundRelDO.setUserId(userInfoApi.getUser().getId());
             userSoundRelDO.setCreateTime(LocalDateTime.now());
             userSoundRelDO.setStatus(TaskStatusEnum.CREATED.getCode());
+            userSoundRelDO.setSoundName(soundName);
             userSoundRelService.addSound(userSoundRelDO);
         }
         TaskDO taskDO = new TaskDO();
@@ -109,21 +114,21 @@ public class UserSoundBiz {
     }
 
     /**
-     * 获取声音
+     * 获取训练声音
      * @PARAM: @param id
      * @RETURN: @return
      **/
-    public UserSoundRelDTO getSound(Integer id) {
+    public UserTrainSoundDTO getSound(Integer id) {
         UserSoundRelDO userSoundRelDO = userSoundRelService.getById(id);
         AssertUtil.notNull(userSoundRelDO, ResultCodeEnum.DATA_NOT_FUND.getCode(),"声音不存在");
         AssertUtil.isTrue(userSoundRelDO.getUserId().equals(userInfoApi.getUser().getId()),
                 ResultCodeEnum.DATA_DENIED.getCode(),"您无数据权限");
-        UserSoundRelDTO res = userParamConvert.convert(userSoundRelDO);
+        UserTrainSoundDTO res = userParamConvert.convert(userSoundRelDO);
         return res;
     }
 
     /**
-     * 删除声音
+     * 删除训练声音
      * @PARAM:
      * @RETURN: @return
      **/
@@ -137,22 +142,49 @@ public class UserSoundBiz {
     }
 
     /**
-     * 获取用户声音列表
+     * 获取用户训练声音列表
      * @PARAM:
      * @RETURN: @return
      **/
-    public List<UserSoundRelDTO> getSoundList() {
+    public List<UserTrainSoundDTO> getSoundList() {
         List<UserSoundRelDO> soundList = userSoundRelService.getSoundByUserId(userInfoApi.getUser().getId());
         AssertUtil.ifNull(soundList, ResultCodeEnum.DATA_NOT_FUND.getCode(),"声音不存在");
         return soundList.stream().map(userParamConvert::convert).collect(Collectors.toList());
     }
 
     /**
-     * 更新声音
+     * 更新训练声音
      * @PARAM: @param updateDO
      * @RETURN: @return
      **/
     public Boolean updateSound(UserSoundRelDO updateDO){
         return userSoundRelService.updateSound(updateDO);
+    }
+
+    /**
+     * 获取用户声音样本库
+     * @PARAM: @param type
+     * @RETURN: @return
+     **/
+    public List<UserSoundLibDTO> getSoundLib(Integer type) {
+        List<UserSoundLibDTO> res = new ArrayList<>();
+        if(type == 0 || type == 2){
+            SoundLibEnum.MAP.values().forEach(item -> {
+                if(item != SoundLibEnum.USER_TRAIN){
+                    UserSoundLibDTO userSoundLibDTO = new UserSoundLibDTO();
+                    userSoundLibDTO.setCode(item.getCode());
+                    userSoundLibDTO.setName(item.getName());
+                    userSoundLibDTO.setParamName(item.getParamName());
+                    userSoundLibDTO.setSoundUrl(item.getSoundUrl());
+                    res.add(userSoundLibDTO);
+                }
+            });
+        }
+        if(type == 1 || type == 2){
+            UserDO userDO = userInfoApi.getUser();
+            List<UserSoundLibDTO> userTrainSound = userSoundRelService.getUserTrainSoundLib(userDO.getId());
+            res.addAll(userTrainSound);
+        }
+        return res;
     }
 }
