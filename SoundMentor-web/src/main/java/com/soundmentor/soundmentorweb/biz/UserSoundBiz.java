@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -185,6 +186,8 @@ public class UserSoundBiz {
             List<UserSoundLibDTO> userTrainSound = userSoundRelService.getUserTrainSoundLib(userDO.getId());
             res.addAll(userTrainSound);
         }
+        // 自定义比较器，将code转为Integer然后排序
+        res.sort(Comparator.comparing(item -> Integer.parseInt(item.getCode())));
         return res;
     }
 }
