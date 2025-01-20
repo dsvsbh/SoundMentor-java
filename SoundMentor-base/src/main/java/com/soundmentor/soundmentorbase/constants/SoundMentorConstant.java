@@ -9,6 +9,10 @@ public final class SoundMentorConstant {
     private SoundMentorConstant(){}
 
     /**
+     * minio mp3前缀
+     **/
+    public static final String MINIO_MP3_PREFIX = "http://121.43.62.36:9090/mp3/";
+    /**
      * 验证码redis key
      **/
     public static final String REDIS_EAMIL_VERIFY_KEY = "email:verify:{}";
