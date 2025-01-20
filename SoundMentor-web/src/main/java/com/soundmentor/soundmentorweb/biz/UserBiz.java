@@ -1,16 +1,24 @@
 package com.soundmentor.soundmentorweb.biz;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AESUtil;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorbase.utils.JwtUtil;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileReqDTO;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.*;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
 import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
+import com.soundmentor.soundmentorweb.mapper.FileMapper;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import com.soundmentor.soundmentorweb.service.impl.MailService;
 import com.soundmentor.soundmentorweb.service.impl.UserServiceImpl;
@@ -21,6 +29,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * 用户相关业务逻辑
@@ -40,6 +49,8 @@ public class UserBiz {
     private UserInfoApi userInfoApi;
     @Resource
     private MailService mailService;
+    @Resource
+    private FileMapper fileMapper;
 
     /**
      * 新增用户
@@ -188,5 +199,26 @@ public class UserBiz {
         AssertUtil.isTrue(password.equals(userDO.getPassword()), ResultCodeEnum.INVALID_PARAM.getCode(),"旧密码错误");
         String newPassword = AESUtil.encrypt(param.getNewPassword(), SoundMentorConstant.AES_KEY);
         return userService.updatePassword(userDO.getEmail(), newPassword);
+    }
+
+    public PageResult<UserFileResDTO> userFiles(UserFileReqDTO dto) {
+        Page<UserFileResDTO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        UserFileQueryParam userFileQueryParam = new UserFileQueryParam();
+        userFileQueryParam.setUserId(userInfoApi.getUser().getId());
+        if(dto.getFileTypes()==null)
+        {
+            userFileQueryParam.setFileTypes(null);
+        } else {
+            userFileQueryParam.setFileTypes(dto.getFileTypes().stream().map(FileTypeEnum::getCode).collect(Collectors.toList()));
+        }
+        userFileQueryParam.setFileName(dto.getFileName());
+        IPage<UserFileResDTO> pageResult = fileMapper.selectUserFiles(page,userFileQueryParam);
+        PageResult<UserFileResDTO> result = new PageResult<>();
+        result.setPageNum(pageResult.getCurrent());
+        result.setPageSize(pageResult.getSize());
+        result.setTotal(pageResult.getTotal());
+        result.setPages(pageResult.getPages());
+        result.setRecords(pageResult.getRecords());
+        return result;
     }
 }

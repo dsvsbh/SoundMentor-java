@@ -1,7 +1,15 @@
 package com.soundmentor.soundmentorweb.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorpojo.DO.FileDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileReqDTO;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
+import org.apache.ibatis.annotations.Param;
+
 
 /**
  * <p>
@@ -13,4 +21,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface FileMapper extends BaseMapper<FileDO> {
 
+    IPage<UserFileResDTO> selectUserFiles(IPage<UserFileResDTO> page,@Param(Constants.WRAPPER) UserFileQueryParam param);
 }

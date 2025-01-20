@@ -1,6 +1,9 @@
 package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileReqDTO;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserInfoParam;
 import com.soundmentor.soundmentorpojo.DTO.user.req.UpdateUserPasswordParam;
 import com.soundmentor.soundmentorpojo.DTO.user.res.UserDTO;
@@ -64,4 +67,13 @@ public class UserController {
         return ResponseDTO.OK(userBiz.updateUser(param));
     }
 
+    /**
+     * 用户文件列表（条件动态分页）
+     * @param dto
+     * @return
+     */
+    @PostMapping("/files")
+    public ResponseDTO<PageResult<UserFileResDTO>> userFiles(@RequestBody @Valid UserFileReqDTO dto){
+        return ResponseDTO.OK(userBiz.userFiles(dto));
+    }
 }

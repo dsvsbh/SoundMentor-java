@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
+import com.soundmentor.soundmentorpojo.DTO.file.ShareFileDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 import com.soundmentor.soundmentorweb.common.aop.annotation.RepeatSubmit;
@@ -108,4 +109,17 @@ public class OrganizationController {
         organizationService.removeOrganization(organizationId);
         return ResponseDTO.OK();
     }
+
+    /**
+     * 分享用户文件到组织
+     * @param dto
+     * @return
+     */
+    @PostMapping("/shareFile")
+    public ResponseDTO shareFile(@RequestBody @Valid ShareFileDTO dto)
+    {
+        organizationService.shareFile(dto);
+        return ResponseDTO.OK();
+    }
+
 }

@@ -2,13 +2,16 @@ package com.soundmentor.soundmentorweb.service.impl;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.map.MapUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
+import com.soundmentor.soundmentorpojo.DO.OrganizationFileDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
+import com.soundmentor.soundmentorpojo.DTO.file.ShareFileDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
 
@@ -205,6 +208,31 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 .remove();
         ofMapper.deleteByMap(MapUtil.of("organization_id",organizationId));
         this.removeById(organizationId);
+    }
+
+    @Override
+    public void shareFile(ShareFileDTO dto) {
+        OrganizationRole organizationRole = userInfoApi.getOrganizationRole(dto.getOrganizationId());
+        if(Objects.isNull(organizationRole))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织成员");
+        }
+        if(organizationRole.equals(OrganizationRole.USER))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您的权限不够");
+        }
+        OrganizationFileDO organizationFileDO = ofMapper.selectOne(new LambdaQueryWrapper<OrganizationFileDO>()
+                .eq(OrganizationFileDO::getOrganizationId, dto.getOrganizationId())
+                .eq(OrganizationFileDO::getFileId, dto.getFileId()));
+        if(Objects.nonNull(organizationFileDO))
+        {
+            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"该文件已分享到该组织");
+        }
+        organizationFileDO =  new OrganizationFileDO();
+        organizationFileDO.setOrganizationId(dto.getOrganizationId());
+        organizationFileDO.setFileId(dto.getFileId());
+        organizationFileDO.setCreateTime(LocalDateTime.now());
+        ofMapper.insert(organizationFileDO);
     }
 
     /**

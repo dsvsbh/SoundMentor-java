@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soundmentor.soundmentorweb.mapper.FileMapper">
 
+    <select id="selectUserFiles" resultType="com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO">
+        select f.id as fileId,f.origin_name as fileName,f.file_size as fileSize,f.path as filePath,f.file_type as fileType,uf.create_time as createTime
+        from user_file uf,file f
+        <where>
+            uf.file_id=f.id and uf.user_id=#{ew.userId}
+        <if test="ew.fileTypes!=null">
+            and f.file_type in
+        <foreach collection="ew.fileTypes" item="fileType" open="(" close=")" separator=",">
+                        #{fileType}
+         </foreach>
+        </if>
+        <if test="ew.fileName!=null">
+            and f.origin_name like concat('%',#{ew.fileName},'%')
+        </if>
+        </where>
+        order by uf.create_time desc
+    </select>
 </mapper>
