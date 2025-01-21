@@ -57,6 +57,24 @@ public class UserSoundRelDO implements Serializable {
     private Integer status;
 
     /**
+     *  类型：0 代表自定义训练，1 代表预设声音
+     **/
+    @TableField("type")
+    private Integer type;
+
+    /**
+     * 使用此声音的参数名
+     **/
+    @TableField("api_param")
+    private String apiParam;
+
+    /**
+     * 声音描述
+     **/
+    @TableField("description")
+    private String description;
+
+    /**
      * 记录这行数据的创建时间，默认是当前系统时间
      */
     @TableField("create_time")

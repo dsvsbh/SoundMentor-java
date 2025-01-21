@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE `file` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `path` (`path`),
   UNIQUE KEY `md5` (`md5`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `file` (
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (1,'01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf','http://121.43.62.36:9000/doc/1736660981975_01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf',509863,3,'2025-01-12 13:49:43','af7e83ed32e798b8ff73924e4479f149'),(2,'test.mp3','http://121.43.62.36:9000/mp3/1736845832691_test.mp3',201086,0,'2025-01-14 09:10:33','8176cebc4a669345b65a0df11e4e047f'),(3,'【格木】2024年7月-时政热点.pdf','http://121.43.62.36:9000/doc/1736910538281_【格木】2024年7月-时政热点.pdf',957718,3,'2025-01-15 03:08:58','86888f283f6bddb71ed72479b40e6509'),(4,'stu_sys.png','http://121.43.62.36:9000/img/1736910945086_stu_sys.png',108130,6,'2025-01-15 03:15:45','c939ac71744d0c7276ba1c3b52661bad'),(5,'3.1-3.4 CPU调度.ppt','http://121.43.62.36:9000/ppt/1736915581401_3.1-3.4 CPU调度.ppt',994816,4,'2025-01-15 12:33:02','b30d47d83922e28e393dee7339427d5e'),(6,'4.0 gcc分步编译.ppt','http://121.43.62.36:9000/ppt/1736917259815_ac95fd37eddb3be72828ceaadfe6bd9f',346112,4,'2025-01-15 13:01:00','ac95fd37eddb3be72828ceaadfe6bd9f'),(7,'4.1-4.3 连续分配存储管理.ppt','http://121.43.62.36:9000/ppt/1736917503920_c27cd9ee60e849615102224e0426d275.ppt',1835520,4,'2025-01-15 13:05:05','c27cd9ee60e849615102224e0426d275'),(8,'5.1 虚拟存储器.pptx','http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',1140067,5,'2025-01-15 14:47:06','5e5bd4d73cbd451c0cfd346dc96a5d9b'),(9,'R-C.jpg','http://121.43.62.36:9000/img/1737271893796_b4c0c917082a47f5cd0a2342607603d8.jpg',120744,7,'2025-01-19 07:31:34','b4c0c917082a47f5cd0a2342607603d8'),(10,'voice.png','http://121.43.62.36:9000/img/1737363230908_f4e04c3f5fe59d8662f5787cd3f047fa.png',2566,6,'2025-01-20 08:53:51','f4e04c3f5fe59d8662f5787cd3f047fa'),(11,'test.pptx','http://121.43.62.36:9000/ppt/1737363754214_d41d8cd98f00b204e9800998ecf8427e.pptx',0,5,'2025-01-20 09:02:34','d41d8cd98f00b204e9800998ecf8427e');
+INSERT INTO `file` VALUES (1,'01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf','http://121.43.62.36:9000/doc/1736660981975_01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf',509863,3,'2025-01-12 13:49:43','af7e83ed32e798b8ff73924e4479f149'),(2,'test.mp3','http://121.43.62.36:9000/mp3/1736845832691_test.mp3',201086,0,'2025-01-14 09:10:33','8176cebc4a669345b65a0df11e4e047f'),(3,'【格木】2024年7月-时政热点.pdf','http://121.43.62.36:9000/doc/1736910538281_【格木】2024年7月-时政热点.pdf',957718,3,'2025-01-15 03:08:58','86888f283f6bddb71ed72479b40e6509'),(4,'stu_sys.png','http://121.43.62.36:9000/img/1736910945086_stu_sys.png',108130,6,'2025-01-15 03:15:45','c939ac71744d0c7276ba1c3b52661bad'),(5,'3.1-3.4 CPU调度.ppt','http://121.43.62.36:9000/ppt/1736915581401_3.1-3.4 CPU调度.ppt',994816,4,'2025-01-15 12:33:02','b30d47d83922e28e393dee7339427d5e'),(6,'4.0 gcc分步编译.ppt','http://121.43.62.36:9000/ppt/1736917259815_ac95fd37eddb3be72828ceaadfe6bd9f',346112,4,'2025-01-15 13:01:00','ac95fd37eddb3be72828ceaadfe6bd9f'),(7,'4.1-4.3 连续分配存储管理.ppt','http://121.43.62.36:9000/ppt/1736917503920_c27cd9ee60e849615102224e0426d275.ppt',1835520,4,'2025-01-15 13:05:05','c27cd9ee60e849615102224e0426d275'),(8,'5.1 虚拟存储器.pptx','http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',1140067,5,'2025-01-15 14:47:06','5e5bd4d73cbd451c0cfd346dc96a5d9b'),(9,'R-C.jpg','http://121.43.62.36:9000/img/1737271893796_b4c0c917082a47f5cd0a2342607603d8.jpg',120744,7,'2025-01-19 07:31:34','b4c0c917082a47f5cd0a2342607603d8'),(10,'voice.png','http://121.43.62.36:9000/img/1737363230908_f4e04c3f5fe59d8662f5787cd3f047fa.png',2566,6,'2025-01-20 08:53:51','f4e04c3f5fe59d8662f5787cd3f047fa'),(11,'test.pptx','http://121.43.62.36:9000/ppt/1737363754214_d41d8cd98f00b204e9800998ecf8427e.pptx',0,5,'2025-01-20 09:02:34','d41d8cd98f00b204e9800998ecf8427e'),(12,'test.pptx','http://121.43.62.36:9000/ppt/1737443741216_3b8d9774206e88a853a320246fdd91c4.pptx',35831,5,'2025-01-21 07:15:41','3b8d9774206e88a853a320246fdd91c4');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,6 +86,8 @@ CREATE TABLE `organization_file` (
   `organization_id` int NOT NULL COMMENT '组织ID',
   `file_id` int NOT NULL COMMENT '文件ID，关联文件表',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
+  `sharer_id` int NOT NULL COMMENT '分享者id',
+  `download_count` int DEFAULT NULL COMMENT '组织文件下载次数',
   PRIMARY KEY (`id`),
   KEY `idx_organization_id` (`organization_id`),
   KEY `idx_file_id` (`file_id`)
@@ -98,7 +100,7 @@ CREATE TABLE `organization_file` (
 
 LOCK TABLES `organization_file` WRITE;
 /*!40000 ALTER TABLE `organization_file` DISABLE KEYS */;
-INSERT INTO `organization_file` VALUES (1,20,10,'2025-01-20 22:11:23');
+INSERT INTO `organization_file` VALUES (1,20,10,'2025-01-20 22:11:23',2,NULL);
 /*!40000 ALTER TABLE `organization_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,6 +199,30 @@ INSERT INTO `user` VALUES (1,'','1939729609@qq.com','46236141025','','k+glZME5LB
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_favorite`
+--
+
+DROP TABLE IF EXISTS `user_favorite`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_favorite` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键，自增长的唯一标识符',
+  `favorite_id` int NOT NULL COMMENT '收藏对象的唯一标识符，不能为空',
+  `create_time` timestamp NULL DEFAULT (now()) COMMENT '记录该收藏记录的创建时间，默认是当前系统时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户收藏信息的表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_favorite`
+--
+
+LOCK TABLES `user_favorite` WRITE;
+/*!40000 ALTER TABLE `user_favorite` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_favorite` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_file`
 --
 
@@ -211,7 +237,7 @@ CREATE TABLE `user_file` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_file_id` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +246,7 @@ CREATE TABLE `user_file` (
 
 LOCK TABLES `user_file` WRITE;
 /*!40000 ALTER TABLE `user_file` DISABLE KEYS */;
-INSERT INTO `user_file` VALUES (1,2,1,'2025-01-12 13:49:43'),(2,5,1,'2025-01-12 13:52:12'),(3,6,2,'2025-01-14 09:10:33'),(4,6,3,'2025-01-15 03:08:58'),(5,6,4,'2025-01-15 03:15:45'),(6,2,5,'2025-01-15 12:33:02'),(7,2,6,'2025-01-15 13:01:00'),(8,2,7,'2025-01-15 13:05:05'),(9,2,8,'2025-01-15 14:47:06'),(10,6,9,'2025-01-19 07:31:34'),(11,2,10,'2025-01-20 08:53:51'),(12,2,11,'2025-01-20 09:02:34');
+INSERT INTO `user_file` VALUES (1,2,1,'2025-01-12 13:49:43'),(2,5,1,'2025-01-12 13:52:12'),(3,6,2,'2025-01-14 09:10:33'),(4,6,3,'2025-01-15 03:08:58'),(5,6,4,'2025-01-15 03:15:45'),(6,2,5,'2025-01-15 12:33:02'),(7,2,6,'2025-01-15 13:01:00'),(8,2,7,'2025-01-15 13:05:05'),(9,2,8,'2025-01-15 14:47:06'),(10,6,9,'2025-01-19 07:31:34'),(11,2,10,'2025-01-20 08:53:51'),(12,2,11,'2025-01-20 09:02:34'),(13,6,12,'2025-01-21 07:15:41');
 /*!40000 ALTER TABLE `user_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,7 +295,7 @@ CREATE TABLE `user_ppt_rel` (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_ppt_url` (`user_id`,`ppt_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户ppt相关记录的表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户ppt相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +304,7 @@ CREATE TABLE `user_ppt_rel` (
 
 LOCK TABLES `user_ppt_rel` WRITE;
 /*!40000 ALTER TABLE `user_ppt_rel` DISABLE KEYS */;
-INSERT INTO `user_ppt_rel` VALUES (1,2,'http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',70,'2025-01-15 21:11:21');
+INSERT INTO `user_ppt_rel` VALUES (1,2,'http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',70,'2025-01-15 21:11:21'),(2,6,'http://121.43.62.36:9000/ppt/1737443741216_3b8d9774206e88a853a320246fdd91c4.pptx',0,'2025-01-21 07:24:49');
 /*!40000 ALTER TABLE `user_ppt_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,11 +322,14 @@ CREATE TABLE `user_sound_rel` (
   `status` int DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录这行数据的创建时间，默认是当前系统时间',
   `sound_name` varchar(255) NOT NULL DEFAULT '' COMMENT '声音名称',
+  `type` int NOT NULL DEFAULT '0' COMMENT '类型：0 代表自定义训练，1 代表预设声音',
+  `api_param` varchar(255) DEFAULT 'self-defined' COMMENT 'API 参数',
+  `description` varchar(255) DEFAULT '' COMMENT '声音描述',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_sound_url` (`user_id`,`sound_url`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户声音相关记录的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,7 +338,7 @@ CREATE TABLE `user_sound_rel` (
 
 LOCK TABLES `user_sound_rel` WRITE;
 /*!40000 ALTER TABLE `user_sound_rel` DISABLE KEYS */;
-INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17','用户测试'),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21','用户测试'),(10,5,'/mp3/123/test09.mp3',0,'2025-01-12 15:12:01','用户测试'),(12,2,'test',0,'2025-01-12 23:29:57','用户测试'),(21,2,'test1',0,'2025-01-13 11:52:51','用户测试'),(22,2,'test11',0,'2025-01-13 15:05:12','用户测试'),(23,2,'test112',0,'2025-01-13 15:09:51','用户测试'),(24,2,'test1123',0,'2025-01-13 15:15:35','用户测试'),(25,2,'123',0,'2025-01-13 22:18:49','用户测试'),(46,5,'/path/to/sound10',3,'2025-01-14 13:04:33','用户测试'),(48,5,'/path/to/sound1',1,'2025-01-14 13:05:58','用户测试'),(49,5,'/path/to/sound2',1,'2025-01-14 13:16:11','用户测试'),(51,5,'/path/to/sound3',1,'2025-01-14 13:18:01','用户测试'),(52,5,'/path/to/sound4',3,'2025-01-14 13:20:59','用户测试'),(54,5,'/path/to/sound5',3,'2025-01-14 13:22:27','用户测试'),(55,5,'/path/to/sound6',3,'2025-01-14 13:24:55','用户测试'),(57,5,'/path/to/sound7',3,'2025-01-14 13:25:48','用户测试'),(59,5,'/path/to/sound8',3,'2025-01-14 13:27:23','用户测试'),(60,5,'/path/to/sound9',3,'2025-01-14 13:33:04','用户测试'),(61,2,'test.mp3',2,'2025-01-14 21:35:52','用户测试'),(62,5,'/path/to/sound10.mp3',2,'2025-01-15 09:49:22','用户测试'),(63,5,'/path/to/sound11.mp3',2,'2025-01-19 11:42:52','用户测试'),(64,6,'http://121.43.62.36:9000/mp3/1736845832691_test.mp3',0,'2025-01-19 07:32:17',''),(65,2,'123.mp3',3,'2025-01-19 16:59:19','123');
+INSERT INTO `user_sound_rel` VALUES (1,5,'/mp3/123/test.mp3',0,'2025-01-12 14:52:17','用户测试',0,'self-defined',''),(3,5,'/mp3/123/test2.mp3',0,'2025-01-12 14:59:21','用户测试',0,'self-defined',''),(10,5,'/mp3/123/test09.mp3',0,'2025-01-12 15:12:01','用户测试',0,'self-defined',''),(12,2,'test',0,'2025-01-12 23:29:57','用户测试',0,'self-defined',''),(21,2,'test1',0,'2025-01-13 11:52:51','用户测试',0,'self-defined',''),(22,2,'test11',0,'2025-01-13 15:05:12','用户测试',0,'self-defined',''),(23,2,'test112',0,'2025-01-13 15:09:51','用户测试',0,'self-defined',''),(24,2,'test1123',0,'2025-01-13 15:15:35','用户测试',0,'self-defined',''),(25,2,'123',0,'2025-01-13 22:18:49','用户测试',0,'self-defined',''),(46,5,'/path/to/sound10',3,'2025-01-14 13:04:33','用户测试',0,'self-defined',''),(48,5,'/path/to/sound1',1,'2025-01-14 13:05:58','用户测试',0,'self-defined',''),(49,5,'/path/to/sound2',1,'2025-01-14 13:16:11','用户测试',0,'self-defined',''),(51,5,'/path/to/sound3',1,'2025-01-14 13:18:01','用户测试',0,'self-defined',''),(52,5,'/path/to/sound4',3,'2025-01-14 13:20:59','用户测试',0,'self-defined',''),(54,5,'/path/to/sound5',3,'2025-01-14 13:22:27','用户测试',0,'self-defined',''),(55,5,'/path/to/sound6',3,'2025-01-14 13:24:55','用户测试',0,'self-defined',''),(57,5,'/path/to/sound7',3,'2025-01-14 13:25:48','用户测试',0,'self-defined',''),(59,5,'/path/to/sound8',3,'2025-01-14 13:27:23','用户测试',0,'self-defined',''),(60,5,'/path/to/sound9',3,'2025-01-14 13:33:04','用户测试',0,'self-defined',''),(61,2,'test.mp3',2,'2025-01-14 21:35:52','用户测试',0,'self-defined',''),(62,5,'/path/to/sound10.mp3',2,'2025-01-15 09:49:22','用户测试',0,'self-defined',''),(63,5,'/path/to/sound11.mp3',2,'2025-01-19 11:42:52','用户测试',0,'self-defined',''),(64,6,'http://121.43.62.36:9000/mp3/1736845832691_test.mp3',0,'2025-01-19 07:32:17','',0,'self-defined',''),(65,2,'123.mp3',3,'2025-01-19 16:59:19','123',0,'self-defined',''),(66,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaomengNeural.mp3',2,'2025-01-21 09:36:01','小萌',1,'zh-CN-XiaomengNeural','这是小萌的声音，音色柔和动听，适合用于各种场景，给人一种温馨亲切的感觉。'),(67,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaomoNeural.mp3',2,'2025-01-21 09:36:01','小墨',1,'zh-CN-XiaomoNeural','小墨的声音富有磁性，清晰有力，在广播、解说等场景中表现出色，能吸引听众的注意力。'),(68,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoqiuNeural.mp3',2,'2025-01-21 09:36:01','小球',1,'zh-CN-XiaoqiuNeural','小球的声音充满活力，活泼可爱，适合用于儿童类节目、游戏等，为内容增添趣味。'),(69,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoruiNeural.mp3',2,'2025-01-21 09:36:01','小蕊',1,'zh-CN-XiaoruiNeural','小蕊的声音轻柔悦耳，如同涓涓细流，适用于诗歌朗诵、温馨故事讲述等场景。'),(70,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoshuangNeural.mp3',2,'2025-01-21 09:36:01','小爽',1,'zh-CN-XiaoshuangNeural','小爽的声音清脆响亮，具有较高的辨识度，适合广告宣传、语音提示等应用。'),(71,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoxiaoNeural.mp3',2,'2025-01-21 09:36:01','小小',1,'zh-CN-XiaoxiaoNeural','小小的声音充满童趣，天真无邪，是儿童学习、娱乐应用的理想之选。'),(72,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoxuanNeural.mp3',2,'2025-01-21 09:36:01','小玄',1,'zh-CN-XiaoxuanNeural','小玄的声音沉稳大气，富有感染力，适用于新闻播报、商务讲解等正式场合。'),(73,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoyanNeural.mp3',2,'2025-01-21 09:36:01','小言',1,'zh-CN-XiaoyanNeural','小言的声音婉转悠扬，情感丰富，适合有声读物、情感类音频的录制。'),(74,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoyiNeural.mp3',2,'2025-01-21 09:36:01','小艺',1,'zh-CN-XiaoyiNeural','小艺的声音温暖柔和，能给人带来一种舒适的听觉体验，适合作为客服语音。'),(75,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaoyouNeural.mp3',2,'2025-01-21 09:36:01','小右',1,'zh-CN-XiaoyouNeural','小右的声音充满青春活力，朝气蓬勃，适用于运动、时尚类内容的配音。'),(76,0,'http://121.43.62.36:9000/mp3/zh-CN-XiaozhenNeural.mp3',2,'2025-01-21 09:36:01','小真',1,'zh-CN-XiaozhenNeural','小真的声音质朴醇厚，带有一种自然的亲和力，可用于文化、历史类讲解。'),(77,0,'http://121.43.62.36:9000/mp3/zh-CN-YunhaoNeural.mp3',2,'2025-01-21 09:36:01','允浩',1,'zh-CN-YunhaoNeural','允浩的声音雄浑有力，具有权威性，适用于领导讲话、正式报告等场景。'),(78,0,'http://121.43.62.36:9000/mp3/zh-CN-YunxiNeural.mp3',2,'2025-01-21 09:36:01','云熙',1,'zh-CN-YunxiNeural','云熙的声音空灵梦幻，给人一种神秘的感觉，适合科幻、奇幻类内容的配音。'),(79,0,'http://121.43.62.36:9000/mp3/zh-CN-YunyangNeural.mp3',2,'2025-01-21 09:36:01','云杨',1,'zh-CN-YunyangNeural','云杨的声音热情奔放，充满激情，适合用于激励性的演讲、宣传等。'),(80,0,'http://121.43.62.36:9000/mp3/zh-CN-YunyeNeural.mp3',2,'2025-01-21 09:36:01','云野',1,'zh-CN-YunyeNeural','云野的声音舒缓平和，具有安抚人心的效果，可用于冥想、放松类音频的制作。');
 /*!40000 ALTER TABLE `user_sound_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -322,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-20 22:24:13
+-- Dump completed on 2025-01-21 17:41:53

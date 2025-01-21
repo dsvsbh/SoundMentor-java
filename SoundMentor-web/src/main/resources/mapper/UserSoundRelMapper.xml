@@ -8,6 +8,10 @@
         <result column="user_id" property="userId" />
         <result column="sound_url" property="soundUrl" />
         <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="api_param" property="apiParam" />
+        <result column="description" property="description" />
+        <result column="sound_name" property="soundName" />
         <result column="create_time" property="createTime" />
     </resultMap>
 
