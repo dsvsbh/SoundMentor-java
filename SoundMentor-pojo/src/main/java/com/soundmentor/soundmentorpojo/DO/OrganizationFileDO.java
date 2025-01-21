@@ -40,7 +40,14 @@ public class OrganizationFileDO implements Serializable {
      * 文件ID，关联文件表
      */
     private Integer fileId;
-
+    /**
+     *  分享者id
+     */
+    private Integer sharerId;
+    /**
+     * 下载次数
+     */
+    private Integer downloadCount;
     /**
      * 记录创建时间
      */

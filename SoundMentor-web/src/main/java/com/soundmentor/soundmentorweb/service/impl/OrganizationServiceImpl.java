@@ -3,7 +3,10 @@ package com.soundmentor.soundmentorweb.service.impl;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
+import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
@@ -11,6 +14,7 @@ import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationFileDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
 import com.soundmentor.soundmentorpojo.DTO.file.ShareFileDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
@@ -231,8 +235,37 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         organizationFileDO =  new OrganizationFileDO();
         organizationFileDO.setOrganizationId(dto.getOrganizationId());
         organizationFileDO.setFileId(dto.getFileId());
+        organizationFileDO.setSharerId(userInfoApi.getUser().getId());
+        organizationFileDO.setDownloadCount(0);
         organizationFileDO.setCreateTime(LocalDateTime.now());
         ofMapper.insert(organizationFileDO);
+    }
+
+    @Override
+    public PageResult<OrganizationFileListResDTO> fileList(OrganizationFileListReqDTO dto) {
+        OrganizationRole organizationRole = userInfoApi.getOrganizationRole(dto.getOrganizationId());
+        if(Objects.isNull(organizationRole))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织成员");
+        }
+        IPage<OrganizationFileListResDTO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        OrganizationFilesQueryParam param = new OrganizationFilesQueryParam();
+        param.setFileName(dto.getFileName());
+        if(Objects.isNull(dto.getFileTypes()))
+        {
+            param.setFileTypes(null);
+        } else {
+            param.setFileTypes(dto.getFileTypes().stream().map(FileTypeEnum::getCode).collect(Collectors.toList()));
+        }
+        param.setOrganizationId(dto.getOrganizationId());
+        IPage<OrganizationFileListResDTO> pageResult = ofMapper.selectOrganizationFileList(page,param);
+        PageResult<OrganizationFileListResDTO> result = new PageResult<>();
+        result.setPageNum(pageResult.getCurrent());
+        result.setPageSize(pageResult.getSize());
+        result.setTotal(pageResult.getTotal());
+        result.setPages(pageResult.getPages());
+        result.setRecords(pageResult.getRecords());
+        return result;
     }
 
     /**

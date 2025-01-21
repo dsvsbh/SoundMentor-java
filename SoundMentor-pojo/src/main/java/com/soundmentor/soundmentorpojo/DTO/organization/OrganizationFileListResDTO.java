@@ -1,25 +1,33 @@
-package com.soundmentor.soundmentorpojo.DTO.file;
+package com.soundmentor.soundmentorpojo.DTO.organization;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserFileResDTO {
+public class OrganizationFileListResDTO {
     private Integer fileId;
     private String fileName;
     private String filePath;
     private Integer fileType;
     /**
+     * 分享者名称
+     */
+    private String sharerName;
+    /**
+     * 分享者头像
+     */
+    private String sharerHeaderImg;
+    /**
+     * 下载次数
+     */
+    private Integer downloadCount;
+    /**
      * 文件大小 单位为B，前端展示时可单位转换
      */
     private Integer fileSize;
     /**
-     * 上传时间
+     * 分享时间
      */
     private LocalDateTime createTime;
 }

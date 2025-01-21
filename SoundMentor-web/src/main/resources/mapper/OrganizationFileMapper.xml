@@ -9,5 +9,22 @@
         <result column="file_id" property="fileId" />
         <result column="create_time" property="createTime" />
     </resultMap>
+    <select id="selectOrganizationFileList"
+            resultType="com.soundmentor.soundmentorpojo.DTO.organization.OrganizationFileListResDTO">
+        select f.id as fileId,f.origin_name as fileName,f.file_size as fileSize,f.path as filePath,f.file_type as fileType,orf.create_time as createTime,u.name as sharerName,u.head_img as sharerHeaderImg,orf.download_count as downloadCount
+        from organization_file orf join file f on orf.file_id=f.id left join user u on u.id=orf.sharer_id
+        <where>
+         orf.organization_id=#{ew.organizationId}
+        <if test="ew.fileTypes!=null">
+            and f.file_type in
+        <foreach collection="ew.fileTypes" item="fileType" open="(" close=")" separator=",">
+                        #{fileType}
+         </foreach>
+        </if>
+        <if test="ew.fileName!=null">
+            and f.origin_name like concat('%',#{ew.fileName},'%')
+        </if>
+        </where>
+    </select>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.soundmentor.soundmentorweb.service;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
 import com.soundmentor.soundmentorpojo.DTO.file.ShareFileDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
@@ -36,4 +37,6 @@ public interface IOrganizationService extends IService<OrganizationDO> {
     void removeOrganization(Integer organizationId);
 
     void shareFile(ShareFileDTO dto);
+
+    PageResult<OrganizationFileListResDTO> fileList(OrganizationFileListReqDTO dto);
 }

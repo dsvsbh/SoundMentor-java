@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
 import com.soundmentor.soundmentorpojo.DTO.file.ShareFileDTO;
 import com.soundmentor.soundmentorpojo.DTO.organization.*;
 import com.soundmentor.soundmentorpojo.DTO.user.req.CreateOrganizationDTO;
@@ -122,4 +123,14 @@ public class OrganizationController {
         return ResponseDTO.OK();
     }
 
+    /**
+     * 查询组织文件列表（分页，动态条件）
+     * @param dto
+     * @return
+     */
+    @PostMapping("/fileList")
+    public ResponseDTO<PageResult<OrganizationFileListResDTO>> fileList(@RequestBody @Valid OrganizationFileListReqDTO dto)
+    {
+        return ResponseDTO.OK(organizationService.fileList(dto));
+    }
 }
