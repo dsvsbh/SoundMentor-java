@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.soundmentor.soundmentorpojo.DO.UserFavoriteDO">
         <id column="id" property="id" />
+        <result column="user_id" property="userId" />
         <result column="favorite_id" property="favoriteId" />
         <result column="create_time" property="createTime" />
     </resultMap>

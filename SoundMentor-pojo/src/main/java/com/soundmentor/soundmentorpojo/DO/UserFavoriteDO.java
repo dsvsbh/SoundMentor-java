@@ -32,6 +32,10 @@ public class UserFavoriteDO implements Serializable {
     private Integer id;
 
     /**
+     * 用户的唯一标识符，不能为空
+     */
+    private Integer userId;
+    /**
      * 收藏对象的唯一标识符，不能为空
      */
     private Integer favoriteId;

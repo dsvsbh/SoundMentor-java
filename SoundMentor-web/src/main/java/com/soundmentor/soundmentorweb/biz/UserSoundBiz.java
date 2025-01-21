@@ -16,6 +16,7 @@ import com.soundmentor.soundmentorweb.biz.convert.UserParamConvert;
 import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.config.properties.UserProperties;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
+import com.soundmentor.soundmentorweb.service.IUserFavoriteService;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,8 @@ import java.util.stream.Collectors;
 public class UserSoundBiz {
     @Resource
     private IUserSoundRelService userSoundRelService;
+    @Resource
+    private IUserFavoriteService userFavoriteService;
     @Resource
     private UserProperties userProperties;
     @Resource
@@ -189,5 +192,25 @@ public class UserSoundBiz {
         // 自定义比较器，将code转为Integer然后排序
         res.sort(Comparator.comparing(item -> Integer.parseInt(item.getCode())));
         return res;
+    }
+
+    /**
+     * 添加收藏
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    public Boolean addFavorite(Integer id) {
+        Integer userId = userInfoApi.getUser().getId();
+        return userFavoriteService.addFavorite(userId,id);
+    }
+
+    /**
+     * 删除收藏
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    public Boolean delFavorite(Integer id) {
+        Integer userId = userInfoApi.getUser().getId();
+        return userFavoriteService.delFavorite(userId,id);
     }
 }

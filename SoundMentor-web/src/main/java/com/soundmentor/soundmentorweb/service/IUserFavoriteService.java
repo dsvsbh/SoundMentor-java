@@ -13,4 +13,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserFavoriteService extends IService<UserFavoriteDO> {
 
+    /**
+     * 添加收藏
+     * @param objectId
+     * @PARAM: @param userId
+     * @RETURN: @return
+     **/
+    Boolean addFavorite(Integer userId, Integer objectId);
+
+    /**
+     * 取消收藏
+     * @param objectId
+     * @PARAM: @param userId
+     * @RETURN: @return
+     **/
+    Boolean delFavorite(Integer userId, Integer objectId);
 }
