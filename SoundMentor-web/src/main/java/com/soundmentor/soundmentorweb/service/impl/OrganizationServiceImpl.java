@@ -269,6 +269,25 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     /**
+     * 没考虑高并发，应该也不会出现高并发问题
+     * @param dto
+     * @return
+     */
+    @Override
+    public Integer download(OrganizationFileDownloadDTO dto) {
+        OrganizationFileDO organizationFileDO = ofMapper.selectOne(new LambdaQueryWrapper<OrganizationFileDO>()
+                .eq(OrganizationFileDO::getOrganizationId, dto.getOrganizationId())
+                .eq(OrganizationFileDO::getFileId, dto.getFileId()));
+        if (Objects.isNull(organizationFileDO))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"该文件不在该组织");
+        }
+        organizationFileDO.setDownloadCount(organizationFileDO.getDownloadCount()+1);
+        ofMapper.updateById(organizationFileDO);;
+        return organizationFileDO.getDownloadCount();
+    }
+
+    /**
      *  加入组织
      * @param capacity
      * @param organizationId

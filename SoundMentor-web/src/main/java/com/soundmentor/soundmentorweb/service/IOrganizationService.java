@@ -39,4 +39,6 @@ public interface IOrganizationService extends IService<OrganizationDO> {
     void shareFile(ShareFileDTO dto);
 
     PageResult<OrganizationFileListResDTO> fileList(OrganizationFileListReqDTO dto);
+
+    Integer download(OrganizationFileDownloadDTO dto);
 }

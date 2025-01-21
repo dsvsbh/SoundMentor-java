@@ -133,4 +133,15 @@ public class OrganizationController {
     {
         return ResponseDTO.OK(organizationService.fileList(dto));
     }
+
+    /**
+     * 用户下载文件时增加下载次数接口
+     * @param dto
+     * @return
+     */
+    @PutMapping("/download")
+    public ResponseDTO<Integer> download(@RequestBody @Valid OrganizationFileDownloadDTO dto)
+    {
+        return ResponseDTO.OK(organizationService.download(dto));
+    }
 }
