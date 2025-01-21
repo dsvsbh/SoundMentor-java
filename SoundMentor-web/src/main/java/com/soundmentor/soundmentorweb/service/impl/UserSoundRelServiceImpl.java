@@ -4,8 +4,6 @@ package com.soundmentor.soundmentorweb.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.soundmentor.soundmentorbase.enums.SoundLibEnum;
-import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
@@ -16,7 +14,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
