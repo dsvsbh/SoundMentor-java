@@ -83,7 +83,7 @@ public class SoundLibController {
      * @PARAM: @param param
      * @RETURN: @return
      **/
-    @GetMapping(GET_SOUND_LIB)
+    @PostMapping(GET_SOUND_LIB)
     public ResponseDTO<PageResult<UserSoundLibDTO>> pageSoundLib(@Valid @RequestBody UserSoundLibQueryParam param){
         return ResponseDTO.OK(userSoundBiz.pageSoundLib(param));
     }
