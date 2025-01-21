@@ -4,6 +4,8 @@ import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.basic.IdListParam;
 import com.soundmentor.soundmentorpojo.DTO.basic.IdParam;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserFavoriteQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
@@ -29,6 +31,7 @@ public class SoundLibController {
     private static final String GET_SOUND_LIB = "getSoundLib";
     private static final String ADD_FAVORITE = "addFavorite";
     private static final String DEL_FAVORITE = "delFavorite";
+    private static final String Page_FAVORITE = "pageFavorite";
 
     @Resource
     private UserSoundBiz userSoundBiz;
@@ -81,8 +84,8 @@ public class SoundLibController {
      * @RETURN: @return
      **/
     @GetMapping(GET_SOUND_LIB)
-    public ResponseDTO<List<UserSoundLibDTO>> getSoundLib(@Valid @RequestBody UserSoundLibQueryParam param){
-        return ResponseDTO.OK(userSoundBiz.getSoundLib(param.getType()));
+    public ResponseDTO<PageResult<UserSoundLibDTO>> pageSoundLib(@Valid @RequestBody UserSoundLibQueryParam param){
+        return ResponseDTO.OK(userSoundBiz.pageSoundLib(param));
     }
 
     /**
@@ -103,6 +106,16 @@ public class SoundLibController {
     @PostMapping(DEL_FAVORITE)
     public ResponseDTO<Boolean> delFavorite(@Valid @RequestBody IdParam param){
         return ResponseDTO.OK(userSoundBiz.delFavorite(param.getId()));
+    }
+
+    /**
+     * 分页查询收藏列表
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    @PostMapping(Page_FAVORITE)
+    public ResponseDTO<PageResult<UserSoundLibDTO>> pageFavorite(@Valid @RequestBody UserFavoriteQueryParam param){
+        return ResponseDTO.OK(userSoundBiz.pageFavoriteSound(param));
     }
 
 }

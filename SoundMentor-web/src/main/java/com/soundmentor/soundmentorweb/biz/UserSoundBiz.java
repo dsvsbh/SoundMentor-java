@@ -1,14 +1,18 @@
 package com.soundmentor.soundmentorweb.biz;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.soundmentor.soundmentorbase.enums.*;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
 import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateVoiceTrainParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserFavoriteQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
@@ -25,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -170,27 +172,19 @@ public class UserSoundBiz {
      * @PARAM: @param type
      * @RETURN: @return
      **/
-    public List<UserSoundLibDTO> getSoundLib(Integer type) {
-        List<UserSoundLibDTO> res = new ArrayList<>();
-        if(type == 0 || type == 2){
-            SoundLibEnum.MAP.values().forEach(item -> {
-                if(item != SoundLibEnum.USER_TRAIN){
-                    UserSoundLibDTO userSoundLibDTO = new UserSoundLibDTO();
-                    userSoundLibDTO.setCode(item.getCode());
-                    userSoundLibDTO.setName(item.getName());
-                    userSoundLibDTO.setParamName(item.getParamName());
-                    userSoundLibDTO.setSoundUrl(item.getSoundUrl());
-                    res.add(userSoundLibDTO);
-                }
-            });
+    public PageResult<UserSoundLibDTO> pageSoundLib(UserSoundLibQueryParam param) {
+        param.setUserId(userInfoApi.getUser().getId());
+        // 没传参只查成功的
+        if(param.getSize() == null){
+            param.setStatus(TaskStatusEnum.SUCCESS.getCode());
         }
-        if(type == 1 || type == 2){
-            UserDO userDO = userInfoApi.getUser();
-            List<UserSoundLibDTO> userTrainSound = userSoundRelService.getUserTrainSoundLib(userDO.getId());
-            res.addAll(userTrainSound);
-        }
-        // 自定义比较器，将code转为Integer然后排序
-        res.sort(Comparator.comparing(item -> Integer.parseInt(item.getCode())));
+        IPage<UserSoundLibDTO> pageResult = userSoundRelService.pageSoundLib(param);
+        PageResult<UserSoundLibDTO> res = new PageResult<>();
+        res.setPageNum(pageResult.getCurrent());
+        res.setPageSize(pageResult.getSize());
+        res.setTotal(pageResult.getTotal());
+        res.setPages(pageResult.getPages());
+        res.setRecords(pageResult.getRecords());
         return res;
     }
 
@@ -212,5 +206,25 @@ public class UserSoundBiz {
     public Boolean delFavorite(Integer id) {
         Integer userId = userInfoApi.getUser().getId();
         return userFavoriteService.delFavorite(userId,id);
+    }
+
+    /**
+     * 获取用户收藏
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    public PageResult<UserSoundLibDTO> pageFavoriteSound(UserFavoriteQueryParam param) {
+        param.setUserId(userInfoApi.getUser().getId());
+        IPage<UserSoundLibDTO> pageResult = userFavoriteService.pageFavoriteSound(param);
+        pageResult.getRecords().forEach(item->{
+            item.setIsFavorite(true);
+        });
+        PageResult<UserSoundLibDTO> res = new PageResult<>();
+        res.setPageNum(pageResult.getCurrent());
+        res.setPageSize(pageResult.getSize());
+        res.setTotal(pageResult.getTotal());
+        res.setPages(pageResult.getPages());
+        res.setRecords(pageResult.getRecords());
+        return res;
     }
 }

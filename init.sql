@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.3.0, for macos14 (arm64)
 --
 -- Host: 121.43.62.36    Database: sound_mentor
 -- ------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE `file` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `path` (`path`),
   UNIQUE KEY `md5` (`md5`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件表，用于存储文件的基本信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `file` (
 
 LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
-INSERT INTO `file` VALUES (1,'01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf','http://121.43.62.36:9000/doc/1736660981975_01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf',509863,3,'2025-01-12 13:49:43','af7e83ed32e798b8ff73924e4479f149'),(2,'test.mp3','http://121.43.62.36:9000/mp3/1736845832691_test.mp3',201086,0,'2025-01-14 09:10:33','8176cebc4a669345b65a0df11e4e047f'),(3,'【格木】2024年7月-时政热点.pdf','http://121.43.62.36:9000/doc/1736910538281_【格木】2024年7月-时政热点.pdf',957718,3,'2025-01-15 03:08:58','86888f283f6bddb71ed72479b40e6509'),(4,'stu_sys.png','http://121.43.62.36:9000/img/1736910945086_stu_sys.png',108130,6,'2025-01-15 03:15:45','c939ac71744d0c7276ba1c3b52661bad'),(5,'3.1-3.4 CPU调度.ppt','http://121.43.62.36:9000/ppt/1736915581401_3.1-3.4 CPU调度.ppt',994816,4,'2025-01-15 12:33:02','b30d47d83922e28e393dee7339427d5e'),(6,'4.0 gcc分步编译.ppt','http://121.43.62.36:9000/ppt/1736917259815_ac95fd37eddb3be72828ceaadfe6bd9f',346112,4,'2025-01-15 13:01:00','ac95fd37eddb3be72828ceaadfe6bd9f'),(7,'4.1-4.3 连续分配存储管理.ppt','http://121.43.62.36:9000/ppt/1736917503920_c27cd9ee60e849615102224e0426d275.ppt',1835520,4,'2025-01-15 13:05:05','c27cd9ee60e849615102224e0426d275'),(8,'5.1 虚拟存储器.pptx','http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',1140067,5,'2025-01-15 14:47:06','5e5bd4d73cbd451c0cfd346dc96a5d9b'),(9,'R-C.jpg','http://121.43.62.36:9000/img/1737271893796_b4c0c917082a47f5cd0a2342607603d8.jpg',120744,7,'2025-01-19 07:31:34','b4c0c917082a47f5cd0a2342607603d8'),(10,'voice.png','http://121.43.62.36:9000/img/1737363230908_f4e04c3f5fe59d8662f5787cd3f047fa.png',2566,6,'2025-01-20 08:53:51','f4e04c3f5fe59d8662f5787cd3f047fa'),(11,'test.pptx','http://121.43.62.36:9000/ppt/1737363754214_d41d8cd98f00b204e9800998ecf8427e.pptx',0,5,'2025-01-20 09:02:34','d41d8cd98f00b204e9800998ecf8427e'),(12,'test.pptx','http://121.43.62.36:9000/ppt/1737443741216_3b8d9774206e88a853a320246fdd91c4.pptx',35831,5,'2025-01-21 07:15:41','3b8d9774206e88a853a320246fdd91c4');
+INSERT INTO `file` VALUES (1,'01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf','http://121.43.62.36:9000/doc/1736660981975_01-第十六届中国大学生服务外包创新创业大赛参赛手册.pdf',509863,3,'2025-01-12 13:49:43','af7e83ed32e798b8ff73924e4479f149'),(2,'test.mp3','http://121.43.62.36:9000/mp3/1736845832691_test.mp3',201086,0,'2025-01-14 09:10:33','8176cebc4a669345b65a0df11e4e047f'),(3,'【格木】2024年7月-时政热点.pdf','http://121.43.62.36:9000/doc/1736910538281_【格木】2024年7月-时政热点.pdf',957718,3,'2025-01-15 03:08:58','86888f283f6bddb71ed72479b40e6509'),(4,'stu_sys.png','http://121.43.62.36:9000/img/1736910945086_stu_sys.png',108130,6,'2025-01-15 03:15:45','c939ac71744d0c7276ba1c3b52661bad'),(5,'3.1-3.4 CPU调度.ppt','http://121.43.62.36:9000/ppt/1736915581401_3.1-3.4 CPU调度.ppt',994816,4,'2025-01-15 12:33:02','b30d47d83922e28e393dee7339427d5e'),(6,'4.0 gcc分步编译.ppt','http://121.43.62.36:9000/ppt/1736917259815_ac95fd37eddb3be72828ceaadfe6bd9f',346112,4,'2025-01-15 13:01:00','ac95fd37eddb3be72828ceaadfe6bd9f'),(7,'4.1-4.3 连续分配存储管理.ppt','http://121.43.62.36:9000/ppt/1736917503920_c27cd9ee60e849615102224e0426d275.ppt',1835520,4,'2025-01-15 13:05:05','c27cd9ee60e849615102224e0426d275'),(8,'5.1 虚拟存储器.pptx','http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx',1140067,5,'2025-01-15 14:47:06','5e5bd4d73cbd451c0cfd346dc96a5d9b'),(9,'R-C.jpg','http://121.43.62.36:9000/img/1737271893796_b4c0c917082a47f5cd0a2342607603d8.jpg',120744,7,'2025-01-19 07:31:34','b4c0c917082a47f5cd0a2342607603d8'),(10,'voice.png','http://121.43.62.36:9000/img/1737363230908_f4e04c3f5fe59d8662f5787cd3f047fa.png',2566,6,'2025-01-20 08:53:51','f4e04c3f5fe59d8662f5787cd3f047fa'),(11,'test.pptx','http://121.43.62.36:9000/ppt/1737363754214_d41d8cd98f00b204e9800998ecf8427e.pptx',0,5,'2025-01-20 09:02:34','d41d8cd98f00b204e9800998ecf8427e'),(12,'test.pptx','http://121.43.62.36:9000/ppt/1737443741216_3b8d9774206e88a853a320246fdd91c4.pptx',35831,5,'2025-01-21 07:15:41','3b8d9774206e88a853a320246fdd91c4'),(13,'test.pptx','http://121.43.62.36:9000/ppt/1737455868219_e70bc8f716d0dfaf47ccecd0aa2990d8.pptx',30699,5,'2025-01-21 10:37:48','e70bc8f716d0dfaf47ccecd0aa2990d8');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +100,7 @@ CREATE TABLE `organization_file` (
 
 LOCK TABLES `organization_file` WRITE;
 /*!40000 ALTER TABLE `organization_file` DISABLE KEYS */;
-INSERT INTO `organization_file` VALUES (1,20,10,'2025-01-20 22:11:23',2,0),(2,20,8,'2025-01-21 17:58:24',2,0);
+INSERT INTO `organization_file` VALUES (1,20,10,'2025-01-20 22:11:23',2,0),(2,20,8,'2025-01-21 17:58:24',2,6);
 /*!40000 ALTER TABLE `organization_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,7 @@ CREATE TABLE `user_favorite` (
   `create_time` timestamp NULL DEFAULT (now()) COMMENT '记录该收藏记录的创建时间，默认是当前系统时间',
   `user_id` int NOT NULL COMMENT '用户的唯一标识符，不能为空',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户收藏信息的表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用于存储用户收藏信息的表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +220,7 @@ CREATE TABLE `user_favorite` (
 
 LOCK TABLES `user_favorite` WRITE;
 /*!40000 ALTER TABLE `user_favorite` DISABLE KEYS */;
-INSERT INTO `user_favorite` VALUES (2,79,'2025-01-21 09:57:19',5);
+INSERT INTO `user_favorite` VALUES (2,79,'2025-01-21 09:57:19',5),(3,80,'2025-01-21 11:10:08',5);
 /*!40000 ALTER TABLE `user_favorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,7 +239,7 @@ CREATE TABLE `user_file` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_file_id` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +248,7 @@ CREATE TABLE `user_file` (
 
 LOCK TABLES `user_file` WRITE;
 /*!40000 ALTER TABLE `user_file` DISABLE KEYS */;
-INSERT INTO `user_file` VALUES (1,2,1,'2025-01-12 13:49:43'),(2,5,1,'2025-01-12 13:52:12'),(3,6,2,'2025-01-14 09:10:33'),(4,6,3,'2025-01-15 03:08:58'),(5,6,4,'2025-01-15 03:15:45'),(6,2,5,'2025-01-15 12:33:02'),(7,2,6,'2025-01-15 13:01:00'),(8,2,7,'2025-01-15 13:05:05'),(9,2,8,'2025-01-15 14:47:06'),(10,6,9,'2025-01-19 07:31:34'),(11,2,10,'2025-01-20 08:53:51'),(12,2,11,'2025-01-20 09:02:34'),(13,6,12,'2025-01-21 07:15:41');
+INSERT INTO `user_file` VALUES (1,2,1,'2025-01-12 13:49:43'),(2,5,1,'2025-01-12 13:52:12'),(3,6,2,'2025-01-14 09:10:33'),(4,6,3,'2025-01-15 03:08:58'),(5,6,4,'2025-01-15 03:15:45'),(6,2,5,'2025-01-15 12:33:02'),(7,2,6,'2025-01-15 13:01:00'),(8,2,7,'2025-01-15 13:05:05'),(9,2,8,'2025-01-15 14:47:06'),(10,6,9,'2025-01-19 07:31:34'),(11,2,10,'2025-01-20 08:53:51'),(12,2,11,'2025-01-20 09:02:34'),(13,6,12,'2025-01-21 07:15:41'),(14,6,13,'2025-01-21 10:37:48');
 /*!40000 ALTER TABLE `user_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-21 18:10:48
+-- Dump completed on 2025-01-21 19:11:33

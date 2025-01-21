@@ -9,5 +9,20 @@
         <result column="favorite_id" property="favoriteId" />
         <result column="create_time" property="createTime" />
     </resultMap>
+    <select id="pageFavoriteSound"
+            resultType="com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO">
+        select
+        usr.id AS id,
+        usr.sound_name AS soundName,
+        usr.type AS type,
+        usr.status AS status,
+        usr.api_param AS apiParam,
+        usr.sound_url AS soundUrl,
+        usr.description AS description
+        from user_favorite uf
+        inner join user_sound_rel usr on usr.id = uf.favorite_id
+        where uf.user_id = #{param.userId}
+        order by usr.create_time desc
+    </select>
 
 </mapper>

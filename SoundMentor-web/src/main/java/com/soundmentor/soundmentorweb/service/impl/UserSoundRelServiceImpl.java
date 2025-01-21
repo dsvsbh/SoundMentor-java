@@ -1,10 +1,14 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorbase.enums.SoundLibEnum;
 import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorweb.mapper.UserSoundRelMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
@@ -88,24 +92,15 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
                 .eq(UserSoundRelDO::getUserId, id));
     }
 
+
     /**
-     * 获取用户训练声音
-     * @PARAM: @param id
+     * 分页获取用户声音
+     * @PARAM: @param param
      * @RETURN: @return
      **/
     @Override
-    public List<UserSoundLibDTO> getUserTrainSoundLib(Integer id) {
-        List<UserSoundRelDO> soundList = this.list(Wrappers.<UserSoundRelDO> lambdaQuery()
-                        .eq(UserSoundRelDO::getUserId, id)
-                        .eq(UserSoundRelDO::getStatus, TaskStatusEnum.SUCCESS.getCode()));
-
-        return soundList.stream().map(sound -> {
-            UserSoundLibDTO userSoundLibDTO = new UserSoundLibDTO();
-            userSoundLibDTO.setCode(SoundLibEnum.USER_TRAIN.getCode());
-            userSoundLibDTO.setName(sound.getSoundName());
-            userSoundLibDTO.setSoundUrl(sound.getSoundUrl());
-            userSoundLibDTO.setParamName(sound.getSoundName());
-            return userSoundLibDTO;
-        }).collect(Collectors.toList());
+    public IPage<UserSoundLibDTO> pageSoundLib(UserSoundLibQueryParam param) {
+        Page<UserFileResDTO> page = new Page<>(param.getCurrent(), param.getSize());
+        return baseMapper.pageSoundLib(page,param);
     }
 }

@@ -4,15 +4,48 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.soundmentor.soundmentorpojo.DO.UserSoundRelDO">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="sound_url" property="soundUrl" />
-        <result column="status" property="status" />
-        <result column="type" property="type" />
-        <result column="api_param" property="apiParam" />
-        <result column="description" property="description" />
-        <result column="sound_name" property="soundName" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="sound_url" property="soundUrl"/>
+        <result column="status" property="status"/>
+        <result column="type" property="type"/>
+        <result column="api_param" property="apiParam"/>
+        <result column="description" property="description"/>
+        <result column="sound_name" property="soundName"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
+    <select id="pageSoundLib" resultType="com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO">
+        select
+        usr.id AS id,
+        usr.sound_name AS soundName,
+        usr.type AS type,
+        usr.status AS status,
+        usr.api_param AS apiParam,
+        usr.sound_url AS soundUrl,
+        usr.description AS description,
+        -- 使用 EXISTS 关键字优化子查询，去掉错误的别名 AS isFavorite
+        (EXISTS (select 1 from user_favorite uf where uf.favorite_id = usr.id)) AS isFavorite
+        from user_sound_rel usr
+        <where>
+            <choose>
+                <when test="param.type == 0">
+                    usr.user_id = #{param.userId}
+                </when>
+                <when test="param.type == 1">
+                    usr.user_id = 0
+                </when>
+                <otherwise>
+                    (usr.user_id = #{param.userId} or usr.user_id = 0)
+                </otherwise>
+            </choose>
+            <if test="param.soundName!= null and param.soundName!= ''">
+                and sound_name like concat('%',#{param.soundName},'%')
+            </if>
+            <if test="param.status!= null">
+                and status = #{param.status}
+            </if>
+        </where>
+        order by usr.create_time desc
+    </select>
 
 </mapper>

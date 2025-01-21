@@ -1,7 +1,13 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorpojo.DO.UserFavoriteDO;
+import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserFavoriteQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorweb.mapper.UserFavoriteMapper;
 import com.soundmentor.soundmentorweb.service.IUserFavoriteService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,5 +49,16 @@ public class UserFavoriteServiceImpl extends ServiceImpl<UserFavoriteMapper, Use
         return this.remove(Wrappers.<UserFavoriteDO> lambdaQuery()
                 .eq(UserFavoriteDO::getUserId, userId)
                 .eq(UserFavoriteDO::getFavoriteId, objectId));
+    }
+
+    /**
+     * 分页查询收藏列表
+     * @PARAM: @param param
+     * @RETURN: @return
+     **/
+    @Override
+    public IPage<UserSoundLibDTO> pageFavoriteSound(UserFavoriteQueryParam param) {
+        Page<UserFileResDTO> page = new Page<>(param.getCurrent(), param.getSize());
+        return baseMapper.pageFavoriteSound(page,param);
     }
 }
