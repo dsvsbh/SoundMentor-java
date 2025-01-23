@@ -8,4 +8,7 @@
     <update id="updateResult" parameterType="com.soundmentor.soundmentorpojo.DTO.ppt.PPTTaskResultDTO">
         update user_ppt_detail set summary = #{summary}, sound_url = #{soundUrl} where user_ppt_id = #{userPptId} and ppt_page = #{pptPage}
     </update>
+    <update id="updateSoundUrl" parameterType="com.soundmentor.soundmentorpojo.DTO.ppt.PPTSummaryVoiceMsgDTO">
+        update user_ppt_detail set sound_url = #{text} where user_ppt_id = #{userPptId} and ppt_page = #{page}
+    </update>
 </mapper>
