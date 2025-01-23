@@ -24,7 +24,7 @@
         usr.sound_url AS soundUrl,
         usr.description AS description,
         -- 使用 EXISTS 关键字优化子查询，去掉错误的别名 AS isFavorite
-        (EXISTS (select 1 from user_favorite uf where uf.favorite_id = usr.id)) AS isFavorite
+        (EXISTS (select 1 from user_favorite uf where uf.favorite_id = usr.id and uf.user_id = #{param.userId} )) AS isFavorite
         from user_sound_rel usr
         <where>
             <choose>
