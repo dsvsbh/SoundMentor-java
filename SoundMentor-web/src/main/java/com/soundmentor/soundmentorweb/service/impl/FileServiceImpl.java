@@ -38,7 +38,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
     private IUserFileService userFileService;
 
     /**
-     * 上传文件到 MinIO,并返回文件路径 todo 关联用户和文件
+     * 上传文件到 MinIO,并返回文件路径
      * @param file
      * @return
      */
