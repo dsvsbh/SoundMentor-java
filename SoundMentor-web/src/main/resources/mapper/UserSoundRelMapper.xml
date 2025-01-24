@@ -47,5 +47,25 @@
         </where>
         order by usr.create_time desc
     </select>
+    <select id="pageTrainSound" resultType="com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO">
+        select
+        usr.id AS id,
+        usr.sound_name AS soundName,
+        usr.status AS status,
+        usr.api_param AS apiParam,
+        usr.sound_url AS soundUrl,
+        usr.description AS description,
+        usr.create_time AS createTime
+        from user_sound_rel usr
+        <where>
+            usr.user_id = #{param.userId}
+            <if test="param.soundName!= null and param.soundName!= ''">
+               and sound_name like concat('%',#{param.soundName})
+            </if>
+            <if test="param.status!= null">
+                and status = #{param.status}
+            </if>
+        </where>
+    </select>
 
 </mapper>

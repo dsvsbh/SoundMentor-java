@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserTrainSoundQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.mapper.UserSoundRelMapper;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,10 +32,12 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
      * 根据用户id获取用户声音列表
      * @PARAM: @param userId
      * @RETURN: @return
-     **/
+     *
+     * @return*/
     @Override
-    public List<UserSoundRelDO> getSoundByUserId(Integer userId) {
-        return this.list(Wrappers.<UserSoundRelDO> lambdaQuery().eq(UserSoundRelDO::getUserId,userId));
+    public IPage<UserTrainSoundDTO> pageTrainSound(UserTrainSoundQueryParam param) {
+        Page<UserFileResDTO> page = new Page<>(param.getCurrent(), param.getSize());
+        return baseMapper.pageTrainSound(page,param);
     }
 
     /**
@@ -99,5 +103,15 @@ public class UserSoundRelServiceImpl extends ServiceImpl<UserSoundRelMapper, Use
     public IPage<UserSoundLibDTO> pageSoundLib(UserSoundLibQueryParam param) {
         Page<UserFileResDTO> page = new Page<>(param.getCurrent(), param.getSize());
         return baseMapper.pageSoundLib(page,param);
+    }
+
+    /**
+     * 根据用户id获取用户声音
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    @Override
+    public List<UserSoundRelDO> getSoundByUserId(Integer id) {
+        return this.list(Wrappers.<UserSoundRelDO>lambdaQuery().eq(UserSoundRelDO::getUserId,id));
     }
 }

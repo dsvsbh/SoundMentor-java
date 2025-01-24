@@ -13,6 +13,7 @@ import com.soundmentor.soundmentorpojo.DTO.task.CreateVoiceTrainParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserFavoriteQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserTrainSoundQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.common.mq.producer.MqProducer;
@@ -152,10 +153,16 @@ public class UserSoundBiz {
      * @PARAM:
      * @RETURN: @return
      **/
-    public List<UserTrainSoundDTO> getSoundList() {
-        List<UserSoundRelDO> soundList = userSoundRelService.getSoundByUserId(userInfoApi.getUser().getId());
-        AssertUtil.ifNull(soundList, ResultCodeEnum.DATA_NOT_FUND.getCode(),"声音不存在");
-        return soundList.stream().map(userParamConvert::convert).collect(Collectors.toList());
+    public PageResult<UserTrainSoundDTO> pageTrainSound(UserTrainSoundQueryParam param) {
+        param.setUserId(userInfoApi.getUser().getId());
+        IPage<UserTrainSoundDTO> pageResult = userSoundRelService.pageTrainSound(param);
+        PageResult<UserTrainSoundDTO> res = new PageResult<>();
+        res.setPageNum(pageResult.getCurrent());
+        res.setPageSize(pageResult.getSize());
+        res.setTotal(pageResult.getTotal());
+        res.setPages(pageResult.getPages());
+        res.setRecords(pageResult.getRecords());
+        return res;
     }
 
     /**

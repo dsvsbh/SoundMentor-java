@@ -7,6 +7,7 @@ import com.soundmentor.soundmentorpojo.DTO.basic.IdParam;
 import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserFavoriteQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserTrainSoundQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import com.soundmentor.soundmentorweb.biz.UserSoundBiz;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 声音样本库相关接口
@@ -69,13 +69,13 @@ public class SoundLibController {
     }
 
     /**
-     * 获取声音样本库训练声音列表
+     * 分页查询训练声音列表
      * @PARAM:
      * @RETURN: @return
      **/
     @PostMapping(GET_SOUND_LIST)
-    public ResponseDTO<List<UserTrainSoundDTO>> getSoundList(){
-        return ResponseDTO.OK(userSoundBiz.getSoundList());
+    public ResponseDTO<PageResult<UserTrainSoundDTO>> getSoundList(@Valid @RequestBody UserTrainSoundQueryParam param){
+        return ResponseDTO.OK(userSoundBiz.pageTrainSound(param));
     }
 
     /**

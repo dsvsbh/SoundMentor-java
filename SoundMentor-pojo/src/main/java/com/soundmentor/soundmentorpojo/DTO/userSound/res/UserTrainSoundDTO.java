@@ -45,5 +45,9 @@ public class UserTrainSoundDTO implements Serializable {
      */
     private LocalDateTime createTime;
 
+    /**
+     * 声音描述
+     **/
+    private String description;
 
 }

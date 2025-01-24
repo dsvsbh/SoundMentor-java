@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.file.UserFileResDTO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserTrainSoundQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -27,4 +29,6 @@ public interface UserSoundRelMapper extends BaseMapper<UserSoundRelDO> {
      * @RETURN: @return
      **/
     IPage<UserSoundLibDTO> pageSoundLib(Page<UserFileResDTO> page, @Param("param") UserSoundLibQueryParam param);
+
+    IPage<UserTrainSoundDTO> pageTrainSound(Page<UserFileResDTO> page, @Param("param") UserTrainSoundQueryParam param);
 }

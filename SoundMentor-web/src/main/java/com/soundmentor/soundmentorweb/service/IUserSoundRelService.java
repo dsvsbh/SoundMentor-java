@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.soundmentor.soundmentorpojo.DO.UserSoundRelDO;
 import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserSoundLibQueryParam;
+import com.soundmentor.soundmentorpojo.DTO.userSound.req.UserTrainSoundQueryParam;
 import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserSoundLibDTO;
+import com.soundmentor.soundmentorpojo.DTO.userSound.res.UserTrainSoundDTO;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface IUserSoundRelService extends IService<UserSoundRelDO> {
      * @PARAM: @param id
      * @RETURN: @return
      **/
-    List<UserSoundRelDO> getSoundByUserId(Integer userId);
+    IPage<UserTrainSoundDTO> pageTrainSound(UserTrainSoundQueryParam param);
 
     /**
      * 添加声音
@@ -68,4 +70,11 @@ public interface IUserSoundRelService extends IService<UserSoundRelDO> {
      * @RETURN: @return
      **/
     IPage<UserSoundLibDTO> pageSoundLib(UserSoundLibQueryParam param);
+
+    /**
+     * 根据用户id获取用户声音
+     * @PARAM: @param id
+     * @RETURN: @return
+     **/
+    List<UserSoundRelDO> getSoundByUserId(Integer uid);
 }
