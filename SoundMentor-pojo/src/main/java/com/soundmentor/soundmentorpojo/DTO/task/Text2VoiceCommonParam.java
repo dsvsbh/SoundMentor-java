@@ -17,7 +17,7 @@ public class Text2VoiceCommonParam implements Serializable {
      **/
     private Integer volume;
     /**
-     * 语速：正常是1
+     * 语速：正常是100
      **/
     private Integer rate;
     /**

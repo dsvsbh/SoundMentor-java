@@ -8,5 +8,5 @@ public class PPTSummaryVoiceMsgDTO {
     private Integer page;
     private String text;
     private String voiceName;
-    private Double rate;
+    private Integer rate;
 }

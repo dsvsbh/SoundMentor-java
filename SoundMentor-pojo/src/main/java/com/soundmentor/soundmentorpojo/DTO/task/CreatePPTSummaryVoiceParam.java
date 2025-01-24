@@ -18,5 +18,5 @@ public class CreatePPTSummaryVoiceParam implements CreateTaskParam{
     /**
      * 语速 正常语速的倍数
      */
-    private Double rate;
+    private Integer rate;
 }

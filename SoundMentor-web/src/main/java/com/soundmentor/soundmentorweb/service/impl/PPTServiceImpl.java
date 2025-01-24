@@ -169,7 +169,7 @@ public class PPTServiceImpl implements PPTService {
      * @param rate
      */
     @Transactional(rollbackFor = Exception.class)
-    public void taskExec(UserPptDetailDO userPptDetailDO,String apiParam, Double rate)
+    public void taskExec(UserPptDetailDO userPptDetailDO,String apiParam, Integer rate)
     {
         String summary = userPptDetailDO.getSummary();
         if(StringUtils.isEmpty(summary))
