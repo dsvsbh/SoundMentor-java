@@ -1,11 +1,17 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -18,6 +24,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements IUserService {
 
+    @Resource
+    private RedisTemplate redisTemplate;
     /**
      * 新增用户
      * @PARAM: @param userDO
@@ -36,7 +44,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      **/
     @Override
     public Boolean updateUser(UserDO userDO) {
-        return this.updateById(userDO);
+        boolean b = this.updateById(userDO);
+        if(b)
+        {
+            UserDO newUserInfo = this.getById(userDO.getId());
+            redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()),
+                   newUserInfo, SoundMentorConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+        }
+        return b;
     }
 
     /**
@@ -59,8 +74,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
      */
     @Override
     public Boolean updatePassword(String email, String password) {
-        return this.update(Wrappers.<UserDO> lambdaUpdate()
-                .set(UserDO::getPassword, password)
-                .eq(UserDO::getEmail, email));
+        UserDO userDO = this.lambdaQuery().eq(UserDO::getEmail, email).one();
+        userDO.setPassword(password);
+        redisTemplate.opsForValue().set(StrUtil.format(SoundMentorConstant.REDIS_USER_KEY,userDO.getId()),
+                userDO, SoundMentorConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+        return this.updateById(userDO);
     }
 }
