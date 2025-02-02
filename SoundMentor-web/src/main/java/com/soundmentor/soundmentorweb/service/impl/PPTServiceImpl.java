@@ -61,6 +61,11 @@ public class PPTServiceImpl implements PPTService {
     @Autowired
     private HttpMessageConverters messageConverters;
 
+    /**
+     * 创建ppt讲解生成任务
+     * @param param
+     * @return
+     */
     @Override
     public Integer createPPTSummary(CreatePPTSummaryTaskParam param) {
         String pptUrl = param.getPptUrl();
@@ -93,6 +98,11 @@ public class PPTServiceImpl implements PPTService {
         return userPptRelDO.getId();
     }
 
+    /**
+     * 创建ppt讲解语音生成任务
+     * @param param
+     * @return
+     */
     @Override
     public Integer createPPTSummaryVoice(CreatePPTSummaryVoiceParam param) {
         UserSoundRelDO sound = userSoundRelService.getById(param.getUserSoundId());
