@@ -15,6 +15,7 @@ import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 
+import io.minio.errors.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
 @Service
@@ -62,30 +65,20 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             return new FileUploadResDTO(file.getOriginalFilename(),one.getPath());
         }
         // 遍历文件类型枚举，找到文件对应类型和对应的 bucket
-        String bucketName = null;
         FileTypeEnum fileTypeEnum = null;
         for (FileTypeEnum value : FileTypeEnum.values()) {
             if (value.getSuffix().equals(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")))) {
-                bucketName = value.getBucket();
                 fileTypeEnum = value;
                 break;
             }
         }
-        if (bucketName == null) {
+        if (fileTypeEnum == null) {
             throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "暂不支持该文件");
         }
         // 上传文件
         try(InputStream inputStream = file.getInputStream())
         {
-            String objectName = System.currentTimeMillis() + "_" + md5 + fileTypeEnum.getSuffix();
-            // 上传文件到 MinIO
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(objectName)
-                            .stream(inputStream, inputStream.available(), -1)
-                            .build());
-            String path = minioConfig.getMinioUrl()+"/"+bucketName + "/" + objectName;
+            String path = uploadFileToMinio(inputStream, fileTypeEnum, md5);
             // 保存文件到数据库
             FileDO fileDO = new FileDO();
             fileDO.setFileSize(file.getSize());
@@ -106,5 +99,18 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
         {
             throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), ResultCodeEnum.FILE_ERROR.getMsg());
         }
+    }
+
+    @Override
+    public String uploadFileToMinio(InputStream inputStream, FileTypeEnum fileType, String md5) throws Exception {
+        String objectName = System.currentTimeMillis() + "_" + md5 + fileType.getSuffix();
+        // 上传文件到 MinIO
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket(fileType.getBucket())
+                        .object(objectName)
+                        .stream(inputStream, inputStream.available(), -1)
+                        .build());
+        return minioConfig.getMinioUrl()+"/"+fileType.getBucket() + "/" + objectName;
     }
 }

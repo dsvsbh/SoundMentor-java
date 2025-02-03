@@ -1,6 +1,6 @@
 package com.soundmentor.soundmentorbase.utils;
 
-import cn.hutool.json.XML;
+
 import com.soundmentor.soundmentorbase.constants.PPTConstant;
 import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
@@ -8,13 +8,18 @@ import com.soundmentor.soundmentorbase.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.sl.usermodel.PictureData;
-import org.apache.poi.sl.usermodel.Slide;
-import org.apache.poi.sl.usermodel.SlideShow;
 import org.apache.poi.xslf.usermodel.*;
 
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Slf4j
@@ -136,6 +141,60 @@ public class PPTXUtil {
             throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), ResultCodeEnum.FILE_ERROR.getMsg());
         }
     }
+
+    /**
+     * 将 PPTX 的幻灯片转换为 PNG 图片的 InputStream
+     * @param slide XSLFSlide 幻灯片对象
+     * @return PNG 图片的输入流（需由调用者关闭）
+     * @throws IOException 如果转换失败
+     */
+    public static InputStream convertSlideToImage(XSLFSlide slide) throws IOException {
+        // 获取幻灯片尺寸
+        XMLSlideShow slideShow = slide.getSlideShow();
+        Dimension pageSize = slideShow.getPageSize();
+
+        // 创建 BufferedImage 画布
+        BufferedImage image = new BufferedImage(
+                pageSize.width,
+                pageSize.height,
+                BufferedImage.TYPE_INT_RGB
+        );
+
+        // 初始化绘图上下文
+        Graphics2D graphics = image.createGraphics();
+        configureGraphicsQuality(graphics);
+
+        // 填充白色背景（避免透明区域显示为黑色）
+        graphics.setColor(Color.WHITE);
+        graphics.fill(new Rectangle2D.Double(0, 0, pageSize.width, pageSize.height));
+
+        // 将幻灯片内容绘制到图像
+        slide.draw(graphics);
+        graphics.dispose();
+
+        // 将图像转换为 PNG 输入流
+        return convertBufferedImageToInputStream(image, "PNG");
+    }
+
+    // 配置高质量渲染参数
+    private static void configureGraphicsQuality(Graphics2D graphics) {
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+    }
+
+    // 将 BufferedImage 转换为 InputStream
+    private static InputStream convertBufferedImageToInputStream(
+            BufferedImage image,
+            String format
+    ) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (!ImageIO.write(image, format, outputStream)) {
+            throw new IOException("不支持图片格式: " + format);
+        }
+        return new ByteArrayInputStream(outputStream.toByteArray());
+    }
 }
 
 class PPTUtilTest {
@@ -147,5 +206,18 @@ class PPTUtilTest {
         System.out.println(PPTXUtil.getSlideInfo(slides.get(0)));
         PPTXUtil.addAudioToSlide(ppt, 0, "test.mp3");
         PPTXUtil.savePPT(ppt, "SoundMentor-base/src/main/resources/test.ppt");
+    }
+}
+class PPTXUtilTest2 {
+    public static void main(String[] args) {
+        String url = "http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx";
+        XMLSlideShow ppt = PPTXUtil.loadPPTX(url);
+        List<XSLFSlide> slides = ppt.getSlides();
+        try {
+            InputStream inputStream = PPTXUtil.convertSlideToImage(slides.get(1));
+            Files.copy(inputStream, Paths.get("SoundMentor-base/src/main/resources/test1.png"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

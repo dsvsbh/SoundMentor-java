@@ -50,7 +50,10 @@ public class UserPptDetailDO implements Serializable {
      * 该页ppt的音频地址
      */
     private String soundUrl;
-
+    /**
+     * 该页ppt的预览图片地址
+     */
+    private String imgUrl;
     /**
      * 该页ppt的最新任务id
      */

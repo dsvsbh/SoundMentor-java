@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.enums.TaskStatusEnum;
 import com.soundmentor.soundmentorbase.enums.TaskTypeEnum;
@@ -21,6 +22,7 @@ import com.soundmentor.soundmentorweb.config.mqConfig.DirectRabbitConfig;
 import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.mapper.UserPptDetailMapper;
 import com.soundmentor.soundmentorweb.mapper.UserPptRelMapper;
+import com.soundmentor.soundmentorweb.service.FileService;
 import com.soundmentor.soundmentorweb.service.IUserSoundRelService;
 import com.soundmentor.soundmentorweb.service.PPTService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
@@ -35,9 +37,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
@@ -58,8 +62,8 @@ public class PPTServiceImpl implements PPTService {
     private MqProducer mqProducer;
     @Resource
     private IUserSoundRelService userSoundRelService;
-    @Autowired
-    private HttpMessageConverters messageConverters;
+    @Resource
+    private FileService fileService;
 
     /**
      * 创建ppt讲解生成任务
@@ -135,7 +139,7 @@ public class PPTServiceImpl implements PPTService {
      * @param slide ppt页对象
      */
     @Transactional(rollbackFor = Exception.class)
-    public void taskExec(Integer userPptId, Integer page,XSLFSlide slide)
+    public void taskExec(Integer userPptId, Integer page,XSLFSlide slide) throws Exception
     {
         TaskDO taskDO = new TaskDO();
         PPTPageSummaryTaskDTO pptPageSummaryTaskDTO = new PPTPageSummaryTaskDTO();
@@ -165,6 +169,10 @@ public class PPTServiceImpl implements PPTService {
             userPptDetailDO.setPptPage(page);
             userPptDetailDO.setCreateTime(LocalDateTime.now());
             userPptDetailDO.setLastTaskId(taskDO.getId());
+            //上传并添加预览图
+            InputStream inputStream = PPTXUtil.convertSlideToImage(slide);
+            String imgUrl = fileService.uploadFileToMinio(inputStream, FileTypeEnum.PNG, UUID.randomUUID().toString());
+            userPptDetailDO.setImgUrl(imgUrl);
             userPptDetailMapper.insert(userPptDetailDO);
         } else {
             userPptDetailDO.setLastTaskId(taskDO.getId());

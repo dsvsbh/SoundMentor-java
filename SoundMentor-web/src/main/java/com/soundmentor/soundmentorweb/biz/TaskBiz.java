@@ -107,6 +107,7 @@ public class TaskBiz {
                     pptTaskResultDTO.setPptPage(userPptDetailDO.getPptPage());
                     pptTaskResultDTO.setSummary(userPptDetailDO.getSummary());
                     pptTaskResultDTO.setSoundUrl(userPptDetailDO.getSoundUrl());
+                    pptTaskResultDTO.setImgUrl(userPptDetailDO.getImgUrl());
                     return pptTaskResultDTO;
                 }).collect(Collectors.toList());
     }
