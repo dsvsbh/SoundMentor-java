@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.biz;
 
+import cn.hutool.core.util.DesensitizedUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -161,6 +162,8 @@ public class UserBiz {
      **/
     public UserDTO getWebUser() {
         UserDO userDO = userInfoApi.getUser();
+        userDO.setPhone(DesensitizedUtil.mobilePhone(userDO.getPhone()));
+        userDO.setEmail(DesensitizedUtil.email(userDO.getEmail()));
         return userParamConvert.convert(userDO);
     }
 
@@ -169,7 +172,7 @@ public class UserBiz {
      * @PARAM: @param param
      * @RETURN: @return
      **/
-    public Boolean fogetPassword(ForgetPasswordParam param) {
+    public Boolean forgetPassword(ForgetPasswordParam param) {
         Boolean verifyTrue = verifyEmail(param.getEmail(), param.getVerifyCode());
         AssertUtil.isTrue(verifyTrue, ResultCodeEnum.UNAUTHORIZED.getCode(),"验证码错误");
         AssertUtil.isTrue(isValidEmail(param.getEmail()), ResultCodeEnum.INVALID_PARAM.getCode(),"邮箱格式错误");

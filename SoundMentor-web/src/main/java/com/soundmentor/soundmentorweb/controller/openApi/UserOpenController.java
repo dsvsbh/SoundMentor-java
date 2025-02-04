@@ -70,6 +70,6 @@ public class UserOpenController {
      **/
     @PostMapping(FORGET_PASSWORD)
     public ResponseDTO<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordParam param){
-        return ResponseDTO.OK(userBiz.fogetPassword(param));
+        return ResponseDTO.OK(userBiz.forgetPassword(param));
     }
 }

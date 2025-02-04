@@ -82,7 +82,7 @@ public class OrganizationController {
      * @return
      */
     @PutMapping("/updateRole")
-    public ResponseDTO updateRole(@RequestBody @Valid UpdateOrgUserRoleDTO dto){
+    public ResponseDTO updateRole(@RequestBody UpdateOrgUserRoleDTO dto){
         organizationService.updateRole(dto);
         return ResponseDTO.OK();
     }

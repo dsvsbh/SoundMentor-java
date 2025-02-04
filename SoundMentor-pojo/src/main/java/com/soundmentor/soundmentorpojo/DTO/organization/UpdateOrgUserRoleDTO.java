@@ -11,9 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateOrgUserRoleDTO {
-    @NotEmpty(message = "organizationId不能为空")
     private Integer organizationId;
-    @NotEmpty(message = "userId不能为空")
     private Integer userId;
     /**
      * 这儿只能修改ADMIN和USER角色，不能修改CREATOR角色
