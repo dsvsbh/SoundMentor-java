@@ -13,6 +13,7 @@ public enum FileTypeEnum {
     PPTX(5,".pptx", "ppt"),
     PNG(6,".png", "img"),
     JPG(7,".jpg", "img"),
+    ZIP(8,".zip", "zip"),
     ;
     private final Integer code;
     private final String suffix;
