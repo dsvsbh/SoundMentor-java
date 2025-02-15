@@ -74,5 +74,15 @@ public class TaskController {
         return ResponseDTO.OK();
     }
 
+    /**
+     * 获取有声ppt
+     * @param userPptId
+     * @return 生成的有声ppt的url
+     */
+    @GetMapping("/getppt/{userPptId}")
+    public ResponseDTO<String> getPpt(@PathVariable Integer userPptId)
+    {
+        return ResponseDTO.OK(taskBiz.getPpt(userPptId));
+    }
 
 }

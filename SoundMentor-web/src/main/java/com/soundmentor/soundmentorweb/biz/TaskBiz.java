@@ -1,27 +1,43 @@
 package com.soundmentor.soundmentorweb.biz;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
 import com.soundmentor.soundmentorbase.utils.AssertUtil;
+import com.soundmentor.soundmentorbase.utils.FileUtil;
+import com.soundmentor.soundmentorbase.utils.PPTXUtil;
 import com.soundmentor.soundmentorpojo.DO.TaskDO;
 import com.soundmentor.soundmentorpojo.DO.UserPptDetailDO;
+import com.soundmentor.soundmentorpojo.DO.UserPptRelDO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PPTTaskResultDTO;
 import com.soundmentor.soundmentorpojo.DTO.task.CreateTaskParam;
 import com.soundmentor.soundmentorpojo.DTO.task.TaskMessageDTO;
 import com.soundmentor.soundmentorweb.common.factory.TaskHandlerFactory;
 import com.soundmentor.soundmentorweb.mapper.UserPptDetailMapper;
+import com.soundmentor.soundmentorweb.mapper.UserPptRelMapper;
+import com.soundmentor.soundmentorweb.service.FileService;
 import com.soundmentor.soundmentorweb.service.ITaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +56,10 @@ public class TaskBiz {
     private UserPptDetailMapper userPptDetailMapper;
     @Resource(name = "task-thread-pool-executor")
     private ThreadPoolExecutor threadPoolExecutor;
+    @Autowired
+    private UserPptRelMapper userPptRelMapper;
+    @Resource
+    private FileService fileService;
 
 
     /**
@@ -121,6 +141,56 @@ public class TaskBiz {
                     log.error("更新ppt{}的{}页任务失败,请重试", pptTaskResultDTO.getUserPptId(), pptTaskResultDTO.getPptPage());
                 }
             });
+        }
+    }
+
+    public String getPpt(Integer userPptId) {
+        List<UserPptDetailDO> userPptDetailDOS = userPptDetailMapper.selectList(new LambdaQueryWrapper<UserPptDetailDO>()
+                .eq(UserPptDetailDO::getUserPptId, userPptId)
+                .orderByAsc(UserPptDetailDO::getPptPage));
+        if(CollectionUtils.isEmpty(userPptDetailDOS))
+        {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"该ppt还未执行讲解生成");
+        }
+        UserPptRelDO userPptRelDO = userPptRelMapper.selectById(userPptId);
+        String pptUrl = userPptRelDO.getPptUrl();
+        XMLSlideShow pptx = PPTXUtil.loadPPTX(pptUrl);
+        String folderName = "temp/"+UUID.fastUUID();
+        FileUtil.createFolder(folderName);
+        try(FileOutputStream outputStream = new FileOutputStream(folderName+"/ppt.pptx"))
+        {
+            HttpUtil.download(pptUrl,outputStream,true);
+            outputStream.flush();
+        } catch (Exception e) {
+            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),"下载ppt失败");
+        }
+        try{
+            CountDownLatch countDownLatch = new CountDownLatch(userPptDetailDOS.size());
+            userPptDetailDOS.forEach(userPptDetailDO -> {
+                threadPoolExecutor.execute(() ->{
+                    try(FileOutputStream fileOutputStream = new FileOutputStream(folderName+"/"+userPptDetailDO.getPptPage()+".mp3")) {
+                        HttpUtil.download(userPptDetailDO.getSoundUrl(),fileOutputStream,true);
+                        fileOutputStream.flush();
+                        PPTXUtil.addAudioToSlide(pptx,userPptDetailDO.getPptPage(),userPptDetailDO.getPptPage()+".mp3");
+                    } catch (Exception e) {
+                        log.error("ppt{}的{}页音频插入失败", userPptId, userPptDetailDO.getPptPage());
+                    } finally {
+                        countDownLatch.countDown();
+                    }
+                });
+            });
+            countDownLatch.await(1, TimeUnit.MINUTES);
+            PPTXUtil.savePPT(pptx,folderName+"/ppt.pptx");
+            InputStream inputStream = FileUtil.zipFolder(folderName);
+            return fileService.uploadFileToMinio(inputStream, FileTypeEnum.ZIP, UUID.fastUUID().toString());
+        } catch (Exception e) {
+            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),"生成有声ppt失败");
+        } finally {
+            try {
+                FileUtils.deleteDirectory(new File(folderName));
+            } catch (IOException e) {
+                throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(),"删除临时文件失败");
+            }
         }
     }
 }
