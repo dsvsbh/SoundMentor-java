@@ -12,7 +12,7 @@
         <result column="capacity" property="capacity" />
     </resultMap>
     <select id="getUserOrganizationList" resultType="com.soundmentor.soundmentorpojo.DTO.organization.OrganizationListDTO">
-        select o.id, o.name, o.description, o.created_time as createdTime, o.updated_time as updatedTime, o.capacity,ou.organization_role as organizationRole,(select count(*) from organization_user ou2 where ou2.organization_id = o.id) as userCount, (select count(*) from organization_file orf where orf.organization_id = o.id) as fileCount
+        select o.id, o.name, o.description, o.created_time as createdTime, o.updated_time as updatedTime, o.capacity,ou.organization_role as organizationRole,o.capacity-o.spare_capacity as userCount, (select count(*) from organization_file orf where orf.organization_id = o.id) as fileCount
         from organization_user ou, organization o
         <where>
             ou.organization_id = o.id

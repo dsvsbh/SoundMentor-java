@@ -58,4 +58,9 @@ public class OrganizationDO implements Serializable {
      *  组织的容量
      */
     private Integer capacity;
+
+    /**
+     *  组织的剩余容量
+     */
+    private Integer spareCapacity;
 }

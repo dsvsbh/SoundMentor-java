@@ -85,6 +85,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .capacity(capacity)
+                .spareCapacity(capacity-1)
                 .createdTime(LocalDateTime.now())
                 .updatedTime(LocalDateTime.now())
                 .build();
@@ -138,6 +139,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @param dto
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void join(JoinOrganizationDTO dto) {
         String shareCode = dto.getShareCode();
         Integer organizationId = dto.getOrganizationId();
@@ -163,8 +165,22 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         {
             throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"您已经加入该组织");
         }
-        Integer capacity = organization.getCapacity();
-        joinOrganization(capacity,organizationId);
+        boolean update = this.lambdaUpdate()
+                .setSql("spare_capacity=spare_capacity-1")
+                .eq(OrganizationDO::getId, organizationId)
+                .gt(OrganizationDO::getSpareCapacity, 0)
+                .update();
+        if(!update)
+        {
+            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"组织容量已满");
+        }
+        OrganizationUserDO organizationUserDO = OrganizationUserDO.builder()
+                .organizationId(organizationId)
+                .userId(userInfoApi.getUser().getId())
+                .organizationRole(OrganizationRole.USER.getCode())
+                .createTime(LocalDateTime.now())
+                .build();
+        ouService.save(organizationUserDO);
     }
 
     @Override
@@ -187,12 +203,17 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removeUserFromOrg(RemoveOrganizationUserDTO dto) {
         OrganizationRole organizationRole = userInfoApi.getOrganizationRole(dto.getOrganizationId());
         if(!OrganizationRole.CREATOR.equals(organizationRole))
         {
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(),"您不是该组织的创建者，权限不够");
         }
+        this.lambdaUpdate()
+                .setSql("spare_capacity=spare_capacity+1")
+                .eq(OrganizationDO::getId, dto.getOrganizationId())
+                .update();
         ouService.lambdaUpdate()
                 .eq(OrganizationUserDO::getUserId, dto.getUserId())
                 .eq(OrganizationUserDO::getOrganizationId, dto.getOrganizationId())
@@ -287,41 +308,4 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return organizationFileDO.getDownloadCount();
     }
 
-    /**
-     *  加入组织
-     * @param capacity
-     * @param organizationId
-     */
-    private void joinOrganization(Integer capacity,Integer organizationId) {
-        Integer count = ouService.lambdaQuery()
-                .eq(OrganizationUserDO::getOrganizationId, organizationId)
-                .count();
-        if(count>=capacity)
-        {
-            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"组织已满");
-        }
-        //做分布式锁防止并发加入组织导致的人数超出
-        RLock lock = redissonClient.getLock(SoundMentorConstant.ORGANIZATION_JOIN_LOCK_KEY + organizationId);
-        try {
-            boolean isLock = lock.tryLock(5000, TimeUnit.MILLISECONDS);
-            if(isLock)//拿到锁加入组织
-            {
-                Integer userId = userInfoApi.getUser().getId();
-                OrganizationUserDO build = OrganizationUserDO.builder()
-                        .userId(userId)
-                        .organizationId(organizationId)
-                        .organizationRole(OrganizationRole.USER.getCode())//通过邀请码加入默认为普通用户
-                        .createTime(LocalDateTime.now())
-                        .build();
-                ouService.save(build);
-            } else {
-                //没拿到锁的自旋
-                Thread.sleep(50);
-                joinOrganization(capacity,organizationId);
-            }
-        } catch (Exception e)
-        {
-            throw new BizException(ResultCodeEnum.INTERNAL_ERROR.getCode(),"加入组织失败");
-        }
-    }
 }
