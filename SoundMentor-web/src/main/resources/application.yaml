@@ -11,11 +11,11 @@ spring:
     name: SoundMentor-web
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.43.62.36:3306/sound_mentor
+    url: jdbc:mysql://8.148.229.137:3306/sound_mentor
     username: root
     password: 123456
   redis:
-    host: 121.43.62.36
+    host: 8.148.229.137
     port: 6379
     database: 0
     jedis:
@@ -42,7 +42,7 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
   # 配置 rabbitMq 服务器
   rabbitmq:
-    host: 121.43.62.36
+    host: 8.148.229.137
     port: 5672
     username: admin
     password: 123456
@@ -82,7 +82,7 @@ user:
   maxSound: 100
 
 minio:
-  url: http://121.43.62.36:9000
+  url: http://8.148.229.137:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket:

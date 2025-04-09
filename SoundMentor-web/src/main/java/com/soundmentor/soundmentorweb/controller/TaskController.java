@@ -75,7 +75,7 @@ public class TaskController {
     }
 
     /**
-     * 获取有声ppt
+     * 获取有声ppt todo 后续这里要用spring的异步驱动解耦，同步接口返回太慢
      * @param userPptId
      * @return 生成的有声ppt的url
      */

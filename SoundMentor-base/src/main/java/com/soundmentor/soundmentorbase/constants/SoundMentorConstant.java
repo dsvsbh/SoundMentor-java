@@ -11,7 +11,7 @@ public final class SoundMentorConstant {
     /**
      * minio mp3前缀
      **/
-    public static final String MINIO_MP3_PREFIX = "http://121.43.62.36:9000/mp3/";
+    public static final String MINIO_MP3_PREFIX = "http://8.148.229.137:9000/mp3/";
     /**
      * 验证码redis key
      **/

@@ -199,7 +199,7 @@ public class PPTXUtil {
 
 class PPTUtilTest {
     public static void main(String[] args) {
-        String url = "http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx";
+        String url = "http://8.148.229.137:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx";
         XMLSlideShow ppt = PPTXUtil.loadPPTX(url);
         List<XSLFSlide> slides = ppt.getSlides();
         System.out.println(slides.size());
@@ -210,7 +210,7 @@ class PPTUtilTest {
 }
 class PPTXUtilTest2 {
     public static void main(String[] args) {
-        String url = "http://121.43.62.36:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx";
+        String url = "http://8.148.229.137:9000/ppt/1736923625533_5e5bd4d73cbd451c0cfd346dc96a5d9b.pptx";
         XMLSlideShow ppt = PPTXUtil.loadPPTX(url);
         List<XSLFSlide> slides = ppt.getSlides();
         try {
