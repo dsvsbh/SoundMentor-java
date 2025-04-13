@@ -12,7 +12,8 @@ import lombok.Data;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CreateVoiceTrainParam.class, name = "VOICE_TRAIN"),
         @JsonSubTypes.Type(value = CreatePPTSummaryTaskParam.class, name = "PPT_SUMMARY"),
-        @JsonSubTypes.Type(value = CreatePPTSummaryVoiceParam.class, name = "PPT_SUMMARY_VOICE")
+        @JsonSubTypes.Type(value = CreatePPTSummaryVoiceParam.class, name = "PPT_SUMMARY_VOICE"),
+        @JsonSubTypes.Type(value = CreateNormalTtsParam.class, name = "NORMAL_TTS")
 })
 public interface CreateTaskParam {
    TaskTypeEnum getTaskType();

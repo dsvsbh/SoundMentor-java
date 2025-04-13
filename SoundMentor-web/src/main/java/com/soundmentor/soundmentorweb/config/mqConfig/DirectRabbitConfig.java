@@ -25,9 +25,15 @@ public class DirectRabbitConfig {
     public static final String EXCHANGE_NAME_PPT_SUMMARY = "PPTSummaryDirectExchange";
     public static final String ROUTING_KEY_PPT_SUMMARY = "PPTSummaryDirectRouting";
 
+    // PPT讲解语音队列
     public static final String QUEUE_NAME_PPT_SUMMARY_VOICE = "PPTSummaryVoiceDirectQueue";
     public static final String EXCHANGE_NAME_PPT_SUMMARY_VOICE = "PPTSummaryVoiceDirectExchange";
     public static final String ROUTING_KEY_PPT_SUMMARY_VOICE = "PPTSummaryVoiceDirectRouting";
+
+    // 预设文本朗读队列
+    public static final String QUEUE_NAME_NORMAL_TTS = "NormalTtsDirectQueue";
+    public static final String EXCHANGE_NAME_NORMAL_TTS = "NormalTtsDirectExchange";
+    public static final String ROUTING_KEY_NORMAL_TTS = "NormalTtsDirectRouting";
 
     // 任务返回结果队列
     public static final String QUEUE_NAME_TASK_BACK = "TaskBack";
@@ -78,6 +84,11 @@ public class DirectRabbitConfig {
         return new Queue(QUEUE_NAME_PPT_SUMMARY_VOICE,true);
     }
 
+    @Bean
+    public Queue NormalTtsDirectQueue() {
+        return new Queue(QUEUE_NAME_NORMAL_TTS,true);
+    }
+
     /**
      * 延时队列
      * @return
@@ -110,6 +121,11 @@ public class DirectRabbitConfig {
     @Bean
     DirectExchange PPTDirectVoiceExchange() {
         return new DirectExchange(EXCHANGE_NAME_PPT_SUMMARY_VOICE,true,false);
+    }
+
+    @Bean
+    DirectExchange NormalTtsDirectExchange() {
+        return new DirectExchange(EXCHANGE_NAME_NORMAL_TTS,true,false);
     }
     /**
      * 创建任务返回结果交换机
@@ -156,7 +172,10 @@ public class DirectRabbitConfig {
     Binding bindingDirectPPTVoice() {
         return BindingBuilder.bind(PPTDirectVoiceQueue()).to(PPTDirectVoiceExchange()).with(ROUTING_KEY_PPT_SUMMARY_VOICE);
     }
-
+    @Bean
+    Binding bindingDirectNormalTts() {
+        return BindingBuilder.bind(NormalTtsDirectQueue()).to(NormalTtsDirectExchange()).with(ROUTING_KEY_NORMAL_TTS);
+    }
     /**
      * 任务返回结果绑定
      * @PARAM:
