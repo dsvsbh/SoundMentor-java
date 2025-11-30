@@ -1,5 +1,8 @@
 package com.soundmentor.soundmentorbase.constants;
 
+/**
+ * PPTConstant ppt相关常量
+ */
 public class PPTConstant {
     public static final String PPT_VOICE_PICTURE_PATH = "SoundMentor-base/src/main/resources/voice.png";
     public static final Integer PPT_VOICE_PICTURE_WIDTH = 50;
