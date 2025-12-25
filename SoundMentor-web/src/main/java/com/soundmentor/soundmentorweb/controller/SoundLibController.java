@@ -54,7 +54,6 @@ public class SoundLibController {
     @PostMapping(GET_SOUND)
     public ResponseDTO<UserTrainSoundDTO> getSound(@Valid @RequestBody IdParam param){
         return ResponseDTO.OK(userSoundBiz.getSound(param.getId()));
-
     }
 
     /**
