@@ -1,8 +1,5 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
-import com.soundmentor.soundmentorpojo.DO.TaskDO;
-
-import com.soundmentor.soundmentorweb.mapper.TaskMapper;
 import com.soundmentor.soundmentorweb.service.ITaskService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

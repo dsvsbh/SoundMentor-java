@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.soundmentor.soundmentorbase.constants.SoundMentorConstant;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
 import com.soundmentor.soundmentorweb.mapper.UserMapper;
-import com.soundmentor.soundmentorweb.service.IUserService;
+import com.soundmentor.soundmentorweb.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2025-01-05
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements IUserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
 
     @Resource
     private RedisTemplate redisTemplate;

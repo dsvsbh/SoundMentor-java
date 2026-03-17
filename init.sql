@@ -100,6 +100,7 @@ CREATE TABLE `ppt_task` (
   `user_id` bigint NOT NULL,
   `original_ppt_file_url` varchar(255) NOT NULL,
   `task_status` int DEFAULT '0',
+  `fail_reason` varchar(255) DEFAULT NULL,
   `audio_ppt_file_url` varchar(255) DEFAULT NULL,
   `total_pages` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,

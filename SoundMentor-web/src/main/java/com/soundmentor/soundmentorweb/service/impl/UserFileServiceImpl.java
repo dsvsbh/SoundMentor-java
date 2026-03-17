@@ -3,7 +3,7 @@ package com.soundmentor.soundmentorweb.service.impl;
 import com.soundmentor.soundmentorpojo.DO.UserFileDO;
 
 import com.soundmentor.soundmentorweb.mapper.UserFileMapper;
-import com.soundmentor.soundmentorweb.service.IUserFileService;
+import com.soundmentor.soundmentorweb.service.UserFileService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 2025-01-12
  */
 @Service
-public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFileDO> implements IUserFileService {
+public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFileDO> implements UserFileService {
 
     @Override
     public void bindUserFile(UserFileDO userFileDO) {

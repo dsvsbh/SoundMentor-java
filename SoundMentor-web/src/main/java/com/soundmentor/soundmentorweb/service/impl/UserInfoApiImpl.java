@@ -2,22 +2,16 @@ package com.soundmentor.soundmentorweb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.soundmentor.soundmentorbase.enums.OrganizationRole;
-import com.soundmentor.soundmentorpojo.DO.OrganizationDO;
 import com.soundmentor.soundmentorpojo.DO.OrganizationUserDO;
 import com.soundmentor.soundmentorpojo.DO.UserDO;
-import com.soundmentor.soundmentorweb.mapper.UserMapper;
 import com.soundmentor.soundmentorweb.service.IOrganizationService;
 import com.soundmentor.soundmentorweb.service.IOrganizationUserService;
-import com.soundmentor.soundmentorweb.service.IUserService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class UserInfoApiImpl implements UserInfoApi {

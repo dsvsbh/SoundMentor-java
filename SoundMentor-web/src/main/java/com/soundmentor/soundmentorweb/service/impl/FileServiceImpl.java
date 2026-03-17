@@ -10,12 +10,11 @@ import com.soundmentor.soundmentorpojo.DTO.file.FileUploadResDTO;
 import com.soundmentor.soundmentorweb.config.minioConfig.MinioConfig;
 import com.soundmentor.soundmentorweb.mapper.FileMapper;
 import com.soundmentor.soundmentorweb.service.FileService;
-import com.soundmentor.soundmentorweb.service.IUserFileService;
+import com.soundmentor.soundmentorweb.service.UserFileService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 
-import io.minio.errors.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
 @Service
@@ -38,7 +35,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
     @Resource
     private UserInfoApi userInfoApi;
     @Resource
-    private IUserFileService userFileService;
+    private UserFileService userFileService;
 
     /**
      * 上传文件到 MinIO,并返回文件路径
@@ -64,14 +61,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             userFileService.bindUserFile(userFileDO);
             return new FileUploadResDTO(file.getOriginalFilename(),one.getPath());
         }
-        // 遍历文件类型枚举，找到文件对应类型和对应的 bucket
-        FileTypeEnum fileTypeEnum = null;
-        for (FileTypeEnum value : FileTypeEnum.values()) {
-            if (value.getSuffix().equals(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")))) {
-                fileTypeEnum = value;
-                break;
-            }
-        }
+        // 获取文件后缀名并直接通过静态方法获取枚举
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        FileTypeEnum fileTypeEnum = FileTypeEnum.getBySuffix(suffix);
+        
         if (fileTypeEnum == null) {
             throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "暂不支持该文件");
         }
