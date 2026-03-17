@@ -42,6 +42,7 @@ public class PPTController {
     public ResponseDTO<Long> createPPTTask(@RequestParam String url) {
         return ResponseDTO.OK(pptService.createPPTTask(url));
     }
+
     /**
      * 讲解生成
      * @param taskId 任务id
@@ -52,6 +53,7 @@ public class PPTController {
         pptService.generateExplanation(taskId);
         return ResponseDTO.OK();
     }
+
     /**
      * 讲解批量编辑
      * @param batchEditPPTExplanationDTO 批量编辑讲解DTO
@@ -62,6 +64,7 @@ public class PPTController {
         pptService.batchEditExplanation(batchEditPPTExplanationDTO);
         return ResponseDTO.OK();
     }
+
     /**
      * 讲解语音生成
      * @param taskId 任务id
@@ -72,6 +75,7 @@ public class PPTController {
         pptService.generateExplanationVoice(taskId);
         return ResponseDTO.OK();
     }
+
     /**
      * 讲解语音批量编辑
      * @param batchEditPPTVoiceExplanationDTO 批量编辑讲解语音DTO
@@ -82,6 +86,7 @@ public class PPTController {
         pptService.batchEditExplanationVoice(batchEditPPTVoiceExplanationDTO);
         return ResponseDTO.OK();
     }
+
     /**
      * 有声ppt生成
      * @param taskId 任务id
@@ -92,6 +97,7 @@ public class PPTController {
         pptService.generateSoundPPT(taskId);
         return ResponseDTO.OK();
     }
+
     /**
      * 任务查询
      * @param taskId 任务id
@@ -101,6 +107,7 @@ public class PPTController {
     public ResponseDTO<PptTaskQueryResultDTO> queryTask(Long taskId) {
         return ResponseDTO.OK(pptService.queryTask(taskId));
     }
+
     /**
      * 列出当前用户的所有ppt任务
      * @return
