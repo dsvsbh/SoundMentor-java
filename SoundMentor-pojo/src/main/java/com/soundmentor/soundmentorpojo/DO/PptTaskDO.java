@@ -52,6 +52,11 @@ public class PptTaskDO implements Serializable {
     private Integer taskStatus;
 
     /**
+     * 失败原因
+     */
+    private String failReason;
+
+    /**
      * 音频 PPT 文件 URL
      */
     private String audioPptFileUrl;

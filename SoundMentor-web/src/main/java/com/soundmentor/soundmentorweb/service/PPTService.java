@@ -4,8 +4,6 @@ import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTVoiceExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
-import com.soundmentor.soundmentorpojo.DTO.task.CreatePPTSummaryTaskParam;
-import com.soundmentor.soundmentorpojo.DTO.task.CreatePPTSummaryVoiceParam;
 
 import java.util.List;
 
@@ -34,13 +32,34 @@ public interface PPTService {
      */
     void batchEditExplanation(BatchEditPPTExplanationDTO batchEditPPTExplanationDTO);
 
+    /**
+     * 生成讲解语音
+     * @param taskId 任务id
+     */
     void generateExplanationVoice(Long taskId);
 
+    /**
+     * 批量编辑讲解语音
+     * @param batchEditPPTVoiceExplanationDTO 批量编辑讲解语音DTO
+     */
     void batchEditExplanationVoice(BatchEditPPTVoiceExplanationDTO batchEditPPTVoiceExplanationDTO);
 
+    /**
+     * 生成有声ppt
+     * @param taskId 任务id
+     */
     void generateSoundPPT(Long taskId);
 
+    /**
+     * 根据任务id查询任务
+     * @param taskId 任务id
+     * @return 任务信息
+     */
     PptTaskQueryResultDTO queryTask(Long taskId);
 
+    /**
+     * 列出当前用户的所有任务
+     * @return 任务列表
+     */
     List<PptTaskDTO> listTasks();
 }
