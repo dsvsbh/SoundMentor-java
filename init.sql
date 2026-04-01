@@ -11,7 +11,7 @@
  Target Server Version : 80044 (8.0.44)
  File Encoding         : 65001
 
- Date: 31/03/2026 13:50:00
+ Date: 01/04/2026 20:49:11
 */
 
 SET NAMES utf8mb4;
@@ -38,9 +38,6 @@ CREATE TABLE `file` (
 -- Records of file
 -- ----------------------------
 BEGIN;
-INSERT INTO `file` (`id`, `origin_name`, `path`, `file_size`, `file_type`, `create_time`, `md5`) VALUES (20, 'Snipaste_2025-02-09_14-41-08.jpg', 'http://8.148.229.137:9000/img/1744211186358_9cf4281160b56cfbe565e947dc0ec403.jpg', 24187, 7, '2025-04-09 15:06:27', '9cf4281160b56cfbe565e947dc0ec403');
-INSERT INTO `file` (`id`, `origin_name`, `path`, `file_size`, `file_type`, `create_time`, `md5`) VALUES (21, 'test.pptx', 'http://8.148.229.137:9000/ppt/1744348485766_e70bc8f716d0dfaf47ccecd0aa2990d8.pptx', 30699, 5, '2025-04-11 05:14:46', 'e70bc8f716d0dfaf47ccecd0aa2990d8');
-INSERT INTO `file` (`id`, `origin_name`, `path`, `file_size`, `file_type`, `create_time`, `md5`) VALUES (22, '极简总结汇报.pptx', 'http://8.148.229.137:9000/ppt/1744556072643_1ff7ba6cc4b6f17c8df4745fdd978278.pptx', 4518433, 5, '2025-04-13 14:54:34', '1ff7ba6cc4b6f17c8df4745fdd978278');
 COMMIT;
 
 -- ----------------------------
@@ -2076,18 +2073,6 @@ CREATE TABLE `organization` (
 -- Records of organization
 -- ----------------------------
 BEGIN;
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (20, 'test', 'test', '2025-01-06 17:00:34', '2025-01-06 17:00:34', 100, 99);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (21, 'test', 'test', '2025-01-06 17:00:48', '2025-01-06 17:00:48', 100, 99);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (22, 'test', 'test', '2025-01-06 17:00:59', '2025-01-06 17:00:59', 100, 99);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (23, '', '', '2025-01-06 18:28:37', '2025-01-06 18:28:37', 22, 21);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (24, '', '', '2025-01-06 18:36:44', '2025-01-06 18:36:44', 22, 21);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (25, '', 'zuzhi', '2025-01-06 19:16:53', '2025-01-06 19:16:53', 50, 49);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (26, '', 'zuzhi', '2025-01-06 19:17:05', '2025-01-06 19:17:05', 999, 998);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (27, 'testjoin', 'testjoin', '2025-01-07 22:08:48', '2025-01-07 22:08:48', 10, 8);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (28, 'testjoin', 'testjoin', '2025-01-07 22:13:26', '2025-01-07 22:13:26', 1, 0);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (37, 'ggg', 'gg', '2025-01-14 08:26:16', '2025-01-14 08:26:16', 2, 0);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (38, '11', '1111111111111111', '2025-01-24 12:59:19', '2025-01-24 12:59:19', 2, 1);
-INSERT INTO `organization` (`id`, `name`, `description`, `created_time`, `updated_time`, `capacity`, `spare_capacity`) VALUES (39, '1', '111', '2025-01-24 12:59:42', '2025-01-24 12:59:42', 2, 1);
 COMMIT;
 
 -- ----------------------------
@@ -2110,9 +2095,6 @@ CREATE TABLE `organization_file` (
 -- Records of organization_file
 -- ----------------------------
 BEGIN;
-INSERT INTO `organization_file` (`id`, `organization_id`, `file_id`, `create_time`, `sharer_id`, `download_count`) VALUES (1, 20, 10, '2025-01-20 22:11:23', 2, 0);
-INSERT INTO `organization_file` (`id`, `organization_id`, `file_id`, `create_time`, `sharer_id`, `download_count`) VALUES (2, 20, 8, '2025-01-21 17:58:24', 2, 0);
-INSERT INTO `organization_file` (`id`, `organization_id`, `file_id`, `create_time`, `sharer_id`, `download_count`) VALUES (3, 37, 12, '2025-01-23 08:43:24', 6, 2);
 COMMIT;
 
 -- ----------------------------
@@ -2135,20 +2117,6 @@ CREATE TABLE `organization_user` (
 -- Records of organization_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (20, 20, 2, 2, '2025-01-09 16:15:57');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (21, 21, 2, 2, '2025-01-09 16:16:01');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (22, 22, 2, 2, '2025-01-09 16:16:03');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (23, 23, 5, 2, '2025-01-09 16:16:02');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (24, 24, 5, 2, '2025-01-09 16:16:04');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (25, 25, 2, 2, '2025-01-09 16:16:06');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (26, 26, 2, 2, '2025-01-09 16:16:05');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (27, 27, 2, 2, '2025-01-09 16:16:07');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (28, 27, 5, 0, '2025-01-09 16:16:09');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (29, 28, 2, 2, '2025-01-09 16:16:08');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (39, 37, 6, 2, '2025-01-14 08:26:16');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (40, 37, 5, 0, '2025-01-14 08:26:34');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (41, 38, 6, 2, '2025-01-24 12:59:19');
-INSERT INTO `organization_user` (`id`, `organization_id`, `user_id`, `organization_role`, `create_time`) VALUES (42, 39, 6, 2, '2025-01-24 12:59:42');
 COMMIT;
 
 -- ----------------------------
@@ -2235,17 +2203,13 @@ CREATE TABLE `user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (1, '', '1939729609@qq.com', '46236141025', '', 'k+glZME5LBcwGi+tx9vmJg==', '2025-01-05 17:45:05', '2025-01-05 09:45:05', 'https://s2.loli.net/2025/01/09/UNMOVLJAFs7YCBk.png');
-INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (2, 'lzc', '291396312@qq.com', '18570687868', 'lzc', 'CwIfXN2Osf90jwST7FA6yg==', '2025-01-05 21:15:25', '2025-01-05 13:15:24', 'http://121.43.62.36:9000/img/1737363230908_f4e04c3f5fe59d8662f5787cd3f047fa.png');
-INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (5, 'make', '484005691@qq.com', '13464696188', 'Make', 'k+glZME5LBcwGi+tx9vmJg==', '2025-01-05 21:28:35', '2025-01-05 13:28:35', 'https://s2.loli.net/2025/01/09/UNMOVLJAFs7YCBk.png');
-INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (6, '111', '3515746178@qq.com', '123****8902', '111', 'k+glZME5LBcwGi+tx9vmJg==', '2025-01-08 13:22:44', '2025-01-08 13:22:44', 'http://8.148.229.137:9000/img/1744211186358_9cf4281160b56cfbe565e947dc0ec403.jpg');
-INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (7, 'make1938', 'fzw1938@163.com', '028 8847 4323', 'make1938', 'k+glZME5LBcwGi+tx9vmJg==', '2025-01-11 15:11:43', '2025-01-11 07:11:43', 'https://s2.loli.net/2025/01/09/UNMOVLJAFs7YCBk.png');
+INSERT INTO `user` (`id`, `name`, `email`, `phone`, `username`, `password`, `created_time`, `updated_time`, `head_img`) VALUES (9, 'lzc', '291396312@qq.com', '19308460507', 'lzc', 'CwIfXN2Osf90jwST7FA6yg==', '2026-04-01 20:40:17', '2026-04-01 12:40:16', 'default');
 COMMIT;
 
 -- ----------------------------
@@ -2266,30 +2230,6 @@ CREATE TABLE `user_file` (
 -- Records of user_file
 -- ----------------------------
 BEGIN;
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (1, 2, 1, '2025-01-12 13:49:43');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (2, 5, 1, '2025-01-12 13:52:12');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (3, 6, 2, '2025-01-14 09:10:33');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (4, 6, 3, '2025-01-15 03:08:58');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (5, 6, 4, '2025-01-15 03:15:45');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (6, 2, 5, '2025-01-15 12:33:02');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (7, 2, 6, '2025-01-15 13:01:00');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (8, 2, 7, '2025-01-15 13:05:05');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (9, 2, 8, '2025-01-15 14:47:06');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (10, 6, 9, '2025-01-19 07:31:34');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (11, 2, 10, '2025-01-20 08:53:51');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (12, 2, 11, '2025-01-20 09:02:34');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (13, 6, 12, '2025-01-21 07:15:41');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (14, 2, 13, '2025-01-23 18:56:25');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (15, 6, 14, '2025-01-24 13:16:38');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (16, 6, 15, '2025-01-24 13:32:40');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (17, 6, 16, '2025-02-02 13:23:56');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (18, 6, 17, '2025-02-02 14:14:14');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (19, 6, 18, '2025-02-02 14:33:56');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (20, 2, 19, '2025-02-03 16:57:31');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (21, 6, 20, '2025-04-09 15:06:27');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (22, 6, 19, '2025-04-10 00:49:42');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (23, 6, 21, '2025-04-11 05:14:46');
-INSERT INTO `user_file` (`id`, `user_id`, `file_id`, `create_time`) VALUES (24, 6, 22, '2025-04-13 14:54:34');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
