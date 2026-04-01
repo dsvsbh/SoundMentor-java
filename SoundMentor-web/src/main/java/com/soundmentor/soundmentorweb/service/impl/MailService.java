@@ -28,7 +28,7 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setFrom(FROM_EMAIL);
             helper.setTo(email);
-            helper.setSubject("Sound - Mentot 验证码");
+            helper.setSubject("【SoundMentor语音教辅系统】注册验证码");
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.CHINA);
             /// String content = StrUtil.format(SoundMentorConstant.MAIL_CONTENT, code, currentDate.format(formatter));

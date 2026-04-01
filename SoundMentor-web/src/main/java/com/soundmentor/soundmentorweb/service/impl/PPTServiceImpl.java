@@ -1,5 +1,6 @@
 package com.soundmentor.soundmentorweb.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.PptTaskStatusEnum;
 import com.soundmentor.soundmentorbase.exception.BizException;
@@ -22,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.sl.usermodel.Slide;
 import org.apache.poi.sl.usermodel.SlideShow;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * PPTServiceImpl 有声ppt服务实现类 todo 待实现方法
+ * PPTServiceImpl 有声ppt服务实现类
  */
 @Service
 @Slf4j

@@ -22,9 +22,9 @@ spring:
       pool:
         max-active: 8
   mail:
-    host: smtp.163.com
-    username: fzw1938@163.com
-    password: EWiPDkat4FXdtuh5
+    host: smtp.qq.com
+    username: 291396312@qq.com
+    password: avsbuhivzmrzcbde
     port: 465
     protocol: smtp
     default-encoding: utf-8

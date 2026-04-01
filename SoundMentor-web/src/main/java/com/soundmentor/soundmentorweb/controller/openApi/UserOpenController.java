@@ -27,9 +27,6 @@ public class UserOpenController {
     public static final String FORGET_PASSWORD = "/forgetPassword";
     @Resource
     private UserBiz userBiz;
-    @Resource
-    private MqProducer mqProducer;
-
 
     /**
      * 发送邮件
