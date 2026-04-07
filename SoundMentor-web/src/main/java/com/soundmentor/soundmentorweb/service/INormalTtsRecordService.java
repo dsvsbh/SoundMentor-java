@@ -3,7 +3,7 @@ package com.soundmentor.soundmentorweb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.soundmentor.soundmentorpojo.DO.NormalTtsRecord;
-import com.soundmentor.soundmentorpojo.DTO.basic.PageResult;
+import com.soundmentor.soundmentorpojo.DTO.PresetSoundDTO;
 
 import java.util.List;
 
@@ -17,5 +17,9 @@ import java.util.List;
  */
 public interface INormalTtsRecordService extends IService<NormalTtsRecord> {
 
-    PageResult<NormalTtsRecord> getRecords(Integer pageNum, Integer pageSize);
+    /**
+     * 查询声音库
+     * @return 预设声音列表
+     */
+    List<PresetSoundDTO> listVoices();
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 public enum FileTypeEnum {
-    MP3(0,".mp3", "mp3"),
+    WAV(0,".wav", "wav"),
     DOC(1,".doc", "doc"),
     DOCX(2,".docx", "doc"),
     PDF(3,".pdf", "doc"),
