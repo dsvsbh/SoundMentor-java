@@ -1,7 +1,7 @@
 package com.soundmentor.soundmentorweb.service;
 
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTExplanationDTO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
 
@@ -14,9 +14,10 @@ public interface PPTService {
      * 创建一个有声ppt任务（创建接口），创建1个task、n个task_detail,
      * 生成每页预览图上传并落库url，页面查询展示ppt的预览图，任务状态为创建。
      * @param url ppt地址
+     * @param taskName 任务名称
      * @return
      */
-    Long createPPTTask(String url);
+    Long createPPTTask(String url, String taskName);
     /**
      * 生成讲解
      * 用户执行讲解生成任务，任务状态改为讲解生成中并提交异步任务，异步任务解析每页内容并发请求LLM获取讲解落库，
@@ -26,11 +27,10 @@ public interface PPTService {
     void generateExplanation(Long taskId);
 
     /**
-     * 编辑讲解
-     * 用户编辑讲解
-     * @param batchEditPPTExplanationDTO 批量编辑讲解DTO
+     * 讲解单个编辑
+     * @param editPPTExplanationDTO 单个编辑讲解DTO
      */
-    void batchEditExplanation(BatchEditPPTExplanationDTO batchEditPPTExplanationDTO);
+    void editExplanation(EditPPTExplanationDTO editPPTExplanationDTO);
 
     /**
      * 生成讲解语音
@@ -39,10 +39,10 @@ public interface PPTService {
     void generateExplanationVoice(Long taskId);
 
     /**
-     * 批量编辑讲解语音
-     * @param batchEditPPTVoiceExplanationDTO 批量编辑讲解语音DTO
+     * 讲解语音单个编辑
+     * @param editPPTVoiceExplanationDTO 单个编辑讲解语音DTO
      */
-    void batchEditExplanationVoice(BatchEditPPTVoiceExplanationDTO batchEditPPTVoiceExplanationDTO);
+    void editExplanationVoice(EditPPTVoiceExplanationDTO editPPTVoiceExplanationDTO);
 
     /**
      * 生成有声ppt
@@ -62,4 +62,10 @@ public interface PPTService {
      * @return 任务列表
      */
     List<PptTaskDTO> listTasks();
+    
+    /**
+     * 批量删除PPT任务
+     * @param taskIds 任务ID列表
+     */
+    void batchDeleteTasks(List<Long> taskIds);
 }

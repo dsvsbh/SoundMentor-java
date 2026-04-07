@@ -1,8 +1,8 @@
 package com.soundmentor.soundmentorweb.controller;
 
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTExplanationDTO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
 import com.soundmentor.soundmentorweb.service.PPTService;
@@ -36,11 +36,12 @@ public class PPTController {
     /**
      * 创建有声ppt任务
      * @param url ppt地址
+     * @param taskName 任务名称
      * @return
      */
     @PostMapping("/createTask")
-    public ResponseDTO<Long> createPPTTask(@RequestParam String url) {
-        return ResponseDTO.OK(pptService.createPPTTask(url));
+    public ResponseDTO<Long> createPPTTask(@RequestParam String url, @RequestParam(required = false) String taskName) {
+        return ResponseDTO.OK(pptService.createPPTTask(url, taskName));
     }
 
     /**
@@ -49,19 +50,19 @@ public class PPTController {
      * @return
      */
     @PostMapping("/generateExplanation")
-    public ResponseDTO generateExplanation(Long taskId) {
+    public ResponseDTO generateExplanation(@RequestParam Long taskId) {
         pptService.generateExplanation(taskId);
         return ResponseDTO.OK();
     }
 
     /**
-     * 讲解批量编辑
-     * @param batchEditPPTExplanationDTO 批量编辑讲解DTO
+     * 讲解单个编辑
+     * @param editPPTExplanationDTO 单个编辑讲解DTO
      * @return
      */
-    @PostMapping("/batchEditExplanation")
-    public ResponseDTO batchEditExplanation(@RequestBody BatchEditPPTExplanationDTO batchEditPPTExplanationDTO) {
-        pptService.batchEditExplanation(batchEditPPTExplanationDTO);
+    @PostMapping("/editExplanation")
+    public ResponseDTO editExplanation(@RequestBody EditPPTExplanationDTO editPPTExplanationDTO) {
+        pptService.editExplanation(editPPTExplanationDTO);
         return ResponseDTO.OK();
     }
 
@@ -71,19 +72,19 @@ public class PPTController {
      * @return
      */
     @PostMapping("/generateExplanationVoice")
-    public ResponseDTO generateExplanationVoice(Long taskId) {
+    public ResponseDTO generateExplanationVoice(@RequestParam Long taskId) {
         pptService.generateExplanationVoice(taskId);
         return ResponseDTO.OK();
     }
 
     /**
-     * 讲解语音批量编辑
-     * @param batchEditPPTVoiceExplanationDTO 批量编辑讲解语音DTO
+     * 讲解语音单个编辑
+     * @param editPPTVoiceExplanationDTO 单个编辑讲解语音DTO
      * @return
      */
-    @PostMapping("/batchEditExplanationVoice")
-    public ResponseDTO batchEditExplanationVoice(@RequestBody BatchEditPPTVoiceExplanationDTO batchEditPPTVoiceExplanationDTO) {
-        pptService.batchEditExplanationVoice(batchEditPPTVoiceExplanationDTO);
+    @PostMapping("/editExplanationVoice")
+    public ResponseDTO editExplanationVoice(@RequestBody EditPPTVoiceExplanationDTO editPPTVoiceExplanationDTO) {
+        pptService.editExplanationVoice(editPPTVoiceExplanationDTO);
         return ResponseDTO.OK();
     }
 
@@ -93,7 +94,7 @@ public class PPTController {
      * @return
      */
     @PostMapping("/generateSoundPPT")
-    public ResponseDTO generateSoundPPT(Long taskId) {
+    public ResponseDTO generateSoundPPT(@RequestParam Long taskId) {
         pptService.generateSoundPPT(taskId);
         return ResponseDTO.OK();
     }
@@ -104,7 +105,7 @@ public class PPTController {
      * @return
      */
     @PostMapping("/queryTask")
-    public ResponseDTO<PptTaskQueryResultDTO> queryTask(Long taskId) {
+    public ResponseDTO<PptTaskQueryResultDTO> queryTask(@RequestParam Long taskId) {
         return ResponseDTO.OK(pptService.queryTask(taskId));
     }
 
@@ -115,5 +116,16 @@ public class PPTController {
     @PostMapping("/listTasks")
     public ResponseDTO<List<PptTaskDTO>> listTasks() {
         return ResponseDTO.OK(pptService.listTasks());
+    }
+    
+    /**
+     * 批量删除PPT任务
+     * @param taskIds 任务ID列表
+     * @return
+     */
+    @PostMapping("/batchDeleteTasks")
+    public ResponseDTO batchDeleteTasks(@RequestBody List<Long> taskIds) {
+        pptService.batchDeleteTasks(taskIds);
+        return ResponseDTO.OK();
     }
 }

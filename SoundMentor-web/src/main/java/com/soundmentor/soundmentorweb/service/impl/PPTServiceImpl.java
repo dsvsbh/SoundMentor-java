@@ -9,10 +9,11 @@ import com.soundmentor.soundmentorbase.utils.DashScopeUtil;
 import com.soundmentor.soundmentorbase.utils.PPTUtil;
 import com.soundmentor.soundmentorpojo.DO.PptTaskDetailDO;
 import com.soundmentor.soundmentorpojo.DO.PptTaskDO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTExplanationDTO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.BatchEditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDetailDTO;
 import com.soundmentor.soundmentorweb.config.properties.DashScopeProperties;
 import com.soundmentor.soundmentorweb.mapper.PptTaskDetailMapper;
 import com.soundmentor.soundmentorweb.mapper.PptTaskMapper;
@@ -60,7 +61,7 @@ public class PPTServiceImpl implements PPTService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long createPPTTask(String url) {
+    public Long createPPTTask(String url, String taskName) {
         if (StringUtils.isBlank(url)) {
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "PPT文件URL不能为空");
         }
@@ -76,6 +77,8 @@ public class PPTServiceImpl implements PPTService {
         PptTaskDO task = new PptTaskDO();
         task.setUserId(userId);
         task.setOriginalPptFileUrl(url);
+        // 如果没有提供任务名称，设置为默认值
+        task.setTaskName(StringUtils.isNotBlank(taskName) ? taskName : "未命名任务");
         task.setTaskStatus(PptTaskStatusEnum.CREATED.getCode());
         task.setTotalPages(slides.size());
         task.setCreatedAt(LocalDateTime.now());
@@ -226,8 +229,30 @@ public class PPTServiceImpl implements PPTService {
     }
 
     @Override
-    public void batchEditExplanation(BatchEditPPTExplanationDTO batchEditPPTExplanationDTO) {
-
+    public void editExplanation(EditPPTExplanationDTO editPPTExplanationDTO) {
+        Long pptTaskDetailId = editPPTExplanationDTO.getPptTaskDetailId();
+        String newExplanation = editPPTExplanationDTO.getNewExplanation();
+        
+        // 检查任务详情是否存在
+        PptTaskDetailDO detail = pptTaskDetailMapper.selectById(pptTaskDetailId);
+        if (detail == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务详情不存在");
+        }
+        
+        // 检查任务是否属于当前用户
+        PptTaskDO task = pptTaskMapper.selectById(detail.getTaskId());
+        if (task == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务不存在");
+        }
+        
+        Long userId = Long.valueOf(userInfoApi.getUser().getId());
+        if (!userId.equals(task.getUserId())) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "没有权限编辑该任务");
+        }
+        
+        // 更新讲解内容
+        detail.setExplanationText(newExplanation);
+        pptTaskDetailMapper.updateById(detail);
     }
 
     @Override
@@ -236,8 +261,30 @@ public class PPTServiceImpl implements PPTService {
     }
 
     @Override
-    public void batchEditExplanationVoice(BatchEditPPTVoiceExplanationDTO batchEditPPTVoiceExplanationDTO) {
-
+    public void editExplanationVoice(EditPPTVoiceExplanationDTO editPPTVoiceExplanationDTO) {
+        Long pptTaskDetailId = editPPTVoiceExplanationDTO.getPptTaskDetailId();
+        String newVoicePath = editPPTVoiceExplanationDTO.getNewVoicePath();
+        
+        // 检查任务详情是否存在
+        PptTaskDetailDO detail = pptTaskDetailMapper.selectById(pptTaskDetailId);
+        if (detail == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务详情不存在");
+        }
+        
+        // 检查任务是否属于当前用户
+        PptTaskDO task = pptTaskMapper.selectById(detail.getTaskId());
+        if (task == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务不存在");
+        }
+        
+        Long userId = Long.valueOf(userInfoApi.getUser().getId());
+        if (!userId.equals(task.getUserId())) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "没有权限编辑该任务");
+        }
+        
+        // 更新讲解语音
+        detail.setExplanationAudioUrl(newVoicePath);
+        pptTaskDetailMapper.updateById(detail);
     }
 
     @Override
@@ -247,11 +294,108 @@ public class PPTServiceImpl implements PPTService {
 
     @Override
     public PptTaskQueryResultDTO queryTask(Long taskId) {
-        return null;
+        // 查询任务信息
+        PptTaskDO task = pptTaskMapper.selectById(taskId);
+        if (task == null) {
+            return null;
+        }
+        
+        // 查询任务详情
+        List<PptTaskDetailDO> detailList = pptTaskDetailMapper.selectList(
+            new LambdaQueryWrapper<PptTaskDetailDO>()
+                .eq(PptTaskDetailDO::getTaskId, taskId)
+                .orderByAsc(PptTaskDetailDO::getPageNumber)
+        );
+        
+        // 转换为DTO
+        PptTaskQueryResultDTO resultDTO = new PptTaskQueryResultDTO();
+        resultDTO.setId(task.getId())
+                .setUserId(task.getUserId())
+                .setOriginalPptFileUrl(task.getOriginalPptFileUrl())
+                .setTaskName(task.getTaskName())
+                .setTaskStatus(task.getTaskStatus())
+                .setAudioPptFileUrl(task.getAudioPptFileUrl())
+                .setTotalPages(task.getTotalPages())
+                .setCreatedAt(task.getCreatedAt())
+                .setUpdatedAt(task.getUpdatedAt());
+        
+        // 转换详情列表
+        if (detailList != null && !detailList.isEmpty()) {
+            List<PptTaskDetailDTO> detailDTOList = new ArrayList<>();
+            for (PptTaskDetailDO detail : detailList) {
+                PptTaskDetailDTO detailDTO = new PptTaskDetailDTO();
+                detailDTO.setId(detail.getId())
+                        .setTaskId(detail.getTaskId())
+                        .setPageNumber(detail.getPageNumber())
+                        .setImgUrl(detail.getImgUrl())
+                        .setExplanationText(detail.getExplanationText())
+                        .setExplanationAudioUrl(detail.getExplanationAudioUrl());
+                detailDTOList.add(detailDTO);
+            }
+            resultDTO.setDetailList(detailDTOList);
+        }
+        
+        return resultDTO;
     }
 
     @Override
     public List<PptTaskDTO> listTasks() {
-        return Collections.emptyList();
+        Long userId = Long.valueOf(userInfoApi.getUser().getId());
+        
+        List<PptTaskDO> tasks = pptTaskMapper.selectList(
+            new LambdaQueryWrapper<PptTaskDO>()
+                .eq(PptTaskDO::getUserId, userId)
+                .orderByDesc(PptTaskDO::getCreatedAt)
+        );
+        
+        if (tasks == null || tasks.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<PptTaskDTO> taskDTOList = new ArrayList<>();
+        for (PptTaskDO task : tasks) {
+            PptTaskDTO taskDTO = new PptTaskDTO();
+            taskDTO.setId(task.getId())
+                    .setTaskName(task.getTaskName())
+                    .setTaskStatus(task.getTaskStatus())
+                    .setTotalPages(task.getTotalPages())
+                    .setCreatedAt(task.getCreatedAt())
+                    .setUpdatedAt(task.getUpdatedAt());
+            taskDTOList.add(taskDTO);
+        }
+        
+        return taskDTOList;
+    }
+    
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void batchDeleteTasks(List<Long> taskIds) {
+        if (taskIds == null || taskIds.isEmpty()) {
+            return;
+        }
+        
+        Long userId = Long.valueOf(userInfoApi.getUser().getId());
+        
+        // 检查任务是否属于当前用户
+        List<PptTaskDO> tasks = pptTaskMapper.selectList(
+            new LambdaQueryWrapper<PptTaskDO>()
+                .in(PptTaskDO::getId, taskIds)
+                .eq(PptTaskDO::getUserId, userId)
+        );
+        
+        if (tasks == null || tasks.isEmpty()) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "没有权限删除指定任务");
+        }
+        
+        // 批量删除任务详情
+        for (Long taskId : taskIds) {
+            pptTaskDetailMapper.delete(
+                new LambdaQueryWrapper<PptTaskDetailDO>()
+                    .eq(PptTaskDetailDO::getTaskId, taskId)
+            );
+        }
+        
+        // 批量删除任务
+        pptTaskMapper.deleteBatchIds(taskIds);
     }
 }

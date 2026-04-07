@@ -45,6 +45,11 @@ public class PptTaskQueryResultDTO implements Serializable {
     private String originalPptFileUrl;
 
     /**
+     * 任务名称
+     */
+    private String taskName;
+
+    /**
      * 任务状态
      */
     private Integer taskStatus;

@@ -96,14 +96,28 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
 
     @Override
     public String uploadFileToMinio(InputStream inputStream, FileTypeEnum fileType, String md5) throws Exception {
+        String bucketName = fileType.getBucket();
         String objectName = System.currentTimeMillis() + "_" + md5 + fileType.getSuffix();
+        
+        // 检查存储桶是否存在，如果不存在则创建
+        if (!minioClient.bucketExists(io.minio.BucketExistsArgs.builder().bucket(bucketName).build())) {
+            minioClient.makeBucket(io.minio.MakeBucketArgs.builder().bucket(bucketName).build());
+            // 设置存储桶的访问权限为公共读取
+            String policy = "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::" + bucketName + "/*\"]}]}";
+            minioClient.setBucketPolicy(io.minio.SetBucketPolicyArgs.builder()
+                    .bucket(bucketName)
+                    .config(policy)
+                    .build());
+        }
+        
         // 上传文件到 MinIO
         minioClient.putObject(
                 PutObjectArgs.builder()
-                        .bucket(fileType.getBucket())
+                        .bucket(bucketName)
                         .object(objectName)
                         .stream(inputStream, inputStream.available(), -1)
                         .build());
-        return minioConfig.getMinioUrl()+"/"+fileType.getBucket() + "/" + objectName;
+        
+        return minioConfig.getMinioUrl() + "/" + bucketName + "/" + objectName;
     }
 }
