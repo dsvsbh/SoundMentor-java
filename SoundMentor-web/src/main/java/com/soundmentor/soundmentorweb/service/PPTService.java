@@ -2,6 +2,7 @@ package com.soundmentor.soundmentorweb.service;
 
 import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.GenerateVoiceDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
 
@@ -34,9 +35,9 @@ public interface PPTService {
 
     /**
      * 生成讲解语音
-     * @param taskId 任务id
+     * @param generateVoiceDTO 生成语音DTO
      */
-    void generateExplanationVoice(Long taskId);
+    void generateExplanationVoice(GenerateVoiceDTO generateVoiceDTO);
 
     /**
      * 讲解语音单个编辑

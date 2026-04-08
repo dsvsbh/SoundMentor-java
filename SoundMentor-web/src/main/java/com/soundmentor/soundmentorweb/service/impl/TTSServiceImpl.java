@@ -29,7 +29,7 @@ import java.security.NoSuchAlgorithmException;
 public class TTSServiceImpl implements TTSService {
 
     private static final String apiUrl = "https://dashscope.aliyuncs.com/api/v1";
-    private static final String MODEL = "qwen3-tts-flash";
+    private static final String MODEL = "qwen-tts-latest";
     private static final String LANGUAGE_TYPE = "Auto";
 
     @Autowired

@@ -86,7 +86,7 @@ public class DashScopeUtil {
      */
     private static String buildPrompt(String pptContent) {
         return "请根据以下PPT页面内容，生成一段生动、易懂的讲解文本，适合教学使用。" +
-                "讲解应该简洁明了，重点突出，时长控制在1分钟左右（约500字）。\n\n" +
+                "讲解应该简洁明了，重点突出，约100字。\n\n" +
                 "PPT内容：\n" + pptContent + "\n\n" +
                 "请直接返回讲解文本，不需要额外的说明或格式。";
     }

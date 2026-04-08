@@ -3,6 +3,7 @@ package com.soundmentor.soundmentorweb.controller;
 import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.GenerateVoiceDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
 import com.soundmentor.soundmentorweb.service.PPTService;
@@ -72,8 +73,8 @@ public class PPTController {
      * @return
      */
     @PostMapping("/generateExplanationVoice")
-    public ResponseDTO generateExplanationVoice(@RequestParam Long taskId) {
-        pptService.generateExplanationVoice(taskId);
+    public ResponseDTO generateExplanationVoice(@RequestBody GenerateVoiceDTO generateVoiceDTO) {
+        pptService.generateExplanationVoice(generateVoiceDTO);
         return ResponseDTO.OK();
     }
 

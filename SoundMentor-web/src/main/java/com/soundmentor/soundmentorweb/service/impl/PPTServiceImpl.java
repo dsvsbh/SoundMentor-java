@@ -9,8 +9,9 @@ import com.soundmentor.soundmentorbase.utils.DashScopeUtil;
 import com.soundmentor.soundmentorbase.utils.PPTUtil;
 import com.soundmentor.soundmentorpojo.DO.PptTaskDetailDO;
 import com.soundmentor.soundmentorpojo.DO.PptTaskDO;
-import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTVoiceExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.EditPPTExplanationDTO;
+import com.soundmentor.soundmentorpojo.DTO.ppt.GenerateVoiceDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskQueryResultDTO;
 import com.soundmentor.soundmentorpojo.DTO.ppt.PptTaskDetailDTO;
@@ -19,6 +20,7 @@ import com.soundmentor.soundmentorweb.mapper.PptTaskDetailMapper;
 import com.soundmentor.soundmentorweb.mapper.PptTaskMapper;
 import com.soundmentor.soundmentorweb.service.FileService;
 import com.soundmentor.soundmentorweb.service.PPTService;
+import com.soundmentor.soundmentorweb.service.TTSService;
 import com.soundmentor.soundmentorweb.service.UserInfoApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +40,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * PPTServiceImpl 有声ppt服务实现类
@@ -58,6 +61,8 @@ public class PPTServiceImpl implements PPTService {
     private FileService fileService;
     @Resource
     private DashScopeProperties dashScopeProperties;
+    @Resource
+    private TTSService ttsService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -154,7 +159,7 @@ public class PPTServiceImpl implements PPTService {
             AtomicInteger successCount = new AtomicInteger(0);
             AtomicInteger failureCount = new AtomicInteger(0);
             CountDownLatch latch = new CountDownLatch(slides.size());
-            StringBuilder failReason = new StringBuilder();
+            AtomicReference<String> failReason = new AtomicReference<>(null);
 
             for (int i = 0; i < slides.size(); i++) {
                 final int pageIndex = i;
@@ -178,7 +183,7 @@ public class PPTServiceImpl implements PPTService {
                     } catch (Exception e) {
                         failureCount.incrementAndGet();
                         log.error("第{}页讲解生成失败", pageIndex + 1, e);
-                        failReason.append("第").append(pageIndex + 1).append("页: ").append(e.getMessage()).append("; ");
+                        failReason.set("部分页面讲解生成失败");
                     } finally {
                         latch.countDown();
                     }
@@ -191,15 +196,15 @@ public class PPTServiceImpl implements PPTService {
 
                 if (!completed) {
                     log.warn("PPT讲解生成超时，已完成: {}/{}", slides.size() - latch.getCount(), slides.size());
-                    failReason.append("部分任务超时未完成;");
+                    failReason.set("部分页面讲解生成超时");
                 }
 
                 // 6. 更新最终任务状态
                 if (failureCount.get() > 0 || !completed) {
                     task.setTaskStatus(PptTaskStatusEnum.EXPLANATION_GENERATION_FAILED.getCode());
-                    task.setFailReason(failReason.toString());
+                    task.setFailReason(failReason.get() != null ? failReason.get() : "讲解生成失败");
                     log.error("PPT讲解生成失败, taskId={}, 成功: {}, 失败: {}, 失败原因: {}",
-                            taskId, successCount.get(), failureCount.get(), failReason.toString());
+                            taskId, successCount.get(), failureCount.get(), failReason.get() != null ? failReason.get() : "讲解生成失败");
                 } else {
                     task.setTaskStatus(PptTaskStatusEnum.EXPLANATION_GENERATED.getCode());
                     task.setFailReason(null);
@@ -256,8 +261,95 @@ public class PPTServiceImpl implements PPTService {
     }
 
     @Override
-    public void generateExplanationVoice(Long taskId) {
-
+    public void generateExplanationVoice(GenerateVoiceDTO generateVoiceDTO) {
+        Long taskId = generateVoiceDTO.getTaskId();
+        String voice = generateVoiceDTO.getVoice();
+        Float speed = generateVoiceDTO.getSpeed();
+        
+        // 校验速度范围
+        if (speed == null || speed < 0.5f || speed > 2.0f) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "语速必须在0.5到2.0之间");
+        }
+        
+        // 校验voice
+        if (voice == null || voice.isEmpty()) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "声音类型不能为空");
+        }
+        
+        // 1. 查询任务
+        PptTaskDO task = pptTaskMapper.selectById(taskId);
+        if (task == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务不存在");
+        }
+        
+        // 检查任务状态（讲解已生成后才能生成语音）
+        if (!PptTaskStatusEnum.EXPLANATION_GENERATED.getCode().equals(task.getTaskStatus())) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务状态不正确，当前状态: " + PptTaskStatusEnum.getByCode(task.getTaskStatus()).getDescription());
+        }
+        
+        // 2. 查询每页的任务详情（需要有讲解内容的）
+        List<PptTaskDetailDO> detailList = pptTaskDetailMapper.selectList(
+            new LambdaQueryWrapper<PptTaskDetailDO>()
+                .eq(PptTaskDetailDO::getTaskId, taskId)
+                .isNotNull(PptTaskDetailDO::getExplanationText)
+                .orderByAsc(PptTaskDetailDO::getPageNumber)
+        );
+        
+        if (detailList == null || detailList.isEmpty()) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "没有可生成语音的讲解内容");
+        }
+        
+        // 3. 更新任务状态为"讲解语音生成中"
+        task.setTaskStatus(PptTaskStatusEnum.EXPLANATION_VOICE_GENERATING.getCode());
+        task.setUpdatedAt(LocalDateTime.now());
+        pptTaskMapper.updateById(task);
+        
+        // 4. 异步串行处理
+        threadPoolExecutor.execute(() -> {
+            int successCount = 0;
+            int failureCount = 0;
+            String failReason = null;
+            
+            // 串行执行每页的语音生成
+            for (PptTaskDetailDO detail : detailList) {
+                try {
+                    // 请求TTS服务生成语音
+                    String audioUrl = ttsService.textToSpeech(
+                        com.alibaba.dashscope.aigc.multimodalconversation.AudioParameters.Voice.valueOf(voice),
+                        detail.getExplanationText(),
+                        speed
+                    );
+                    
+                    // 更新任务详情
+                    detail.setExplanationAudioUrl(audioUrl);
+                    pptTaskDetailMapper.updateById(detail);
+                    
+                    successCount++;
+                    log.info("任务{}第{}页语音生成成功", taskId, detail.getPageNumber());
+                } catch (Exception e) {
+                    failureCount++;
+                    log.error("任务{}第{}页语音生成失败: {}", taskId, detail.getPageNumber(), e.getMessage(), e);
+                    failReason = "部分页面语音生成失败";
+                }
+            }
+            
+            // 5. 更新最终任务状态
+                if (failureCount > 0) {
+                    task.setTaskStatus(PptTaskStatusEnum.EXPLANATION_VOICE_GENERATION_FAILED.getCode());
+                    task.setFailReason(failReason != null ? failReason : "语音生成失败");
+                    log.error("PPT语音生成失败, taskId={}, 成功: {}, 失败: {}, 失败原因: {}",
+                            taskId, successCount, failureCount, failReason != null ? failReason : "语音生成失败");
+                } else {
+                    task.setTaskStatus(PptTaskStatusEnum.EXPLANATION_VOICE_GENERATED.getCode());
+                    task.setFailReason(null);
+                    log.info("PPT语音生成成功, taskId={}, 总页数: {}", taskId, detailList.size());
+                }
+            
+            task.setUpdatedAt(LocalDateTime.now());
+            pptTaskMapper.updateById(task);
+        });
+        
+        log.info("PPT语音生成任务已提交异步处理, taskId={}", taskId);
     }
 
     @Override
