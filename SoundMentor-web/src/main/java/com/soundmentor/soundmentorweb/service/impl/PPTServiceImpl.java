@@ -30,11 +30,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -128,8 +136,8 @@ public class PPTServiceImpl implements PPTService {
             throw new BizException(ResultCodeEnum.DATA_NOT_FUND.getCode(), "任务不存在");
         }
 
-        // 检查任务状态
-        if (!PptTaskStatusEnum.CREATED.getCode().equals(task.getTaskStatus())) {
+        // 检查任务状态 是否为创建或讲解生成失败
+        if (!(PptTaskStatusEnum.CREATED.getCode().equals(task.getTaskStatus())||PptTaskStatusEnum.EXPLANATION_GENERATION_FAILED.getCode().equals(task.getTaskStatus()))) {
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务状态不正确，当前状态: " + PptTaskStatusEnum.getByCode(task.getTaskStatus()).getDescription());
         }
 
@@ -282,8 +290,8 @@ public class PPTServiceImpl implements PPTService {
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务不存在");
         }
         
-        // 检查任务状态（讲解已生成后才能生成语音）
-        if (!PptTaskStatusEnum.EXPLANATION_GENERATED.getCode().equals(task.getTaskStatus())) {
+        // 检查任务状态（讲解已生成或讲解语音生成失败后才能生成语音）
+        if (!(PptTaskStatusEnum.EXPLANATION_GENERATED.getCode().equals(task.getTaskStatus())||PptTaskStatusEnum.EXPLANATION_VOICE_GENERATION_FAILED.getCode().equals(task.getTaskStatus()))) {
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务状态不正确，当前状态: " + PptTaskStatusEnum.getByCode(task.getTaskStatus()).getDescription());
         }
         
@@ -381,7 +389,214 @@ public class PPTServiceImpl implements PPTService {
 
     @Override
     public void generateSoundPPT(Long taskId) {
+        // 1. 查询任务
+        PptTaskDO task = pptTaskMapper.selectById(taskId);
+        if (task == null) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务不存在");
+        }
 
+        // 检查任务状态（语音已生成或有声ppt生成失败后才能生成有声PPT）
+        if (!(PptTaskStatusEnum.EXPLANATION_VOICE_GENERATED.getCode().equals(task.getTaskStatus())||PptTaskStatusEnum.AUDIO_PPT_GENERATION_FAILED.getCode().equals(task.getTaskStatus()))) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "任务状态不正确，当前状态: " + PptTaskStatusEnum.getByCode(task.getTaskStatus()).getDescription());
+        }
+
+        // 2. 查询每页的任务详情（需要有音频的）
+        List<PptTaskDetailDO> detailList = pptTaskDetailMapper.selectList(
+            new LambdaQueryWrapper<PptTaskDetailDO>()
+                .eq(PptTaskDetailDO::getTaskId, taskId)
+                .isNotNull(PptTaskDetailDO::getExplanationAudioUrl)
+                .orderByAsc(PptTaskDetailDO::getPageNumber)
+        );
+
+        if (detailList == null || detailList.isEmpty()) {
+            throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "没有可嵌入的音频文件");
+        }
+
+        // 3. 更新任务状态为"有声PPT生成中"
+        task.setTaskStatus(PptTaskStatusEnum.AUDIO_PPT_GENERATING.getCode());
+        task.setUpdatedAt(LocalDateTime.now());
+        pptTaskMapper.updateById(task);
+
+        // 4. 异步处理生成有声PPT
+        threadPoolExecutor.execute(() -> {
+            java.io.File tempDir = null;
+            try {
+                // 使用PPTUtil直接加载原始PPT文件
+                SlideShow<?, ?> slideShow = PPTUtil.loadPPT(task.getOriginalPptFileUrl());
+                
+                // 下载所有音频文件并保存到临时文件夹
+                tempDir = new java.io.File(System.getProperty("java.io.tmpdir"), 
+                    "ppt_audio_" + taskId + "_" + System.currentTimeMillis());
+                if (!tempDir.exists()) {
+                    tempDir.mkdirs();
+                }
+                
+                // 为每个有音频的幻灯片添加音频
+                for (PptTaskDetailDO detail : detailList) {
+                    if (detail.getExplanationAudioUrl() != null) {
+                        // 下载音频文件到临时文件
+                        byte[] audioBytes = downloadFileFromUrl(detail.getExplanationAudioUrl());
+                        String audioFileName = "page_" + detail.getPageNumber() + ".wav";
+                        java.io.File audioFile = new java.io.File(tempDir, audioFileName);
+                        
+                        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(audioFile)) {
+                            fos.write(audioBytes);
+                        }
+                        
+                        // 使用相对路径添加音频到幻灯片
+                        String relativeAudioPath = audioFileName; // 相对路径
+                        int slideIndex = detail.getPageNumber() - 1;
+                        PPTUtil.addAudioToSlide(slideShow, slideIndex, relativeAudioPath);
+                        
+                        log.info("音频已添加到幻灯片 {}: {}", detail.getPageNumber(), relativeAudioPath);
+                    }
+                }
+                
+                // 确定输出文件名
+                String originalUrl = task.getOriginalPptFileUrl().toLowerCase();
+                String pptFileName = originalUrl.endsWith(".pptx") ? 
+                    "audio_ppt_" + taskId + ".pptx" : 
+                    "audio_ppt_" + taskId + ".ppt";
+                
+                // 将修改后的PPT写入临时文件夹
+                java.io.File pptFile = new java.io.File(tempDir, pptFileName);
+                try (java.io.FileOutputStream fos = new java.io.FileOutputStream(pptFile)) {
+                    slideShow.write(fos);
+                }
+                
+                // 压缩整个临时目录为zip文件
+                java.io.File zipFile = new java.io.File(System.getProperty("java.io.tmpdir"), 
+                    "audio_ppt_" + taskId + ".zip");
+                createZipFile(tempDir, zipFile);
+                
+                // 读取zip文件到字节数组
+                byte[] zipBytes = java.nio.file.Files.readAllBytes(zipFile.toPath());
+                
+                // 上传生成的zip文件
+                String audioPptUrl = fileService.uploadFileToMinio(
+                    new ByteArrayInputStream(zipBytes),
+                    FileTypeEnum.ZIP,
+                    "audio_ppt_" + taskId + ".zip"
+                );
+                
+                // 删除临时zip文件
+                zipFile.delete();
+                
+                // 更新任务状态为成功
+                task.setTaskStatus(PptTaskStatusEnum.AUDIO_PPT_GENERATED.getCode());
+                task.setAudioPptFileUrl(audioPptUrl);
+                task.setUpdatedAt(LocalDateTime.now());
+                pptTaskMapper.updateById(task);
+                
+                log.info("有声PPT生成成功, taskId={}, 生成文件URL={}", taskId, audioPptUrl);
+                
+                // 清理临时文件
+                if (tempDir != null && tempDir.exists()) {
+                    deleteDirectory(tempDir);
+                }
+                
+            } catch (Exception e) {
+                log.error("生成有声PPT失败, taskId={}", taskId, e);
+                
+                // 更新任务状态为失败
+                task.setTaskStatus(PptTaskStatusEnum.AUDIO_PPT_GENERATION_FAILED.getCode());
+                task.setFailReason("生成有声PPT失败: " + e.getMessage());
+                task.setUpdatedAt(LocalDateTime.now());
+                pptTaskMapper.updateById(task);
+                
+                // 清理临时文件
+                try {
+                    if (tempDir != null && tempDir.exists()) {
+                        deleteDirectory(tempDir);
+                    }
+                } catch (Exception ex) {
+                    log.warn("清理临时文件失败: {}", ex.getMessage());
+                }
+            }
+        });
+        
+        log.info("有声PPT生成任务已提交异步处理, taskId={}", taskId);
+    }
+    
+    // 辅助方法：通过网络URL下载文件
+    
+    // 辅助方法：删除目录
+    private void deleteDirectory(java.io.File directory) {
+        if (directory.exists()) {
+            java.io.File[] files = directory.listFiles();
+            if (files != null) {
+                for (java.io.File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+            directory.delete();
+        }
+    }
+    
+    // 辅助方法：创建zip文件
+    private void createZipFile(java.io.File sourceDir, java.io.File zipFile) throws Exception {
+        try (java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream(zipFile))) {
+            addFilesToZip(sourceDir, sourceDir, zos);
+        }
+    }
+    
+    // 辅助方法：添加文件到zip
+    private void addFilesToZip(java.io.File rootDir, java.io.File sourceDir, java.util.zip.ZipOutputStream zos) throws Exception {
+        java.io.File[] files = sourceDir.listFiles();
+        if (files != null) {
+            for (java.io.File file : files) {
+                if (file.isDirectory()) {
+                    addFilesToZip(rootDir, file, zos);
+                } else {
+                    String relativePath = rootDir.toURI().relativize(file.toURI()).getPath();
+                    java.util.zip.ZipEntry entry = new java.util.zip.ZipEntry(relativePath);
+                    zos.putNextEntry(entry);
+                    try (java.io.FileInputStream fis = new java.io.FileInputStream(file)) {
+                        byte[] buffer = new byte[4096];
+                        int len;
+                        while ((len = fis.read(buffer)) > 0) {
+                            zos.write(buffer, 0, len);
+                        }
+                    }
+                    zos.closeEntry();
+                }
+            }
+        }
+    }
+    
+    // 辅助方法：通过网络URL下载文件
+    private byte[] downloadFileFromUrl(String fileUrl) {
+        try {
+            URL url = new URL(fileUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(30000);
+            
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("下载失败，响应码: " + responseCode);
+            }
+            
+            // 使用Java 8兼容的方式读取输入流
+            try (InputStream in = conn.getInputStream()) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+                return out.toByteArray();
+            }
+            
+        } catch (Exception e) {
+            log.error("下载文件失败: {}", fileUrl, e);
+            throw new BizException(ResultCodeEnum.FILE_ERROR.getCode(), "下载文件失败: " + e.getMessage());
+        }
     }
 
     @Override
@@ -451,6 +666,8 @@ public class PPTServiceImpl implements PPTService {
                     .setTaskName(task.getTaskName())
                     .setTaskStatus(task.getTaskStatus())
                     .setTotalPages(task.getTotalPages())
+                    .setOriginalPptFileUrl(task.getOriginalPptFileUrl())
+                    .setAudioPptFileUrl(task.getAudioPptFileUrl())
                     .setCreatedAt(task.getCreatedAt())
                     .setUpdatedAt(task.getUpdatedAt());
             taskDTOList.add(taskDTO);

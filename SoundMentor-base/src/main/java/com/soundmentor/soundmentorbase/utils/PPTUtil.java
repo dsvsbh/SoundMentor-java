@@ -1,6 +1,7 @@
 package com.soundmentor.soundmentorbase.utils;
 
 
+
 import com.soundmentor.soundmentorbase.constants.PPTConstant;
 import com.soundmentor.soundmentorbase.enums.FileTypeEnum;
 import com.soundmentor.soundmentorbase.enums.ResultCodeEnum;
@@ -13,6 +14,7 @@ import org.apache.poi.hslf.usermodel.HSLFSlideShow;
 import org.apache.poi.sl.usermodel.PictureData;
 import org.apache.poi.sl.usermodel.Slide;
 import org.apache.poi.sl.usermodel.SlideShow;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xslf.usermodel.*;
 
 
@@ -22,10 +24,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Slf4j
@@ -124,12 +123,18 @@ public class PPTUtil {
         Slide<?, ?> slide = slides.get(slideIndex);
         log.info("开始向{}页ppt导入音频", slideIndex);
         
-        File imageFile = new File(PPTConstant.PPT_VOICE_PICTURE_PATH);
         byte[] imageBytes;
         try {
-            imageBytes = Files.readAllBytes(imageFile.toPath());
+            // 使用类加载器读取资源文件
+            InputStream imageStream = PPTUtil.class.getClassLoader().getResourceAsStream("voice.png");
+            if (imageStream == null) {
+                throw new RuntimeException("找不到音频图标文件: voice.png");
+            }
+            try (InputStream is = imageStream) {
+                imageBytes = IOUtils.toByteArray(is);
+            }
         } catch (IOException e) {
-            throw new RuntimeException("读取音频图标文件失败: " + PPTConstant.PPT_VOICE_PICTURE_PATH, e);
+            throw new RuntimeException("读取音频图标文件失败: " + e.getMessage(), e);
         }
 
         URI linkUri;
