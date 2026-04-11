@@ -83,11 +83,12 @@ CREATE TABLE `normal_tts_record` (
   `user_id` int NOT NULL COMMENT '用户id',
   `file_name` varchar(255) NOT NULL COMMENT 'MP3名字',
   `file_url` varchar(255) NOT NULL COMMENT 'mp3 url',
-  `rate` int NOT NULL COMMENT '语速',
+  `speed` float NOT NULL COMMENT '语速',
   `voice_name` varchar(63) NOT NULL COMMENT '声音名',
   `create_time` timestamp NOT NULL,
+  `content` varchar(1000) DEFAULT NULL COMMENT '文本内容',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +142,7 @@ CREATE TABLE `organization_file` (
   PRIMARY KEY (`id`),
   KEY `idx_organization_id` (`organization_id`),
   KEY `idx_file_id` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织文件关系表，用于存储组织与文件之间的关系';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='组织文件关系表，用于存储组织与文件之间的关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,6 +150,7 @@ CREATE TABLE `organization_file` (
 --
 
 /*!40000 ALTER TABLE `organization_file` DISABLE KEYS */;
+INSERT INTO `organization_file` VALUES (4,40,24,'2026-04-09 17:00:44',9,1);
 /*!40000 ALTER TABLE `organization_file` ENABLE KEYS */;
 
 --
@@ -199,7 +201,7 @@ CREATE TABLE `ppt_task` (
   `task_name` varchar(255) DEFAULT '未命名任务' COMMENT '任务名称',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +209,7 @@ CREATE TABLE `ppt_task` (
 --
 
 /*!40000 ALTER TABLE `ppt_task` DISABLE KEYS */;
-INSERT INTO `ppt_task` VALUES (1,9,'http://localhost:9000/ppt/1775553373530_666003862d07f0ffd5776e2cc787fb28.pptx',0,NULL,8,'2026-04-07 17:16:51','2026-04-07 17:16:51',NULL,'未命名任务'),(2,9,'http://localhost:9000/ppt/1775553373530_666003862d07f0ffd5776e2cc787fb28.pptx',0,NULL,8,'2026-04-07 17:32:10','2026-04-07 17:32:10',NULL,'未命名任务'),(3,9,'http://localhost:9000/ppt/1775553373530_666003862d07f0ffd5776e2cc787fb28.pptx',0,NULL,8,'2026-04-07 17:32:38','2026-04-07 17:32:38',NULL,'未命名任务');
+INSERT INTO `ppt_task` VALUES (11,9,'http://localhost:9000/ppt/1775553373530_666003862d07f0ffd5776e2cc787fb28.pptx',9,'http://localhost:9000/zip/1775723083900_audio_ppt_11.zip.zip',8,'2026-04-09 16:21:41','2026-04-09 16:24:44',NULL,'AI教育有声课件生成'),(12,9,'http://localhost:9000/ppt/1775553373530_666003862d07f0ffd5776e2cc787fb28.pptx',9,'http://localhost:9000/zip/1775723719614_audio_ppt_12.zip.zip',8,'2026-04-09 16:33:43','2026-04-09 16:35:20',NULL,'测试按钮位置');
 /*!40000 ALTER TABLE `ppt_task` ENABLE KEYS */;
 
 --
@@ -227,7 +229,7 @@ CREATE TABLE `ppt_task_detail` (
   PRIMARY KEY (`id`),
   KEY `task_id` (`task_id`),
   CONSTRAINT `ppt_task_detail_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `ppt_task` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +237,7 @@ CREATE TABLE `ppt_task_detail` (
 --
 
 /*!40000 ALTER TABLE `ppt_task_detail` DISABLE KEYS */;
-INSERT INTO `ppt_task_detail` VALUES (1,1,1,'http://localhost:9000/img/1775553412301_1a2a9507346c499ba35f1d44fd946b8b.png',NULL,NULL),(2,1,2,'http://localhost:9000/img/1775553412422_1e18e2713f3e4ab8978d0cbc440768cb.png',NULL,NULL),(3,1,3,'http://localhost:9000/img/1775553412505_ecc90559eb5143eea0f57da80e25d6e1.png',NULL,NULL),(4,1,4,'http://localhost:9000/img/1775553412608_040cf92fbbaa4d5bbe93ea4d5d2b0cee.png',NULL,NULL),(5,1,5,'http://localhost:9000/img/1775553412675_4cffeae36a4d4b16984f4359c316d9c9.png',NULL,NULL),(6,1,6,'http://localhost:9000/img/1775553412723_bfa73426b459488e84569e0eb5ba2e54.png',NULL,NULL),(7,1,7,'http://localhost:9000/img/1775553412804_bcb78eadbdd34ac1b918a3fd48d06d3c.png',NULL,NULL),(8,1,8,'http://localhost:9000/img/1775553412837_7121dfb384114b57acbd606e38a2ee93.png',NULL,NULL),(9,2,1,'http://localhost:9000/img/1775554330952_755038be955b438b98e1647122eb585f.png',NULL,NULL),(10,2,2,'http://localhost:9000/img/1775554331105_91dca6c096b84a42977426153563d82b.png',NULL,NULL),(11,2,3,'http://localhost:9000/img/1775554331183_d463a3847bf44716a9885dddd91d8412.png',NULL,NULL),(12,2,4,'http://localhost:9000/img/1775554331270_6e41c35245be432bbfcfb8dc4c5ffd16.png',NULL,NULL),(13,2,5,'http://localhost:9000/img/1775554331339_2704ee527754468e8956228d890c8033.png',NULL,NULL),(14,2,6,'http://localhost:9000/img/1775554331392_2bd5c6d30f3948dbb87e1f666ace45b3.png',NULL,NULL),(15,2,7,'http://localhost:9000/img/1775554331472_f9f7d14e81eb45008497f77b62fe5caa.png',NULL,NULL),(16,2,8,'http://localhost:9000/img/1775554331510_789faf5931614095a0eb155811aa9d90.png',NULL,NULL),(17,3,1,'http://localhost:9000/img/1775554358258_34925771bc2e433fb8bda82a871e8ecf.png',NULL,NULL),(18,3,2,'http://localhost:9000/img/1775554358329_7c5e8ee65af04e9da3c8574303b60a2d.png',NULL,NULL),(19,3,3,'http://localhost:9000/img/1775554358389_842bda9a4a3345b58a63a64689004332.png',NULL,NULL),(20,3,4,'http://localhost:9000/img/1775554358445_eae44fbd3134489687eedec748c8ac86.png',NULL,NULL),(21,3,5,'http://localhost:9000/img/1775554358503_55902b48a111410ead1e8f45d11a75db.png',NULL,NULL),(22,3,6,'http://localhost:9000/img/1775554358539_7cdfdd92f6994e46982bb65b45f8e6a5.png',NULL,NULL),(23,3,7,'http://localhost:9000/img/1775554358590_3810147618ae470582d004a830e99ddd.png',NULL,NULL),(24,3,8,'http://localhost:9000/img/1775554358615_55fbf6a0154f43a5a2e0aef68985373c.png',NULL,NULL);
+INSERT INTO `ppt_task_detail` VALUES (81,11,1,'http://localhost:9000/img/1775722901552_3669291fcf4e41e287cc35b69da6f9de.png','人工智能正在改变教育方式，让学习更高效、个性化。AI可以分析学生表现，提供定制化辅导，自动批改作业，甚至模拟真实教学场景。它助力教师，提升学生学习体验，为未来教育开启无限可能。','http://localhost:9000/wav/1775722928504_2d2acdfed08c70cc2224eb7b1461ccb6.wav'),(82,11,2,'http://localhost:9000/img/1775722901739_57574b49ed4c4d9cac1958d9be84e380.png','同学们，今天我们一起来了解AI在教育中的应用。首先，AI教育的定义和发展背景，接着看它在个性化学习、智能评估和虚拟助教中的实际应用。然后，我们探讨背后的的技术架构，分析市场增长趋势，最后讨论面临的挑战与未来发展方向。','http://localhost:9000/wav/1775722935578_1f1a76cddbd65a2a6fa6f6a43c85fdda.wav'),(83,11,3,'http://localhost:9000/img/1775722901828_7765432d367949139efa8f09135c242d.png','人工智能教育是利用AI技术如机器学习、自然语言处理等，提升教学效率和学习体验。全球市场规模已达380亿美元，年增长47%，65%的教师认为AI提升了教学效率。越来越多国家将AI纳入教育战略，AI正从辅助工具转变为教育基础设施，重塑教与学的方式。','http://localhost:9000/wav/1775722944767_2ff5de77ee6c889dd6e9d59b49c10fd5.wav'),(84,11,4,'http://localhost:9000/img/1775722901921_ba0d49eaa8224cf0ae11bda1ac890e95.png','AI赋能教育，三大关键领域助力高效学习。个性化学习通过数据分析为每位学生定制路径，智能评估利用AI实现自动批改与多维评价，虚拟助教全天候提供答疑与资源推荐，全面提升教学效率与学习体验。','http://localhost:9000/wav/1775722952349_a2efd46e845c76e214d0abd880fe9c0d.wav'),(85,11,5,'http://localhost:9000/img/1775722901991_251673e1fe724904bbf2e5ea9ebafcbe.png','AI教育系统由四层技术架构组成：数据层收集学习行为、知识图谱和资源；算法层运用深度学习、NLP等技术分析与推荐；应用层实现自适应学习和智能评估；交互层通过Web、语音、AR/VR提升体验，形成完整的AI教育生态。','http://localhost:9000/wav/1775722959879_ac58f07ff1d1288a3afa246caa8c716d.wav'),(86,11,6,'http://localhost:9000/img/1775722902041_e750dddcbede40a38317cd2c446da5e7.png','AI教育市场6年增长近10倍，亚太地区增速最快，占比超35%。自适应学习平台投资最多，已覆盖超过5亿人次学生，展现出巨大潜力与成效。','http://localhost:9000/wav/1775722965203_e81425a315f7b1515034a8351db368fb.wav'),(87,11,7,'http://localhost:9000/img/1775722902134_6fd656bc9074476ea635e417c32a7590.png','当前，AI在教育中面临数据隐私、算法偏见和教师数字素养等挑战。未来，大模型将深度整合，提升教学互动；AI与AR/VR结合，带来沉浸式学习体验；个性化终身学习平台将成为主流，推动教育持续发展。','http://localhost:9000/wav/1775722972524_1505126528fbf52794b7cd32268ce06d.wav'),(88,11,8,'http://localhost:9000/img/1775722902168_5ea6330902324691891d53773afc6513.png','感谢观看，本报告探讨人工智能在教育中的应用，展示其如何提升教学效率与学习体验，助力个性化发展。2026年，AI正重塑教育未来。','http://localhost:9000/wav/1775722976968_6fcaa754f4c5cc819fe8737bf19f99dc.wav'),(89,12,1,'http://localhost:9000/img/1775723624217_2d31438b52f74e62a9820934cd618a23.png','人工智能正在改变教育方式，让学习更个性化、高效。AI可以分析学生表现，提供定制化辅导，自动批改作业，甚至模拟真实教学场景。它助力教师提升教学效果，也让学生获得更好的学习体验，是未来教育的重要趋势。','http://localhost:9000/wav/1775723659078_9b1a4659882cc77b4c7ffc3e3c49794e.wav'),(90,12,2,'http://localhost:9000/img/1775723624385_1c3fd46c475f4f96ae30775514f5d3b3.png','同学们，今天我们一起来了解AI在教育中的应用。首先，AI教育是什么？它如何发展？接着，我们会看到它在个性化学习、智能评估和虚拟助教中的实际应用。然后，了解背后的技术支持，分析市场趋势，最后探讨面临的挑战与未来前景。让我们一起走进AI教育的世界！','http://localhost:9000/wav/1775723667539_b727110039d0763f9975b4f2157938ea.wav'),(91,12,3,'http://localhost:9000/img/1775723624485_4bb193244c9e4610a94bde00d9a28416.png','人工智能教育是利用AI技术如机器学习和自然语言处理，提升教学效率与学习体验，覆盖从K-12到高等教育的全场景。全球市场规模已达380亿美元，年增47%，65%教师认为AI提升了教学效率。AI正从辅助工具转变为教育基础设施，重塑教与学的方式。','http://localhost:9000/wav/1775723676436_46a170c49abbf2717bfd670a15787550.wav'),(92,12,4,'http://localhost:9000/img/1775723624603_54da94a01c194bb994fbc350f9ebc41a.png','AI赋能教育，三大关键领域提升学习效率。个性化学习通过数据分析为每位学生定制路径，智能评估实现多维度能力诊断，虚拟助教全天候提供答疑与资源推荐，助力教学更高效、精准。','http://localhost:9000/wav/1775723682332_ad2cc82526e7f1ec868d51ad0bddc7bb.wav'),(93,12,5,'http://localhost:9000/img/1775723624685_9824e2b1b85b468c85bc32a7f58db0fa.png','AI教育系统由四层技术架构组成：数据层收集学习行为、知识图谱和资源；算法层运用深度学习、NLP等技术分析与推荐；应用层实现自适应学习和智能评估；交互层通过Web、语音、AR/VR提升体验，形成完整的AI教育生态。','http://localhost:9000/wav/1775723689870_2c262b97a5e7e19cb8efbde780c5123b.wav'),(94,12,6,'http://localhost:9000/img/1775723624742_7132c1cbc5a545dea7cbee89d8bbd01b.png','AI教育市场6年增长近10倍，亚太地区增速最快，占比超35%。自适应学习平台投资最多，已覆盖超过5亿学生，展现强大发展潜力与实际效果。','http://localhost:9000/wav/1775723694490_2f4865e960026872c09ff5851b285c7b.wav'),(95,12,7,'http://localhost:9000/img/1775723624830_05cb2285ce344be38e6ad85c4601538a.png','当前，AI在教育中面临数据隐私、算法偏见和教师数字素养等挑战。未来，大模型将深度融入教学，结合AR/VR打造沉浸式学习体验，推动个性化终身学习生态的发展，让教育更智能、更公平。','http://localhost:9000/wav/1775723700928_671e102f7e43b59936d98b762ee5f528.wav'),(96,12,8,'http://localhost:9000/img/1775723624870_8cfe232f14554c8fb56f5ccfe47c5326.png','感谢观看，本报告探讨人工智能在教育中的广泛应用，如智能辅导、个性化学习和自动化评估。AI技术正在改变教学方式，提升学习效率，为未来教育带来更多可能性。','http://localhost:9000/wav/1775723705893_109371dde83a2d23a7ff19a20e55f6dc.wav');
 /*!40000 ALTER TABLE `ppt_task_detail` ENABLE KEYS */;
 
 --
@@ -253,7 +255,7 @@ CREATE TABLE `preset_sound` (
   `description` varchar(255) DEFAULT '预制声音' COMMENT '声音描述',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_sound_url` (`sound_url`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='预制声音样本表';
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='预制声音样本表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,6 +263,7 @@ CREATE TABLE `preset_sound` (
 --
 
 /*!40000 ALTER TABLE `preset_sound` DISABLE KEYS */;
+INSERT INTO `preset_sound` VALUES (50,'http://localhost:9000/wav/1775571755181_bc1c5e2c6013841641a70378d9bdf7dc.wav','CHERRY','CHERRY','系统自动生成的CHERRY试听音频'),(51,'http://localhost:9000/wav/1775571756157_5af02c57dc805f8c76e0edb4b271983f.wav','SERENA','SERENA','系统自动生成的SERENA试听音频'),(52,'http://localhost:9000/wav/1775571756861_7703e8c0be9dd8e09e83ddb93dfab947.wav','ETHAN','ETHAN','系统自动生成的ETHAN试听音频'),(53,'http://localhost:9000/wav/1775571757646_c690989141bb3e84bc0e76c729f05866.wav','CHELSIE','CHELSIE','系统自动生成的CHELSIE试听音频'),(54,'http://localhost:9000/wav/1775571758419_49d99ab6029283f999a7caa5eed502fa.wav','DYLAN','DYLAN','系统自动生成的DYLAN试听音频'),(55,'http://localhost:9000/wav/1775571759161_124ee3796f3d840ae5c30b69d85e8d12.wav','JADA','JADA','系统自动生成的JADA试听音频'),(56,'http://localhost:9000/wav/1775571759894_4d3d5fb74f325aeb69ed10ba821fa4cc.wav','SUNNY','SUNNY','系统自动生成的SUNNY试听音频'),(57,'http://localhost:9000/wav/1775571760712_39321e031ae772c4bb5ffd418712cb62.wav','NOFISH','NOFISH','系统自动生成的NOFISH试听音频'),(58,'http://localhost:9000/wav/1775571761531_70874faa8954795c888ed16e3f2da58a.wav','JENNIFER','JENNIFER','系统自动生成的JENNIFER试听音频'),(59,'http://localhost:9000/wav/1775571762394_f5c35f0f1d6478b87db45521afcec855.wav','LI','LI','系统自动生成的LI试听音频'),(60,'http://localhost:9000/wav/1775571763212_5bb423ed484abcc291dfbd4351d92bb2.wav','MARCUS','MARCUS','系统自动生成的MARCUS试听音频'),(61,'http://localhost:9000/wav/1775571764446_378ba53b1c511fc199211227cbd2f04e.wav','ROY','ROY','系统自动生成的ROY试听音频'),(62,'http://localhost:9000/wav/1775571765236_5a53205497ed44029ea2ed00e4721feb.wav','PETER','PETER','系统自动生成的PETER试听音频'),(63,'http://localhost:9000/wav/1775571766249_09bbaff4ee10ae62342d3eb92e37465e.wav','ERIC','ERIC','系统自动生成的ERIC试听音频'),(64,'http://localhost:9000/wav/1775571767149_640af0e8cf598a264a94df27dfcc9b3f.wav','ROCKY','ROCKY','系统自动生成的ROCKY试听音频'),(65,'http://localhost:9000/wav/1775571768197_f4452a78fb2597a2ed5d10a451ff2143.wav','KIKI','KIKI','系统自动生成的KIKI试听音频'),(66,'http://localhost:9000/wav/1775571769317_754a14592259bc9ff8f2f2e9a34b3eec.wav','RYAN','RYAN','系统自动生成的RYAN试听音频'),(67,'http://localhost:9000/wav/1775571770324_4c95498413ebe11b7a1a6e92491dd428.wav','KATERINA','KATERINA','系统自动生成的KATERINA试听音频'),(68,'http://localhost:9000/wav/1775571771279_18f84fca9afba8a030ed6766cd8e3c66.wav','ELIAS','ELIAS','系统自动生成的ELIAS试听音频'),(69,'http://localhost:9000/wav/1775571772142_e0226a28d89faf00201f60d3a924aa78.wav','MOMO','MOMO','系统自动生成的MOMO试听音频'),(70,'http://localhost:9000/wav/1775571773671_8557586226c47fb64114ba3366b48fe2.wav','MOON','MOON','系统自动生成的MOON试听音频'),(71,'http://localhost:9000/wav/1775571774408_ee93424298241b64a909ab9c65d1fbb2.wav','MAIA','MAIA','系统自动生成的MAIA试听音频'),(72,'http://localhost:9000/wav/1775571775221_8a721a0c7671e216dab0f235f89d4c32.wav','KAI','KAI','系统自动生成的KAI试听音频'),(73,'http://localhost:9000/wav/1775571776175_b29c9fdba0bd6f1e2a3226ca4285064f.wav','BELLA','BELLA','系统自动生成的BELLA试听音频'),(74,'http://localhost:9000/wav/1775571777260_ced0d6b77c925595b065cbc37d770b73.wav','AIDEN','AIDEN','系统自动生成的AIDEN试听音频'),(75,'http://localhost:9000/wav/1775571779099_785eeb1192808e588d6721a7defc808c.wav','ELDRIC_SAGE','ELDRIC_SAGE','系统自动生成的ELDRIC_SAGE试听音频'),(76,'http://localhost:9000/wav/1775571779937_1aa45c1310c6647d878445416b65fdd3.wav','MIA','MIA','系统自动生成的MIA试听音频'),(77,'http://localhost:9000/wav/1775571780959_f2de96cb8c441cff50afa66bffdc5051.wav','MOCHI','MOCHI','系统自动生成的MOCHI试听音频'),(78,'http://localhost:9000/wav/1775571781904_2c3d1cf15ce062b18844d35a7d9301ec.wav','BELLONA','BELLONA','系统自动生成的BELLONA试听音频'),(79,'http://localhost:9000/wav/1775571782800_f078237ee5fc53cadf3cf87da12d854d.wav','VINCENT','VINCENT','系统自动生成的VINCENT试听音频'),(80,'http://localhost:9000/wav/1775571783634_ce481b86cf567c270efc9fc36752d5ed.wav','BUNNY','BUNNY','系统自动生成的BUNNY试听音频'),(81,'http://localhost:9000/wav/1775571784432_7868a32a6d959b7f02ef1412d69da98c.wav','NEIL','NEIL','系统自动生成的NEIL试听音频'),(82,'http://localhost:9000/wav/1775571785475_46db3f4cfb06773382f536b49e8bbfb0.wav','ARTHUR','ARTHUR','系统自动生成的ARTHUR试听音频'),(83,'http://localhost:9000/wav/1775571786492_f890ac5640b4e8be3c2c80770437ea4a.wav','NINI','NINI','系统自动生成的NINI试听音频'),(84,'http://localhost:9000/wav/1775571787620_58ffe6d956d9906c63c75244510ff371.wav','EBONA','EBONA','系统自动生成的EBONA试听音频'),(85,'http://localhost:9000/wav/1775571788668_5f6c9cc0a3b04b722de03a69f2216b80.wav','SEREN','SEREN','系统自动生成的SEREN试听音频'),(86,'http://localhost:9000/wav/1775571789560_b4c2d97ba839526bf515caae2cc1f7f7.wav','PIP','PIP','系统自动生成的PIP试听音频'),(87,'http://localhost:9000/wav/1775571790484_4d98b7f8dab1a1b0e399e3696a8bdbe5.wav','STELLA','STELLA','系统自动生成的STELLA试听音频'),(88,'http://localhost:9000/wav/1775571791599_a280d47c30f584f5f4b8fcce0f9e694e.wav','BODEGA','BODEGA','系统自动生成的BODEGA试听音频'),(89,'http://localhost:9000/wav/1775571792523_eb184aeb87fc4e18e3aaa9c5c2d03511.wav','SONRISA','SONRISA','系统自动生成的SONRISA试听音频'),(90,'http://localhost:9000/wav/1775571793441_742938a7d1757ab346cbaf379da67a5b.wav','ALEK','ALEK','系统自动生成的ALEK试听音频'),(91,'http://localhost:9000/wav/1775571794360_4299bf31135347aacc2ca007247aa088.wav','DOLCE','DOLCE','系统自动生成的DOLCE试听音频'),(92,'http://localhost:9000/wav/1775571795282_95b801b02b7b30107ca9e7c8e47e0ee5.wav','SOHEE','SOHEE','系统自动生成的SOHEE试听音频'),(93,'http://localhost:9000/wav/1775571796317_a0dd55cab6d955161d695031d7a51cf9.wav','ONO_ANNA','ONO_ANNA','系统自动生成的ONO_ANNA试听音频'),(94,'http://localhost:9000/wav/1775571797130_46fdf9832b626b404e461448d77b30bc.wav','LENN','LENN','系统自动生成的LENN试听音频'),(95,'http://localhost:9000/wav/1775571797845_1f5995c9d0868baeafe7bd760b2795d1.wav','EMILIEN','EMILIEN','系统自动生成的EMILIEN试听音频'),(96,'http://localhost:9000/wav/1775571798682_e9482b4b0692fab7e8b9c0cfb40c9492.wav','ANDRE','ANDRE','系统自动生成的ANDRE试听音频'),(97,'http://localhost:9000/wav/1775571799677_af4c23e82c902ee1667b7cd520d462a6.wav','RADIO_GOL','RADIO_GOL','系统自动生成的RADIO_GOL试听音频'),(98,'http://localhost:9000/wav/1775571800567_8006cfc898ca585c91714fd18e98248e.wav','VIVIAN','VIVIAN','系统自动生成的VIVIAN试听音频');
 /*!40000 ALTER TABLE `preset_sound` ENABLE KEYS */;
 
 --
@@ -337,4 +340,4 @@ INSERT INTO `user_file` VALUES (26,9,24,'2026-04-07 17:16:14');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-07 17:57:57
+-- Dump completed on 2026-04-11 15:44:07

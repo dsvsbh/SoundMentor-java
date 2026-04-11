@@ -37,24 +37,29 @@ public class NormalTtsRecord implements Serializable {
     private Integer userId;
 
     /**
-     * MP3名字
+     * 音频文件名
      */
     private String fileName;
 
     /**
-     * mp3 url
+     * 音频文件url
      */
     private String fileUrl;
 
     /**
      * 语速
      */
-    private Integer rate;
+    private Float speed;
 
     /**
      * 声音名
      */
     private String voiceName;
+
+    /**
+     * 文本内容
+     */
+    private String content;
 
     private LocalDateTime createTime;
 
