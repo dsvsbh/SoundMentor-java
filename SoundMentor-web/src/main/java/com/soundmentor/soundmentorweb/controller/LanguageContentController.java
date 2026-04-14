@@ -54,19 +54,6 @@ public class LanguageContentController {
             logger.warn("内容为空");
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "内容不能为空");
         }
-        if(languageContent.getType().equals(ContentTypeEnum.WORD.getCode()))
-        {
-            if(StringUtils.isEmpty(languageContent.getTranslation()))
-            {
-                logger.warn("翻译为空");
-                throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "翻译不能为空");
-            }
-            if(StringUtils.isEmpty(languageContent.getPronunciation()))
-            {
-                logger.warn("发音为空");
-                throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "发音不能为空");
-            }
-        }
         
         languageContentService.save(languageContent);
         logger.info("成功添加语言内容: {}", languageContent);
