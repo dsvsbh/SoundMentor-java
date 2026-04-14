@@ -9,6 +9,8 @@ import com.soundmentor.soundmentorpojo.DTO.ResponseDTO;
 import com.soundmentor.soundmentorpojo.DTO.content.GetContentReq;
 import com.soundmentor.soundmentorweb.service.ILanguageContentService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/language-content")
 public class LanguageContentController {
+    private static final Logger logger = LoggerFactory.getLogger(LanguageContentController.class);
+    
     @Resource
     private ILanguageContentService languageContentService;
 
@@ -43,22 +47,30 @@ public class LanguageContentController {
      */
     @PostMapping("/add")
     public ResponseDTO<LanguageContent> addLanguageContent(@RequestBody LanguageContent languageContent) {
+        logger.info("接收到添加语言内容请求: {}", languageContent);
+        
         if(StringUtils.isEmpty(languageContent.getContent()))
         {
+            logger.warn("内容为空");
             throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "内容不能为空");
         }
         if(languageContent.getType().equals(ContentTypeEnum.WORD.getCode()))
         {
             if(StringUtils.isEmpty(languageContent.getTranslation()))
             {
+                logger.warn("翻译为空");
                 throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "翻译不能为空");
             }
             if(StringUtils.isEmpty(languageContent.getPronunciation()))
             {
+                logger.warn("发音为空");
                 throw new BizException(ResultCodeEnum.INVALID_PARAM.getCode(), "发音不能为空");
             }
         }
-       languageContentService.save(languageContent);
-       return ResponseDTO.OK(languageContent);
+        
+        languageContentService.save(languageContent);
+        logger.info("成功添加语言内容: {}", languageContent);
+        
+        return ResponseDTO.OK(languageContent);
     }
 }
