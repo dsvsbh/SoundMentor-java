@@ -70,4 +70,4 @@ minio:
 
 # 阿里云通义千问大模型配置
 dashscope:
-  api-key: sk-835ae53dacb948d1a49a4e8edf098f40
+  api-key: sk-28e65202d9984a0798987016be8fea7c
